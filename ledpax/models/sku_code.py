@@ -49,10 +49,10 @@ class ProductTemplate(models.Model):
     #          'A Manufacture is a non-material product you provide.')
     drawing_number = fields.Char('Drawing Number')
     part_number_index = fields.Char('Part Number Index')
-    status_active = fields.Boolean('Active', default=True)
+    status_active = fields.Boolean('Active ', default=True)
     status_inactive = fields.Boolean('Not Active', default=False)
-    warehouse = fields.Char('Warehouse', compute='_compute_warehouse')
-    bin = fields.Char('Bin', compute='_compute_bin')
+    warehouse = fields.Char('WAREHOUSE', compute='_compute_warehouse')
+    bin = fields.Char('BIN', compute='_compute_bin')
     uom = fields.Selection([
         ('EA', 'EA'),
         ('FT', 'FT'),
@@ -61,7 +61,7 @@ class ProductTemplate(models.Model):
     name = fields.Char('Name', index=True, required=True, translate=True)
     prod_description = fields.Char('Product Description', index=True)
     p_description = fields.Char('Prod Description', compute='_compute_size', size=80)
-    short_des = fields.Char('Prod Description', compute='_compute_size', size=80)
+    short_des = fields.Char('Prods Description', compute='_compute_size', size=80)
 
 
     def _compute_size(self):

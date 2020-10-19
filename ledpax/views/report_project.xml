@@ -1,0 +1,100 @@
+<odoo>
+	<data>
+        <record id="paperformat_project_report" model="report.paperformat">
+            <field name="name">Project Custom</field>
+            <field name="default" eval="True"/>
+            <field name="format">Tabloid</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+        <template id="report_project">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"/>
+                </t>
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="company" t-value="res_company"/>
+                </t>    
+                <div class="header">
+                    <h1 class="col-md-12" style="font-size:25px;" align="center">
+                        <span t-field="o.name"></span>
+                    </h1>
+                    <div class="row mt32 mb32" style="margin-top:50px">
+                        <div class="col-6" name="company_address">
+                            <div t-field="company.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                        </div>
+                        <div class="col-6" name="company_address">
+                            <div style="float:right">
+                                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="height: 110px; width:250px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <br />
+                    <table class="table table-sm o_main_table" style="top:50px">
+                    	<thead style="background-color: #dddddd">
+                            <tr>
+                                <!-- TODO: remove in master -->
+                                <t t-set="colspan" t-value="6"/>
+                                <th style="border: 1px solid black">Name</th>
+                                <th style="border: 1px solid black">Partner</th>
+                                <th style="border: 1px solid black">Invoice Address</th>
+                                <th style="border: 1px solid black">Delivery Address</th>
+                                <th style="border: 1px solid black">Confirmation Date</th>
+                                <th style="border: 1px solid black">Referance</th>
+                                <th style="border: 1px solid black">Type</th>
+                                <th style="border: 1px solid black">Products</th>
+                                <th style="border: 1px solid black">Product Description</th>
+                                <th style="border: 1px solid black">Ordered Quantity</th>
+                                <th style="border: 1px solid black">Delivered Quantity</th>
+                                <th style="border: 1px solid black">Invoice Quantity</th>
+                                <th style="border: 1px solid black">Unit Price</th>
+                                <th style="border: 1px solid black">Taxes</th>
+                                <th style="border: 1px solid black">Subtotal</th>
+                            </tr>
+                       	</thead>
+			    <tbody>
+	                    	<t t-foreach="o.o_tag_line" t-as="ol">    
+	                        <tr>  
+	                            <td style="border: 1px solid black;"><span t-field="ol.order_name" /></td>      
+	                            <td style="border: 1px solid black;"><span t-field="ol.partner_name" /></td>    
+	                            <td style="border: 1px solid black;"><span t-field="ol.invoice_adrress" /></td> 
+	                            <td style="border: 1px solid black;"><span t-field="ol.delivery_address" /></td>
+	                            <td style="border: 1px solid black;"><span t-field="ol.confirm_date" /></td>    
+	                            <td style="border: 1px solid black;"><span t-field="ol.ref" /></td> <td style="border: 1px solid black;"><span t-field="ol.type" /></td><td style="border: 1px solid black;"><span t-field="ol.products" /></td>        
+	                            <td style="border: 1px solid black;"><span t-field="ol.pd" /></td>  <td style="border: 1px solid black;"><span t-field="ol.ordered_quantity" /></td>
+	                            <td style="border: 1px solid black;"><span t-field="ol.delivered_quantity" /></td>        
+	                            <td style="border: 1px solid black;"><span t-field="ol.invoice_quantity" /></td>
+	                            <td style="border: 1px solid black;"><span t-field="ol.unit_price" /></td>      
+	                            <td style="border: 1px solid black;"><span t-field="ol.tax" /></td> <td style="border: 1px solid black;"><span t-field="ol.subtotal"/></td>  
+	                        </tr>
+	                        </t>
+	                    </tbody>
+	                </table>
+                </div>
+	            </t>
+	        </t>
+		</template>        
+
+       	<report
+            id="action_report_project"
+            string="Project Report"
+            model="order.tag"
+            paperformat="ledpax.paperformat_project_report"
+            report_type="qweb-pdf"
+            file="ledpax.report_project"
+            name="ledpax.report_project"
+        />
+    </data>
+</odoo>

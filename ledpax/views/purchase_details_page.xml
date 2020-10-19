@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="purchase_order_details">
+		<t t-call="portal.portal_layout">
+			<div class="oe_structure">
+				<div class="container">
+					<br />
+						<center><h3>Purchase Order Details</h3></center>
+					<br />
+					<table class="table-striped table">
+						<thead style="font-size: 23px;">
+							<tr>
+								<h6>
+									<b>
+										<th>Purchase Order</th>
+										<th>Vendor</th>
+										<th>Date</th>
+										<th><b>State</b></th>
+									</b>
+								</h6>
+							</tr>
+						</thead>
+						<tbody class="ui-sortable">             
+							<t t-foreach="values['orders']" t-as="order">
+								<tr class="o_data_row">
+									<td> <a t-attf-href="/my/purchase/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a></td>
+									<td class="o_data_cell o_required_modifier"><span t-esc="order.partner_id.name"/></td>
+									<td class="o_data_cell o_required_modifier"><span t-esc="order.date_order"/></td>
+									<td class="o_data_cell o_required_modifier"><span t-esc="order.state"/></td>
+								</tr>
+							</t>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</t>
+	</template>
+
+	<template id="my_purchase_order" name="My Purchase Order">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/ledpax/static/src/js/ledpax_purchase.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+			<t t-call="portal.portal_layout">
+				<t t-set="purchase_order" t-value="values['order']"/>
+				<div id="optional_placeholder"></div>
+				<div class="container">
+					<div class="card">
+						<div class="card-header">
+							<div class="row">
+								<div class="col-lg-12">
+									<h4>
+										<t t-if="values['order'].state in ['draft', 'sent']">
+											Request for Quotation
+										</t>
+										<t t-else="1">
+											Purchase Order
+										</t>
+										<span t-esc="values['order'].name"/>
+									</h4>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="mb8">
+								<strong>Date:</strong> <span t-field="values['order'].date_order" t-options='{"widget": "date"}'/>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<strong>Product</strong>
+								</div>
+								<div class="col-lg-2 text-right">
+									<strong>Unit Price</strong>
+								</div>
+								<div class="col-lg-2 text-right">
+									<strong>Quantity</strong>
+								</div>
+								<div class="col-lg-2 text-right">
+									<strong>Subtotal</strong>
+								</div>
+							</div>
+							<t t-foreach="values['order'].order_line" t-as="ol">
+								<div class="row purchases_vertical_align">
+									<div class="col-lg-1 text-center">
+										<img t-attf-src="data:image/*;base64,{{ol.product_id.image}}" style="height:40px;width:40px"/>
+									</div>
+									<div id='product_name' class="col-lg-5">
+										<span t-esc="ol.product_id.name"/>
+									</div>
+									<div class="col-lg-2 text-right">
+										<span t-field="ol.price_unit" />
+									</div>
+									<div class="col-lg-2 text-right">
+										<span t-esc="ol.product_qty"/>
+									</div>
+									<div class="col-lg-2 text-right">
+										<span t-field="ol.price_subtotal" />
+									</div>
+								</div>
+							</t>
+							<hr/>
+							<button type="button" class="o_default_snippet_text" data-toggle="modal" data-target="#myModal" style="background-color: #1abc9c; padding: 5px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 12x;">Estimated Time of Arrival</button>
+								<div class="modal fade" id="myModal" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"></button>
+												<h4 class="modal-title">Estimated Time of Arrival</h4>
+											</div>
+											<div class="modal-body">
+												<input id="get_date" type="date"></input>
+											</div>
+											<div class="modal-footer">
+												<button id="submit_date" name="search" type="button" class="btn btn-info btn-default" data-dismiss="modal">Submit</button>
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							<div class="row">
+								<div class="col-lg-12 text-right">
+									<div class="row">
+										<div class="col-lg-10 text-right">
+											Untaxed Amount:
+										</div>
+										<div class="col-lg-2 text-right">
+											<span t-field="values['order'].amount_untaxed" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-10 text-right">
+											Taxes:
+										</div>
+										<div class="col-lg-2 text-right">
+											<span t-field="values['order'].amount_tax" />
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-10 text-right">
+											<strong>Total:</strong>
+										</div>
+										<div class="col-lg-2 text-right">
+											<strong><span t-field="values['order'].amount_total" /></strong>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="oe_structure mb32"/>
+			</t>
+		</xpath>
+	</template>    
+
+	<template id="delivery_room" name="Delivery Room">
+      	<t t-call="portal.portal_layout">
+       		<t t-call="portal.portal_searchbar">
+                <t t-set="title">Quotation</t>
+            </t>            
+                    <t t-if="not values['orders']">
+                        <center>
+                            <h2>There are currently no quotations.</h2>
+                        </center>
+                    </t>
+                        <t t-if="values['orders']" t-call="portal.portal_table">
+                            <thead>
+                                <tr class="active">
+                                    <th>Quotation</th>
+                                    <th class="text-left">Order Date</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="ui-sortable"> 
+                                <t t-foreach="values['orders']" t-as="order">
+                                     <t t-set="check_id" t-value="order.id" value="order.id" />
+                                        <tr>
+                                            <td><a t-attf-href="/my/project/quotes/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a></td>
+                                            <td class="text-left"><span t-field="order.date_order"/></td>
+                                           	<td class="text-right"><span t-field="order.amount_total"/></td>
+                                            <td><input type="checkbox" class="checks"/>
+                                            <span t-esc="check_id" style= "display:none"/></td>
+                                        </tr>                           
+                                </t>
+                                <script>
+                                    function getValue() { 
+                                    var checks = document.getElementsByClassName('checks');
+                                    var str = [];
+                                    for(i=0;i &lt; checks.length;i++)
+                                    {
+                                    if (checks[i].checked === true)
+                                    {
+                                    str[str.length]=checks[i].nextElementSibling.innerText;
+                                    }
+                                    }
+                                    string = str.toString();
+                                    $.post('/my/delivery_room/quotation_so', {data : string}, function(result){
+                                    alert(result)
+                                    })
+                                    }
+                                </script>
+                            </tbody>
+                        </t>
+                        <br/>
+                    <button type="button" class="o_default_snippet_text check-box-btn" style="background-color: #1abc9c; padding: 5px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 12x;float: right; margin-right: 50px;" onclick="getValue()" >Submit</button>
+        </t>
+    </template>
+
+    <template id="qoutation_order" name="Portal: My Quotation">
+        <t t-call="portal.portal_layout">
+            <t t-foreach="values['orders']" t-as="order">
+            <div id="optional_placeholder"></div>
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>
+                                    <span t-esc="order.name"/>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                    	<div class="mb8">
+                            <strong>Project:</strong> <span t-field="order.project_name"/>
+                        </div>
+                        <div class="mb8">
+                            <strong>Validity Date:</strong> <span t-field="order.validity_date" t-options='{"widget": "date"}'/>
+                        </div>
+                       	<div class="mb8">
+                            <strong>Customer:</strong> <span t-field="order.partner_id.name"/>
+                        </div>
+                        <br></br>
+                        	<table class="table table-bordered">
+                    		<thead style="background-color: #dddddd">
+		                        <tr>
+		                            <th style="border: 1px solid black; font-size: 12px;">Type</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Product</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Image</th>
+		                            <th style="border: 1px solid black; font-size: 12px; width:20%">Description</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Order Qty</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Unit Of Measure</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Route</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Unit Price</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Taxes</th>
+		                            <th style="border: 1px solid black; font-size: 12px;">Discount</th>
+		                           	<th style="border: 1px solid black; font-size: 12px;">Subtotal</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                    <t t-foreach="order.order_line" t-as="ol">    
+		                        <tr>  
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.type" /></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.product_id.name" /></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><img t-attf-src="data:image/*;base64,{{ol.product_id.image}}" style="height:40px;width:40px"/></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.product_id.prod_description" /></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.product_uom_qty" /></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.product_uom" /></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.route_id.name"/></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.price_unit" /></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.tax_id"/></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.discount"/></td>
+		                            <td style="border: 1px solid black; font-size: 12px;"><span t-field="ol.price_subtotal"/></td>
+		                        </tr>
+		                        </t>
+		                    </tbody>
+		                    </table>
+<!--                         <div class="row">
+                            <div class="col-lg-6">
+                                <strong>Product</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Order Qty</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Unit Of Measure</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Route</strong>
+                            </div>                            
+                            <div class="col-lg-1 text-right">
+                                <strong>Unit Price</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Taxes</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Discount</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Subtotal</strong>
+                            </div>
+                            <div class="col-lg-1 text-right">
+                                <strong>Margin</strong>
+                            </div>
+ 						</div>
+                        <t t-foreach="order.order_line" t-as="ol">
+                            <div class="row purchases_vertical_align">
+                                <div class="col-lg-1 text-center">
+                                    <img t-attf-src="data:image/*;base64,{{ol.product_id.image}}" style="height:40px;width:40px"/>
+                                </div>
+                                <div id='product_name' class="col-lg-5">
+                                    <span t-esc="ol.product_id.name"/>
+                                </div>
+                                <div class="col-lg-1 text-right">
+                                    <span t-field="ol.product_uom_qty" />
+                                </div>
+                                <div class="col-lg-1 text-right">
+                                    <span t-field="ol.product_uom" />
+                                </div>
+                                <div class="col-lg-1 text-right">
+                                    <span t-field="ol.route_id.name" />
+                                </div>
+                                <div class="col-lg-1 text-right">
+                                    <span t-field="ol.price_unit" />
+                                </div> 
+                                <div class="col-lg-1 text-right">
+                                    <span t-field="ol.price_subtotal" />
+                                </div> 
+                                <div class="col-lg-1 text-right">
+                                    <span t-field="ol.margin" />
+                                </div>
+                            </div>    
+                        </t>
+                        <hr/> -->
+                        <div class="col-lg-12 text-right">
+                            <strong>Total : </strong>
+                            <span t-field="order.amount_total" />
+                        </div>
+                    </div>                            
+                </div>
+            </div>
+        </t>
+            <div class="oe_structure mb32"/>
+        </t>
+    </template>    
+
+	<template id="vendor_product_upload" name="Vendor Product File Upload">
+        <t t-call="website.layout">
+            <div class="col-md-offset-5 col-sm-offset-4 col-sm-8 col-md-7" style="margin-top:30px;">
+                <form action="/add_product" method="post" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data" id="file_upload_form">
+                    <div t-attf-class="form-group">
+                        <div class="col-md-7 col-sm-8">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="file" name="attachment" class="file"  data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="project_id"/>
+                            <button type="submit" name="Upload" style="margin-top:20px;" class="fa fa-upload">
+                                Add Products
+                            </button>
+                        </div>
+                    </div>
+                </form>
+				<form action="/update_product" method="post" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data" id="file_upload_form">
+                    <div t-attf-class="form-group">
+                        <div class="col-md-7 col-sm-8">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="file" name="attachment" class="file"  data-show-upload="true" data-show-caption="true" lass="file" data-show-preview="true" id="project_id"/>
+                            <button type="submit" name="Upload" style="margin-top:20px;" class="fa fa-upload">
+                                Update Products
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+
+	<template id="assets_backend_demo" inherit_id="web.assets_backend" name=" testing assets Payment Stripe SCA Assets">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/ledpax/static/src/js/ledpax_purchase.js"></script>
+		</xpath>
+	</template>
+
+	<template id="assets_frontend_demo" inherit_id="web.assets_frontend" name=" testing assets Payment Stripe SCA Assets">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/ledpax/static/src/js/ledpax_purchase.js"></script>
+		</xpath>
+	</template>
+
+	<template id="assets_common_demo" inherit_id="web.assets_common" name=" testing assets Payment Stripe SCA Assets">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/ledpax/static/src/js/ledpax_purchase.js"></script>
+		</xpath>
+	</template>
+
+	<template id="assets_backend" name="account assets" inherit_id="web.assets_backend">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/ledpax/static/src/js/ledpax_purchase.js"></script>
+		</xpath>
+	</template>
+</odoo>

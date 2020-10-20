@@ -17,7 +17,7 @@
 
     'depends': ['base', 'purchase', 'portal','website','sale_stock'],
     'data':[
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/main.xml',
         'views/vendor_portal_menu.xml',
     ],

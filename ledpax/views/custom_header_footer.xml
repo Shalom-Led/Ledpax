@@ -261,8 +261,8 @@
 			<br />
 			<br />
 		</xpath>
-		<xpath expr="//div[hasclass('footer o_standard_footer')]" position="replace">
-		<!-- <xpath expr="//div[@class = 'footer o_standard_footer']" position="replace"> -->
+		<!-- <xpath expr="//div[hasclass('footer o_standard_footer')]" position="replace"> -->
+		<xpath expr="//div[@class = 'footer o_standard_footer']" position="replace">
 
 			<div class="footer o_standard_footer" style="position:relative; overflow: hidden;padding: 0px;border: none;width: 100%">
 			

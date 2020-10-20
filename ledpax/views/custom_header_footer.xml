@@ -2,7 +2,7 @@
 <odoo>
 <data>
 	<template id="custom_header_footer" inherit_id="web.external_layout_standard">
-		<xpath expr="//div[@class='header']" position="replace">
+		<xpath expr="//div[hasclass('header')]" position="replace">
 		<t t-set="company" t-value="doc.print_company_id" t-if="doc_model == 'sale.order'"/>
 		<t t-set="company" t-value="o.print_company_id" t-if="doc_model == 'account.invoice'"/>
 		<t t-set="company" t-value="o.print_company_id" t-if="doc_model == 'purchase.order'"/>
@@ -261,8 +261,8 @@
 			<br />
 			<br />
 		</xpath>
-
-		<xpath expr="//div[@class = 'footer o_standard_footer']" position="replace">
+		<xpath expr="//div[hasclass('footer o_standard_footer')]" position="replace">
+		<!-- <xpath expr="//div[@class = 'footer o_standard_footer']" position="replace"> -->
 
 			<div class="footer o_standard_footer" style="position:relative; overflow: hidden;padding: 0px;border: none;width: 100%">
 			

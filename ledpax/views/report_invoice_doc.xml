@@ -6,8 +6,8 @@
                 <t t-call="web.external_layout">
                     <t t-set="o" t-value="o.with_context(lang=lang)" />
                     <div class="page">
-                            <t t-set="name" t-value="o.partner_id.name + ','"/>
-                            <t t-esc="name"/>
+                            <t t-set="name" t-value="o.partner_id.name "/>
+                            <t t-esc="name + ','"/>
                             <p>
                                 <t t-if="o.partner_id.street">
                                     <t t-set="street" t-value="o.partner_id.street + ','"/>

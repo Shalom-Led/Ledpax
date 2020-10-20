@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import models
+# from . import models
 # from . import stock_rule
 # from . import related_products
 # from . import bom

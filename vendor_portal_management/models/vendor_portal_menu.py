@@ -9,7 +9,7 @@ class VendorPortalWebsite(models.Model):
 
     name = fields.Char(string='RFQ Reference', readonly=True, required=True, copy=False, default='New')
     product_id = fields.Many2one('product.product', string='Product', change_default=True, required=True)
-    rfq_reference = fields.Char(string='RFQ Reference', compute='_rfq_reference')
+    rfq_reference = fields.Char(string='Rfq Reference', compute='_rfq_reference')
     product_qty = fields.Float(string='Quantity', required=True)
     estimated_quote = fields.Text(string='Our Estimated Quote')
     estimated_delivery = fields.Date(string='Our Estimated Delivery')

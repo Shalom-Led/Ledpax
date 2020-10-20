@@ -87,7 +87,7 @@ class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
     project=fields.Many2one('project.project',
-                            string='Project',
+                            string='project',
                             default=lambda self: self.env.context.get('default_project_id'),
                             index=True,
                             track_visibility='onchange')
@@ -100,7 +100,7 @@ class PurchaseOrder(models.Model):
                                            'purchase.order'))
 
     project_so = fields.Char(string="Project", related='group_id.sale_id.project_name.name', default=None)
-    date_ack = fields.Date('Scheduled Date', track_visibility='onchange')
+    date_ack = fields.Date(track_visibility='onchange')
     date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
 
 

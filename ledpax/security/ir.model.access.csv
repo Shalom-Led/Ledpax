@@ -1,3 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_order_tag_line,access_order_tag_line,model_order_tag_line,base.group_user,1,0,0,0
-access_order_tag,access_order_tag,model_order_tag,base.group_user,1,0,0,0
+access_product_related,access_product_related,model_product_related,base.group_user,1,0,0,0
+access_stock_move_portal,stock.move,stock.model_stock_move,base.group_portal,1,0,0,0
+access_order_tag,access_order_tag,model_order_tag,base.group_portal,1,0,0,0
+access_order_tag,access_order_tag,model_order_tag,base.group_system,1,0,0,0
+access_order_tag_line,access_order_tag_line,model_order_tag_line,base.group_portal,1,0,0,0
+access_order_tag_line,access_order_tag_line,model_order_tag_line,base.group_system,1,0,0,0
+access_stock_picking_type,stock.picking.type,stock.model_stock_picking_type,base.group_portal,1,0,0,0
+
+

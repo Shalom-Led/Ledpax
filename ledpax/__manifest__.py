@@ -41,7 +41,7 @@
      #    'views/backorder_pur.xml',
 	 #    'views/quatation.xml',
      #    'views/purchase_details_page.xml',
-     #    'views/home_page.xml', 
+        'views/home_page.xml', 
      #    'views/project.xml',
      #    'views/del_room.xml',
      #    'views/order_tag.xml',

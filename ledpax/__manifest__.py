@@ -25,8 +25,8 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-     #    'wizard/create_product_excel.xml',
-     #    'wizard/create_product_image_excel.xml',
+        'wizard/create_product_excel.xml',
+        'wizard/create_product_image_excel.xml',
      #    'views/partner.xml',
      #    'views/related_products.xml',
      #    'views/pdf_view.xml',

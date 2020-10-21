@@ -482,80 +482,80 @@ class ProductTemplate(models.Model):
     #         self.with_context(active_test=False).mapped('product_variant_ids').write({'active': vals.get('active')})   
     #     return res
 
-    # def _compute_rfq_count(self):
-    #     for product in self:
-    #         product.create_rfq = self.env['purchase.order.line'].search_count([('product_id.product_tmpl_id.id','=',product.id)])
+    def _compute_rfq_count(self):
+        for product in self:
+            product.create_rfq = self.env['purchase.order.line'].search_count([('product_id.product_tmpl_id.id','=',product.id)])
 
-    # def action_view_rfq(self):
-    #     products = self.mapped('product_variant_ids')
-    #     action = self.env.ref('purchase.purchase_form_action').read()[0]
-    #     if products and len(products) == 1:
-    #         action['domain'] = [('order_line.product_id.name', '=', self.name)]
-    #         action['context'] = {'default_product_id': products.ids[0],
-    #                              'default_product_uom':1,
-    #                              'default_name':self.name,
-    #                             }
-    #     elif products :
-    #         try:
-    #             for prod in products :
-    #                 if prod.id == self.prod_variant.id:
-    #                     id = prod.id
-    #                     name = prod.name
-    #             action['domain'] = [('order_line.product_id.name', '=', name)]
-    #             action['context'] = {'default_product_id': id,
-    #                              'default_product_uom':1,
-    #                              'default_name': name
-    #                             }
-    #         except UnboundLocalError:
-    #             raise exceptions.ValidationError('Select the product variant.')
-    #     else:
-    #         action['domain'] = [('product_id', 'in', products.ids)]
-    #         action['context'] = {}
-    #     return action
+    def action_view_rfq(self):
+        products = self.mapped('product_variant_ids')
+        action = self.env.ref('purchase.purchase_form_action').read()[0]
+        if products and len(products) == 1:
+            action['domain'] = [('order_line.product_id.name', '=', self.name)]
+            action['context'] = {'default_product_id': products.ids[0],
+                                 'default_product_uom':1,
+                                 'default_name':self.name,
+                                }
+        elif products :
+            try:
+                for prod in products :
+                    if prod.id == self.prod_variant.id:
+                        id = prod.id
+                        name = prod.name
+                action['domain'] = [('order_line.product_id.name', '=', name)]
+                action['context'] = {'default_product_id': id,
+                                 'default_product_uom':1,
+                                 'default_name': name
+                                }
+            except UnboundLocalError:
+                raise exceptions.ValidationError('Select the product variant.')
+        else:
+            action['domain'] = [('product_id', 'in', products.ids)]
+            action['context'] = {}
+        return action
 
-    # @api.multi
-    # @api.onchange('categ_id')
-    # def on_change_review(self):
-    #     keys =[]
-    #     if self.categ_id.name == 'Downlight' :
-    #         for key in self.env['product.related'].search([('product_type', '=', self.categ_id.name)]):
-    #             keys.append(key.id)
-    #     else :
-    #         for key in self.env['product.related'].search([('product_type', '=', self.categ_id.name)]):
-    #             keys.append(key.id)
-    #     self.update({'related_product_ids':[(6, 0,[y for y in keys])]})
+    @api.multi
+    @api.onchange('categ_id')
+    def on_change_review(self):
+        keys =[]
+        if self.categ_id.name == 'Downlight' :
+            for key in self.env['product.related'].search([('product_type', '=', self.categ_id.name)]):
+                keys.append(key.id)
+        else :
+            for key in self.env['product.related'].search([('product_type', '=', self.categ_id.name)]):
+                keys.append(key.id)
+        self.update({'related_product_ids':[(6, 0,[y for y in keys])]})
 
-    # def _compute_bin(self):
-    #     bin, str_bin = set(), ''
-    #     products = self.env['product.product'].search([('product_tmpl_id', '=', self.id)])
-    #     for product in products:
-    #         locations = self.env['stock.quant'].search([('product_id', '=', product.id), ('quantity', '>=', 0)])
-    #         for location in locations:
-    #             bin.add(location.location_id.name)
-    #     count = 0
-    #     for bin_loc in bin:
-    #         if count != 0:
-    #             str_bin = str_bin + ' , ' + str(bin_loc)
-    #         else:
-    #             str_bin = str_bin + str(bin_loc)
-    #             count = 1
-    #     self.bin = str_bin
+    def _compute_bin(self):
+        bin, str_bin = set(), ''
+        products = self.env['product.product'].search([('product_tmpl_id', '=', self.id)])
+        for product in products:
+            locations = self.env['stock.quant'].search([('product_id', '=', product.id), ('quantity', '>=', 0)])
+            for location in locations:
+                bin.add(location.location_id.name)
+        count = 0
+        for bin_loc in bin:
+            if count != 0:
+                str_bin = str_bin + ' , ' + str(bin_loc)
+            else:
+                str_bin = str_bin + str(bin_loc)
+                count = 1
+        self.bin = str_bin
 
-    # def _compute_warehouse(self):
-    #     warehouse, str_warehouse = set(), ''
-    #     products = self.env['product.product'].search([('product_tmpl_id', '=', self.id)])
-    #     for product in products:
-    #         locations = self.env['stock.quant'].search([('product_id', '=', product.id), ('quantity', '>=', 0)])
-    #         for location in locations:
-    #             for loc in location.location_id.complete_name.split('/'):
-    #                 is_warehouse = self.env['stock.warehouse'].search([('code', '=', loc)])
-    #                 if is_warehouse:
-    #                     warehouse.add(is_warehouse.name)
-    #     count = 0
-    #     for ware_loc in warehouse:
-    #         if count != 0:
-    #             str_warehouse = str_warehouse + ' , ' + str(ware_loc)
-    #         else:
-    #             str_warehouse = str_warehouse + str(ware_loc)
-    #             count = 1
-    #     self.warehouse = str_warehouse
+    def _compute_warehouse(self):
+        warehouse, str_warehouse = set(), ''
+        products = self.env['product.product'].search([('product_tmpl_id', '=', self.id)])
+        for product in products:
+            locations = self.env['stock.quant'].search([('product_id', '=', product.id), ('quantity', '>=', 0)])
+            for location in locations:
+                for loc in location.location_id.complete_name.split('/'):
+                    is_warehouse = self.env['stock.warehouse'].search([('code', '=', loc)])
+                    if is_warehouse:
+                        warehouse.add(is_warehouse.name)
+        count = 0
+        for ware_loc in warehouse:
+            if count != 0:
+                str_warehouse = str_warehouse + ' , ' + str(ware_loc)
+            else:
+                str_warehouse = str_warehouse + str(ware_loc)
+                count = 1
+        self.warehouse = str_warehouse

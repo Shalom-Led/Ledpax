@@ -367,67 +367,67 @@ class ProductTemplate(models.Model):
         try :
             if vals['categ_id']:
                 try:
-                    parent_path = self.env['product.category'].search([('id', '=', vals['categ_id'])]).parent_path
-                    templates = self.env['product.category'].search([('id', '=', vals['categ_id'])]).name.upper()
+                    parent_path = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).parent_path
+                    templates = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).name.upper()
                     if templates == 'MASTER PRODUCT STOCKABLE':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        if self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num == 0 :
+                            obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                             obj['start_num'] = 100000
-                        num_mps = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+                        num_mps = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num
                         sub_code = ''
                         path = parent_path.split('/')[ :-2]
                         for num in path :
                             sub_code = sub_code + '-' +self.env['product.category'].search([('id', 'in', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+                        curr_code = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).short_code
                         default_code = '[' + curr_code + str(num_mps) + ']' + sub_code[1:]
                         sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
                         update_num_mps = num_mps + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        update_obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                         update_obj['start_num'] = update_num_mps
                     elif templates == 'COMPONENT STOCKABLE':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        if self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num == 0 :
+                            obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                             obj['start_num'] = 200000
-                        num_cs = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+                        num_cs = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num
                         sub_code = ''
                         path = parent_path.split('/')[ :-2]
                         for num in path :
                             sub_code = sub_code + '-' +self.env['product.category'].search([('id', 'in', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+                        curr_code = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).short_code
                         default_code = '[' + curr_code + str(num_cs) + ']' + sub_code[1:]
                         sku_codes = ProductTemplate.generate_sku_code(default_code, vals, 'write')
                         update_num_cs = num_cs + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        update_obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                         update_obj['start_num'] = update_num_cs
                     elif templates == 'MADE TO ORDER PRODUCT':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        if self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num == 0 :
+                            obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                             obj['start_num'] = 100000
-                        num_mop = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+                        num_mop = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num
                         sub_code = ''
                         path = parent_path.split('/')[ :-2]
                         for num in path :
                             sub_code = sub_code + '-' +self.env['product.category'].search([('id', 'in', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+                        curr_code = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).short_code
                         default_code = '[' + curr_code + str(num_mop) + ']' + sub_code[1:]
                         sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
                         update_num_mop = num_mop + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        update_obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                         update_obj['start_num'] = update_num_mop
                     elif templates == 'MADE TO ORDER COMPONENT':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        if self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num == 0 :
+                            obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                             obj['start_num'] = 200000
-                        num_moc = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+                        num_moc = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).start_num
                         sub_code = ''
                         path = parent_path.split('/')[ :-2]
                         for num in path :
                             sub_code = sub_code + '-' +self.env['product.category'].search([('id', 'in', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+                        curr_code = self.env['product.category'].search([('id', 'in', vals['categ_id'])]).short_code
                         default_code = '[' + curr_code + str(num_moc) + ']' + sub_code[1:]
                         sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
                         update_num_moc = num_moc + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+                        update_obj = self.env['product.category'].search([('id', 'in', vals['categ_id'])])
                         update_obj['start_num'] = update_num_moc
                     else:
                         path = parent_path.split('/')[ :-1]

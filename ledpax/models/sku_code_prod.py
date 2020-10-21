@@ -109,103 +109,103 @@ class CustomProductProduct(models.Model):
         return record
 
     @api.multi
-    def write(self, vals):
-        try:
-            if 'default_code' in vals.keys():
-                if vals['default_code']:
-                    if self.env['product.product'].search([('default_code', '=', vals['default_code'])]):
-                        raise exceptions.ValidationError('SKU should be unique !')
-        except:
-            raise exceptions.ValidationError('SKU should be unique !')
-        try:
-            if vals['name']:
-                prod_name = vals['name']
-        except KeyError:
-            try:
-                for product in self:  
-                    prod_name = product.name
-                    break
-            except:
-                pass
-        except:
-            pass
-        try :
-            if vals['pdf_image'] :
-                from pdf2image import convert_from_path
-                try:
-                    self.env['product.image'].search([('product_tmpl_id', '=', self.product_tmpl_id.id)]).unlink()
-                except:
-                    pass
-                code = bytes(vals['pdf_image'], encoding='utf-8')
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                with open(os.path.expanduser(file), 'wb') as fout:
-                    fout.write(base64.decodestring(code))
-                    os.chmod(file, 0o777)
-                pdf = convert_from_path(file)
-                for page in pdf:
-                    img_name = prod_name + '.jpg'
-                    rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
-                    page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
-                    img = False
-                    img_path = get_module_resource('ledpax', 'static/image', img_name)
-                    if img_path:
-                        with open(img_path, 'rb') as f:
-                            img = f.read()
-                            vals['image_medium'] = base64.b64encode(img)
-                    os.remove(rm_img)
-                    break
-        except KeyError:
-            pass
-        except:
-            raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
-        try :
-            if vals['excel_file'] :
-                file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
-                code = bytes(vals['excel_file'], encoding='utf-8')
-                with open(os.path.expanduser(file_path), 'wb') as fout:
-                    fout.write(base64.decodestring(code))
-                    os.chmod(file_path, 0o777)
-        except KeyError:
-            try :
-                if vals['name'] and self.excel_file:
-                    file_path = '/home/dolly/Desktop/Excel data/' + prod_name + '.xlsx'
-                    with open(os.path.expanduser(file_path), 'wb') as fout:
-                        fout.write(self.excel_file)
-                        os.chmod(file_path, 0o777)
-            except:
-                pass
-        except:
-            raise exceptions.ValidationError('Selected file is not Excel supported. Upload Excel file.')
+    # def write(self, vals):
+    #     try:
+    #         if 'default_code' in vals.keys():
+    #             if vals['default_code']:
+    #                 if self.env['product.product'].search([('default_code', '=', vals['default_code'])]):
+    #                     raise exceptions.ValidationError('SKU should be unique !')
+    #     except:
+    #         raise exceptions.ValidationError('SKU should be unique !')
+    #     try:
+    #         if vals['name']:
+    #             prod_name = vals['name']
+    #     except KeyError:
+    #         try:
+    #             for product in self:  
+    #                 prod_name = product.name
+    #                 break
+    #         except:
+    #             pass
+    #     except:
+    #         pass
+    #     try :
+    #         if vals['pdf_image'] :
+    #             from pdf2image import convert_from_path
+    #             try:
+    #                 self.env['product.image'].search([('product_tmpl_id', '=', self.product_tmpl_id.id)]).unlink()
+    #             except:
+    #                 pass
+    #             code = bytes(vals['pdf_image'], encoding='utf-8')
+    #             file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+    #             with open(os.path.expanduser(file), 'wb') as fout:
+    #                 fout.write(base64.decodestring(code))
+    #                 os.chmod(file, 0o777)
+    #             pdf = convert_from_path(file)
+    #             for page in pdf:
+    #                 img_name = prod_name + '.jpg'
+    #                 rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
+    #                 page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+    #                 img = False
+    #                 img_path = get_module_resource('ledpax', 'static/image', img_name)
+    #                 if img_path:
+    #                     with open(img_path, 'rb') as f:
+    #                         img = f.read()
+    #                         vals['image_medium'] = base64.b64encode(img)
+    #                 os.remove(rm_img)
+    #                 break
+    #     except KeyError:
+    #         pass
+    #     except:
+    #         raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
+    #     try :
+    #         if vals['excel_file'] :
+    #             file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
+    #             code = bytes(vals['excel_file'], encoding='utf-8')
+    #             with open(os.path.expanduser(file_path), 'wb') as fout:
+    #                 fout.write(base64.decodestring(code))
+    #                 os.chmod(file_path, 0o777)
+    #     except KeyError:
+    #         try :
+    #             if vals['name'] and self.excel_file:
+    #                 file_path = '/home/dolly/Desktop/Excel data/' + prod_name + '.xlsx'
+    #                 with open(os.path.expanduser(file_path), 'wb') as fout:
+    #                     fout.write(self.excel_file)
+    #                     os.chmod(file_path, 0o777)
+    #         except:
+    #             pass
+    #     except:
+    #         raise exceptions.ValidationError('Selected file is not Excel supported. Upload Excel file.')
 
-        res = super(CustomProductProduct, self).write(vals)
+    #     res = super(CustomProductProduct, self).write(vals)
 
-        try:
-            if vals['pdf_image']:
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                pdf = convert_from_path(file)
-                img_name = prod_name + '.jpg'
-                rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
-                ncount = 0
-                for page in pdf:
-                    if ncount == 0:
-                        ncount += 1
-                    else :
-                        page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
-                        img = False
-                        img_path = get_module_resource('ledpax', 'static/image', img_name)
-                        if img_path:
-                            with open(img_path, 'rb') as f:
-                                img = f.read()
-                            self.env['product.image'].create({'product_tmpl_id' : self.product_tmpl_id.id ,
-                                        'name' : prod_name + '_' + str(ncount),
-                                        'image' : base64.b64encode(img) })
-                        ncount += 1
-                        os.remove(rm_img)
-                os.remove(file)
-        except:
-            pass
+    #     try:
+    #         if vals['pdf_image']:
+    #             file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+    #             pdf = convert_from_path(file)
+    #             img_name = prod_name + '.jpg'
+    #             rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
+    #             ncount = 0
+    #             for page in pdf:
+    #                 if ncount == 0:
+    #                     ncount += 1
+    #                 else :
+    #                     page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+    #                     img = False
+    #                     img_path = get_module_resource('ledpax', 'static/image', img_name)
+    #                     if img_path:
+    #                         with open(img_path, 'rb') as f:
+    #                             img = f.read()
+    #                         self.env['product.image'].create({'product_tmpl_id' : self.product_tmpl_id.id ,
+    #                                     'name' : prod_name + '_' + str(ncount),
+    #                                     'image' : base64.b64encode(img) })
+    #                     ncount += 1
+    #                     os.remove(rm_img)
+    #             os.remove(file)
+    #     except:
+    #         pass
  
-        return res
+    #     return res
 
     @api.multi
     def _product_search(self, operator, value):

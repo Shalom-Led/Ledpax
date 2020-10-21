@@ -282,202 +282,202 @@ class ProductTemplate(models.Model):
                 pass
         return record
 
-    @api.multi
-    def write(self, vals):
-        try:
-            if 'name' in vals.keys():
-                if vals['name']:
-                    if self.env['product.template'].search([('name', '=', vals['name'])]):
-                        raise exceptions.ValidationError('Product Name should be unique !')
-        except:
-            raise exceptions.ValidationError('Product Name should be unique !')
-        try:
-            if 'default_code' in vals.keys():
-                if vals['default_code']:
-                    if self.env['product.template'].search([('default_code', '=', vals['default_code'])]):
-                        raise exceptions.ValidationError('SKU should be unique !')
-        except:
-            raise exceptions.ValidationError('SKU should be unique !')
-        try:
-            if vals['name']:
-                prod_name = vals['name']
-        except KeyError:
-            prod_name = self.name
-        except:
-            pass
-        try:
-            if 'description' in vals.keys():
-                if vals['description']:
-                    vals['description_sale'] = vals['description']
-                    vals['description_purchase'] = vals['description']
-        except:
-            pass
-        try :
-            if vals['pdf_image'] :
-                from pdf2image import convert_from_path
-                try:
-                    self.env['product.image'].search([('product_tmpl_id', '=', self.id)]).unlink()
-                except:
-                    pass
-                code = bytes(vals['pdf_image'], encoding='utf-8')
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                with open(os.path.expanduser(file), 'wb') as fout:
-                    fout.write(base64.decodestring(code))
-                    os.chmod(file, 0o777)
-                pdf = convert_from_path(file)
-                for page in pdf:
-                    img_name = prod_name + '.jpg'
-                    rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
-                    page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
-                    img = False
-                    img_path = get_module_resource('ledpax', 'static/image', img_name)
-                    if img_path:
-                        with open(img_path, 'rb') as f:
-                            img = f.read()
-                            vals['image_medium'] = base64.b64encode(img)
-                    os.remove(rm_img)
-                    break
-        except KeyError:
-            pass
-        except:
-            raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
-        try :
-            if vals['excel_file'] :
-                file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
-                code = bytes(vals['excel_file'], encoding='utf-8')
-                with open(os.path.expanduser(file_path), 'wb') as fout:
-                    fout.write(base64.decodestring(code))
-                    os.chmod(file_path, 0o777)
-        except KeyError:
-            try:
-                if vals['name'] and self.excel_file:
-                    file_path = '/home/dolly/Desktop/Excel data/' + prod_name + '.xlsx'
-                    with open(os.path.expanduser(file_path), 'wb') as fout:
-                        fout.write(self.excel_file)
-                        os.chmod(file_path, 0o777)
-            except:
-                pass
-        except:
-            raise exceptions.ValidationError('Selected file is not Excel supported. Upload Excel file.')
+    # @api.multi
+    # def write(self, vals):
+    #     try:
+    #         if 'name' in vals.keys():
+    #             if vals['name']:
+    #                 if self.env['product.template'].search([('name', '=', vals['name'])]):
+    #                     raise exceptions.ValidationError('Product Name should be unique !')
+    #     except:
+    #         raise exceptions.ValidationError('Product Name should be unique !')
+    #     try:
+    #         if 'default_code' in vals.keys():
+    #             if vals['default_code']:
+    #                 if self.env['product.template'].search([('default_code', '=', vals['default_code'])]):
+    #                     raise exceptions.ValidationError('SKU should be unique !')
+    #     except:
+    #         raise exceptions.ValidationError('SKU should be unique !')
+    #     try:
+    #         if vals['name']:
+    #             prod_name = vals['name']
+    #     except KeyError:
+    #         prod_name = self.name
+    #     except:
+    #         pass
+    #     try:
+    #         if 'description' in vals.keys():
+    #             if vals['description']:
+    #                 vals['description_sale'] = vals['description']
+    #                 vals['description_purchase'] = vals['description']
+    #     except:
+    #         pass
+    #     try :
+    #         if vals['pdf_image'] :
+    #             from pdf2image import convert_from_path
+    #             try:
+    #                 self.env['product.image'].search([('product_tmpl_id', '=', self.id)]).unlink()
+    #             except:
+    #                 pass
+    #             code = bytes(vals['pdf_image'], encoding='utf-8')
+    #             file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+    #             with open(os.path.expanduser(file), 'wb') as fout:
+    #                 fout.write(base64.decodestring(code))
+    #                 os.chmod(file, 0o777)
+    #             pdf = convert_from_path(file)
+    #             for page in pdf:
+    #                 img_name = prod_name + '.jpg'
+    #                 rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
+    #                 page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+    #                 img = False
+    #                 img_path = get_module_resource('ledpax', 'static/image', img_name)
+    #                 if img_path:
+    #                     with open(img_path, 'rb') as f:
+    #                         img = f.read()
+    #                         vals['image_medium'] = base64.b64encode(img)
+    #                 os.remove(rm_img)
+    #                 break
+    #     except KeyError:
+    #         pass
+    #     except:
+    #         raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
+    #     try :
+    #         if vals['excel_file'] :
+    #             file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
+    #             code = bytes(vals['excel_file'], encoding='utf-8')
+    #             with open(os.path.expanduser(file_path), 'wb') as fout:
+    #                 fout.write(base64.decodestring(code))
+    #                 os.chmod(file_path, 0o777)
+    #     except KeyError:
+    #         try:
+    #             if vals['name'] and self.excel_file:
+    #                 file_path = '/home/dolly/Desktop/Excel data/' + prod_name + '.xlsx'
+    #                 with open(os.path.expanduser(file_path), 'wb') as fout:
+    #                     fout.write(self.excel_file)
+    #                     os.chmod(file_path, 0o777)
+    #         except:
+    #             pass
+    #     except:
+    #         raise exceptions.ValidationError('Selected file is not Excel supported. Upload Excel file.')
 
-        try :
-            if vals['categ_id']:
-                try:
-                    parent_path = self.env['product.category'].search([('id', '=', vals['categ_id'])]).parent_path
-                    templates = self.env['product.category'].search([('id', '=', vals['categ_id'])]).name.upper()
-                    if templates == 'MASTER PRODUCT STOCKABLE':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                            obj['start_num'] = 100000
-                        num_mps = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
-                        sub_code = ''
-                        path = parent_path.split('/')[ :-2]
-                        for num in path :
-                            sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
-                        default_code = '[' + curr_code + str(num_mps) + ']' + sub_code[1:]
-                        sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
-                        update_num_mps = num_mps + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                        update_obj['start_num'] = update_num_mps
-                    elif templates == 'COMPONENT STOCKABLE':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                            obj['start_num'] = 200000
-                        num_cs = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
-                        sub_code = ''
-                        path = parent_path.split('/')[ :-2]
-                        for num in path :
-                            sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
-                        default_code = '[' + curr_code + str(num_cs) + ']' + sub_code[1:]
-                        sku_codes = ProductTemplate.generate_sku_code(default_code, vals, 'write')
-                        update_num_cs = num_cs + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                        update_obj['start_num'] = update_num_cs
-                    elif templates == 'MADE TO ORDER PRODUCT':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                            obj['start_num'] = 100000
-                        num_mop = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
-                        sub_code = ''
-                        path = parent_path.split('/')[ :-2]
-                        for num in path :
-                            sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
-                        default_code = '[' + curr_code + str(num_mop) + ']' + sub_code[1:]
-                        sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
-                        update_num_mop = num_mop + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                        update_obj['start_num'] = update_num_mop
-                    elif templates == 'MADE TO ORDER COMPONENT':
-                        if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
-                            obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                            obj['start_num'] = 200000
-                        num_moc = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
-                        sub_code = ''
-                        path = parent_path.split('/')[ :-2]
-                        for num in path :
-                            sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
-                        curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
-                        default_code = '[' + curr_code + str(num_moc) + ']' + sub_code[1:]
-                        sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
-                        update_num_moc = num_moc + 1
-                        update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
-                        update_obj['start_num'] = update_num_moc
-                    else:
-                        path = parent_path.split('/')[ :-1]
-                        default_code = ''
-                        for num in path :
-                            sub_code = self.env['product.category'].search([('id', '=', num)]).short_code
-                            default_code = default_code + '-' + sub_code
-                        default_code = default_code[1:]
-                        sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write',self)
-                except :
-                    pass
-                # vals['default_code'] = sku_codes
-        except KeyError:
-            try:
-                if vals['attribute_line_ids']:
-                    default_code = self.default_code
-                    sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write',self)
-                    # vals['default_code'] = sku_codes
-            except:
-                pass
-        except:
-            pass
+    #     try :
+    #         if vals['categ_id']:
+    #             try:
+    #                 parent_path = self.env['product.category'].search([('id', '=', vals['categ_id'])]).parent_path
+    #                 templates = self.env['product.category'].search([('id', '=', vals['categ_id'])]).name.upper()
+    #                 if templates == 'MASTER PRODUCT STOCKABLE':
+    #                     if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
+    #                         obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                         obj['start_num'] = 100000
+    #                     num_mps = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+    #                     sub_code = ''
+    #                     path = parent_path.split('/')[ :-2]
+    #                     for num in path :
+    #                         sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
+    #                     curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+    #                     default_code = '[' + curr_code + str(num_mps) + ']' + sub_code[1:]
+    #                     sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
+    #                     update_num_mps = num_mps + 1
+    #                     update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                     update_obj['start_num'] = update_num_mps
+    #                 elif templates == 'COMPONENT STOCKABLE':
+    #                     if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
+    #                         obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                         obj['start_num'] = 200000
+    #                     num_cs = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+    #                     sub_code = ''
+    #                     path = parent_path.split('/')[ :-2]
+    #                     for num in path :
+    #                         sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
+    #                     curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+    #                     default_code = '[' + curr_code + str(num_cs) + ']' + sub_code[1:]
+    #                     sku_codes = ProductTemplate.generate_sku_code(default_code, vals, 'write')
+    #                     update_num_cs = num_cs + 1
+    #                     update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                     update_obj['start_num'] = update_num_cs
+    #                 elif templates == 'MADE TO ORDER PRODUCT':
+    #                     if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
+    #                         obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                         obj['start_num'] = 100000
+    #                     num_mop = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+    #                     sub_code = ''
+    #                     path = parent_path.split('/')[ :-2]
+    #                     for num in path :
+    #                         sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
+    #                     curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+    #                     default_code = '[' + curr_code + str(num_mop) + ']' + sub_code[1:]
+    #                     sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
+    #                     update_num_mop = num_mop + 1
+    #                     update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                     update_obj['start_num'] = update_num_mop
+    #                 elif templates == 'MADE TO ORDER COMPONENT':
+    #                     if self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num == 0 :
+    #                         obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                         obj['start_num'] = 200000
+    #                     num_moc = self.env['product.category'].search([('id', '=', vals['categ_id'])]).start_num
+    #                     sub_code = ''
+    #                     path = parent_path.split('/')[ :-2]
+    #                     for num in path :
+    #                         sub_code = sub_code + '-' +self.env['product.category'].search([('id', '=', num)]).short_code
+    #                     curr_code = self.env['product.category'].search([('id', '=', vals['categ_id'])]).short_code
+    #                     default_code = '[' + curr_code + str(num_moc) + ']' + sub_code[1:]
+    #                     sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write')
+    #                     update_num_moc = num_moc + 1
+    #                     update_obj = self.env['product.category'].search([('id', '=', vals['categ_id'])])
+    #                     update_obj['start_num'] = update_num_moc
+    #                 else:
+    #                     path = parent_path.split('/')[ :-1]
+    #                     default_code = ''
+    #                     for num in path :
+    #                         sub_code = self.env['product.category'].search([('id', '=', num)]).short_code
+    #                         default_code = default_code + '-' + sub_code
+    #                     default_code = default_code[1:]
+    #                     sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write',self)
+    #             except :
+    #                 pass
+    #             # vals['default_code'] = sku_codes
+    #     except KeyError:
+    #         try:
+    #             if vals['attribute_line_ids']:
+    #                 default_code = self.default_code
+    #                 sku_codes = ProductTemplate.generate_sku_code(default_code, vals,'write',self)
+    #                 # vals['default_code'] = sku_codes
+    #         except:
+    #             pass
+    #     except:
+    #         pass
 
-        res = super(ProductTemplate, self).write(vals)
+    #     res = super(ProductTemplate, self).write(vals)
 
-        try:
-            if vals['pdf_image']:
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                pdf = convert_from_path(file)
-                img_name = prod_name + '.jpg'
-                rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
-                ncount = 0
-                for page in pdf:
-                    if ncount == 0:
-                        ncount += 1
-                    else :
-                        page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
-                        img = False
-                        img_path = get_module_resource('ledpax', 'static/image', img_name)
-                        if img_path:
-                            with open(img_path, 'rb') as f:
-                                img = f.read()
-                            self.env['product.image'].create({'product_tmpl_id' : self.id ,
-                                        'name' : prod_name + '_' + str(ncount),
-                                        'image' : base64.b64encode(img) })
-                        ncount += 1
-                        os.remove(rm_img)
-                os.remove(file)
-        except:
-            pass
+    #     try:
+    #         if vals['pdf_image']:
+    #             file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+    #             pdf = convert_from_path(file)
+    #             img_name = prod_name + '.jpg'
+    #             rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
+    #             ncount = 0
+    #             for page in pdf:
+    #                 if ncount == 0:
+    #                     ncount += 1
+    #                 else :
+    #                     page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+    #                     img = False
+    #                     img_path = get_module_resource('ledpax', 'static/image', img_name)
+    #                     if img_path:
+    #                         with open(img_path, 'rb') as f:
+    #                             img = f.read()
+    #                         self.env['product.image'].create({'product_tmpl_id' : self.id ,
+    #                                     'name' : prod_name + '_' + str(ncount),
+    #                                     'image' : base64.b64encode(img) })
+    #                     ncount += 1
+    #                     os.remove(rm_img)
+    #             os.remove(file)
+    #     except:
+    #         pass
 
-        if 'active' in vals and not vals.get('active'):
-            self.with_context(active_test=False).mapped('product_variant_ids').write({'active': vals.get('active')})   
-        return res
+    #     if 'active' in vals and not vals.get('active'):
+    #         self.with_context(active_test=False).mapped('product_variant_ids').write({'active': vals.get('active')})   
+    #     return res
 
     def _compute_rfq_count(self):
         for product in self:

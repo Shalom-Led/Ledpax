@@ -301,13 +301,13 @@ class ProductTemplate(models.Model):
                         raise exceptions.ValidationError('SKU should be unique !')
         except:
             raise exceptions.ValidationError('SKU should be unique !')
-        try:
-            if vals['name']:
-                prod_name = vals['name']
-        except KeyError:
-            prod_name = self.name
-        except:
-            pass
+        # try:
+        #     if vals['name']:
+        #         prod_name = vals['name']
+        # except KeyError:
+        #     prod_name = self.name
+        # except:
+        #     pass
         try:
             if 'description' in vals.keys():
                 if vals['description']:

@@ -22,10 +22,13 @@ class ProductCategory(models.Model):
 
 class ProductAttributeinherit(models.Model):
     _inherit = 'product.attribute.value'
+    
+
     value = fields.Selection([
         ('ww', 'wall washer'),
         ('down', 'Down light'),
-        ('AA', 'Adjustable Angle')])
+        ('AA', 'Adjustable Angle')], string="Field value")
+    
     code = fields.Char('Short Code')
 
 

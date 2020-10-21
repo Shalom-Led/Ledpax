@@ -153,7 +153,7 @@
             <field name="inherit_id" ref="product.product_attribute_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='is_custom']" position="after">
-                    <field name="value" string="Fieldvalue" />
+                    <field name="value" string="Field value" />
                 </xpath>
                 <xpath expr="//field[@name='is_custom']" position="before">
                     <field name="code" string="Short Code" />

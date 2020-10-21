@@ -6,5 +6,5 @@ from . import related_products
 from . import quatation
 # from . import order_tag
 from . import bom
-# from . import sku_code
+from . import sku_code
 # from . import sku_code_prod

@@ -71,47 +71,47 @@ class ProductTemplate(models.Model):
         for i in self:
             i.p_description = i.prod_description
 
-    # @staticmethod
-    # def generate_sku_code(auto_default_code, auto_vals_list, auto_method, auto_self=None) :
-    #     method = auto_method
-    #     default_code = auto_default_code
-    #     vals_list = auto_vals_list
-    #     sku_codes = []
-    #     if method == 'create':
-    #         try:
-    #             self = auto_self
-    #             count = 0
-    #             for x in vals_list[0]['attribute_line_ids']:
-    #                 originalvalue = self.env['product.attribute.value'].search([('id', '=', vals_list[0]['attribute_line_ids'][count][2]['value_ids'][0][2])]).code
-    #                 default_code = default_code + '-'  + originalvalue
-    #                 count += 1
-    #             sku_codes = default_code
-    #         except KeyError:
-    #             sku_codes = default_code
-    #         except:
-    #             pass
-    #     if method == 'write':
-    #         try:
-    #             self = auto_self
-    #             count = 0
-    #             for x in vals_list['attribute_line_ids']:
-    #                 originalvalue = self.env['product.attribute.value'].search([('id', '=', vals_list['attribute_line_ids'][count][2]['value_ids'][0][2])]).code
-    #                 default_code = default_code + '-'  + originalvalue
-    #                 count += 1
-    #             sku_codes = default_code
-    #         except TypeError:
-    #             pass
-    #         except KeyError:
-    #             try :
-    #                 if self.attribute_line_ids:
-    #                     for x in self.attribute_line_ids:
-    #                         default_code = default_code + '-' + str(x.value_ids.code)
-    #             except:
-    #                 pass
-    #             sku_codes = default_code
-    #         except:
-    #             pass
-    #     return sku_codes
+    @staticmethod
+    def generate_sku_code(auto_default_code, auto_vals_list, auto_method, auto_self=None) :
+        method = auto_method
+        default_code = auto_default_code
+        vals_list = auto_vals_list
+        sku_codes = []
+        if method == 'create':
+            try:
+                self = auto_self
+                count = 0
+                for x in vals_list[0]['attribute_line_ids']:
+                    originalvalue = self.env['product.attribute.value'].search([('id', '=', vals_list[0]['attribute_line_ids'][count][2]['value_ids'][0][2])]).code
+                    default_code = default_code + '-'  + originalvalue
+                    count += 1
+                sku_codes = default_code
+            except KeyError:
+                sku_codes = default_code
+            except:
+                pass
+        if method == 'write':
+            try:
+                self = auto_self
+                count = 0
+                for x in vals_list['attribute_line_ids']:
+                    originalvalue = self.env['product.attribute.value'].search([('id', '=', vals_list['attribute_line_ids'][count][2]['value_ids'][0][2])]).code
+                    default_code = default_code + '-'  + originalvalue
+                    count += 1
+                sku_codes = default_code
+            except TypeError:
+                pass
+            except KeyError:
+                try :
+                    if self.attribute_line_ids:
+                        for x in self.attribute_line_ids:
+                            default_code = default_code + '-' + str(x.value_ids.code)
+                except:
+                    pass
+                sku_codes = default_code
+            except:
+                pass
+        return sku_codes
 
     # @api.model_create_multi
     # def create(self, vals_list):

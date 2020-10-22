@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="product_create_excel_wizard_form" model="ir.ui.view">
+            <field name="name">product.tmpl.excel.wizard.form</field>
+            <field name="model">product.tmpl.excel.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Vendor">
+                    <group>
+                        <field name="excel_file"/>
+                    </group>
+                    <footer>
+                        <button string='Submit' name="submit" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+
+    <record id="action_product_create_excel_wizard" model="ir.actions.act_window">
+            <field name="name">Create Product Template through Excel</field>
+            <field name="res_model">product.tmpl.excel.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="product_create_excel_wizard_form"/>
+            <field name="target">new</field>
+    </record>
+
+</odoo>

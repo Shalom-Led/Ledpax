@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="order_tag_project" name="Order Tag">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Projects</t>
+                </t>
+                <t t-if="orders" t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Project</th>
+                            <th>Quotations</th>
+                            <th>Date</th>
+                            <th>PDF</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="orders" t-as="order">    
+                            <tr>
+                                <td><a t-attf-href="/my/project/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a></td>
+                                <td><t t-foreach="order.saleorders" t-as="saleorder">
+                                    <t t-if="saleorder.partner_id.id == partner_id">
+                                        <t t-if="saleorder.state == 'draft' or saleorder.state == 'sent'">
+                                            <span t-field="saleorder.name" widget="many2many_tags"/>
+                                        </t>
+                                    </t>
+                                </t></td>
+                                <td><span t-field="order.create_date"/></td>
+                                <td>
+                                    <t t-set="project_report_url" t-value="'/my/projects/pdf/%s?%s' % (order.id, keep_query())"/>
+                                    <a t-att-href="project_report_url" style="width: 80px; height: 30px;" id='shipping_note' method="POST" class="btn btn-primary"><span class="fa fa-download" role="button" aria-label="Download" title="Download"/> Print</a>
+                                </td>   
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+    </template>
+
+</odoo>

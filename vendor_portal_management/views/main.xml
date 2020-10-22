@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        <data noupdate="0">
+            <record id="vendor_portal_rfq_menu" model="website.menu">
+                <field name="name">Vendor RFQs</field>
+                <field name="url">/my/rfq</field>
+                <field name="sequence" type="int">1</field>
+            </record>
+        </data>
+
+        <template id="portal_my_home_menu_rfq" name="Portal layout : rfq menu entries" inherit_id="portal.portal_breadcrumbs" priority="25">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'rfq' or request_for_quotation" t-attf-class="breadcrumb-item #{'active ' if not request_for_quotation else ''}">
+                    <a t-if="request_for_quotation" t-attf-href="/my/rfq?{{ keep_query() }}">RFQs</a>
+                    <t t-else="">RFQs</t>
+                </li>
+                <li t-if="request_for_quotation" class="breadcrumb-item active">
+                    <t t-esc="request_for_quotation.name"/>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="rfq_details_page" name="Portal: My RFQs">
+            <t t-call="portal.portal_layout">
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Request For Quotations</t>
+                </t> 
+                <t t-if="my_details" t-call="portal.portal_table" >
+                    <thead>
+                        <tr class="active">
+                            <th>Request For Quotations</th>
+                            <th></th>
+                            <th>Product</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="my_details" t-as="order">
+                            <tr>
+                                <td><a t-attf-href="/my/rfq/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a></td>
+                                <td><t t-if="order.state == 'done'">
+                                    <span class="badge badge-warning"><i class="fa fa-check-square"></i>Quoted</span>
+                                    </t>
+                                </td>
+                                <td><span t-field="order.product_id.name"/></td>
+                                <td><span t-field="order.date_order"/></td>
+                                <td>
+                                    <t t-if="order.state == 'draft'">
+                                        <span class="badge badge-primary"><i class="fa fa-fw fa-file-text"/>New</span>
+                                    </t>
+                                    <t t-if="order.state == 'pending'">
+                                        <span class="badge badge-primary"><i class="fa fa-fw fa-remove"/>Waiting Approval</span>
+                                    </t>
+                                    <t t-if="order.state == 'done'">
+                                        <span class="badge badge-success"><i class="fa fa-fw fa-file-text"/>Done</span>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="rfq_detail_page_view" name="Portal: My RFQ">
+        <t t-call="portal.portal_layout">
+            <!-- <t t-set="request_for_quotation" t-as="order"> -->
+            <t t-foreach="values['orders']" t-as="order">
+            <div id="optional_placeholder"></div>
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>
+                                    <span t-esc="order.name"/>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb8">
+                            <strong>Date:</strong> <span t-field="order.date_order" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <strong>Product</strong>
+                            </div>
+                            <div class="col-lg-2 text-right">
+                                <strong>Quantity</strong>
+                            </div>
+                            <t t-if="order.state == 'done'">
+                                <div class="col-lg-1 text-right">
+                                    <strong>Vendor</strong>
+                                </div>
+                            </t>
+                            <t t-if="order.state == 'done'">
+                                <div class="col-lg-1 text-right">
+                                    <strong>Price</strong>
+                                </div>
+                            </t>
+                        </div>
+                            <div class="row purchases_vertical_align">
+                                <div class="col-lg-1 text-center">
+                                    <img t-attf-src="data:image/*;base64,{{order.product_id.image}}" style="height:40px;width:40px"/>
+                                </div>
+                                <div id='product_name' class="col-lg-5">
+                                    <span t-esc="order.product_id.name"/>
+                                </div>
+                                <div class="col-lg-2 text-right">
+                                    <span t-esc="order.product_qty"/>
+                                </div>
+                                <t t-if="order.state == 'done'">
+                                    <div class="col-lg-1 text-right">
+                                        <span t-esc="order.vendor"/>
+                                    </div>
+                                </t>
+                                <t t-if="order.state == 'done'">
+                                    <div class="col-lg-1 text-right">
+                                        <span t-esc="order.estimated_quote"/>
+                                    </div>
+                                </t>
+                                <div class="col-lg-2 text-right">
+                                <t t-if="order.state != 'done'">
+                                <a role="button" class="btn btn-primary" t-att-data-id="order.name" data-toggle="modal" data-target="#modalsubmitprice" href="#">My Price</a>
+                                </t>
+                                </div>
+                            </div>
+                            <div id="quote_content" class="col-12 col-lg justify-content-end">
+                                <div role="dialog" class="modal fade" id="modalsubmitprice">
+                                    <div class="modal-dialog">
+                                        <form id="submitprice" method="POST" t-attf-action="/my/rfq/submit/price/#{order.id}/#{order.id}" class="modal-content">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <header class="modal-header">
+                                                <h4 class="modal-title">Submit My Price</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
+                                            </header>
+                                            <main class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="qoute_p">Qouted Price:</label>
+                                                    <input type="text" class="form_controller" name="qoute_p" id="qoute_p" required="true"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="date">Delivery Date:</label>
+                                                    <input type="date" class="form_controller" widget="date" name="date" id="date" required="true"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="note">Additional Note:</label>
+                                                    <input type="text" class="form_controller" name="note" id="note" required="true"/>
+                                                </div>
+                                            </main>
+                                            <footer class="modal-footer">
+                                                <span>
+                                                    <a role="button" id='submit' method="POST" class="btn btn-primary" data-toggle="modal" data-target="#modalsubmitprice" href="#">Submit</a>
+                                                </span>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            </footer>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <hr/>
+                    </div>
+                </div>
+            </div>
+          </t>
+          <div class="oe_structure mb32"/>
+        </t>
+    </template>
+
+    <template id="on_submit" inherit_id="vendor_portal_management.rfq_detail_page_view">
+        <xpath expr="//a[@role='button']" position="after">
+            <script type="text/javascript" src ="/vendor_portal_management/static/src/js/submit.js">
+            </script>
+        </xpath>
+    </template>
+
+</odoo>

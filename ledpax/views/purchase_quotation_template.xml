@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <template id="report_purchasequotation_inherit" inherit_id="purchase.report_purchasequotation_document">
+            <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+                <div class="page" style="position:relative;font: 13px 'Arial'; overflow: hidden;margin: 24px 0px 44px 37px;padding: 0px;border: none;">
+                    <t t-call="web.external_layout">
+                        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                        <TABLE cellpadding="0" cellspacing="0" class="t0" style="width: 100%;font: 13px 'Arial'">
+                            <TR>
+                                <TD rowspan="2" class="tr9 td17" style="border-bottom: #000000 1px solid;height: 32px; padding: 0px;margin: 0px;width: 300px;vertical-align: bottom;">
+                                    <P class="p4 ft4" style="text-align: left;padding-left: 2px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px;">
+                                        To:
+                                    </P>
+                                </TD>
+                                <TD class="tr4 td0" style="height: 16px;padding: 0px;margin: 0px;width: 2px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td2" style="height: 16px;padding: 0px;margin: 0px;width: 293px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td3" style="height: 16px;padding: 0px;margin: 0px;width: 41px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td4" style="height: 16px;padding: 0px;margin: 0px;width: 169px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD rowspan="2" class="tr9 td18" style="border-bottom: #000000 1px solid;height: 32px; padding: 2px;margin: 0px;width: 100px;vertical-align: bottom;">
+                                    <P class="p0 ft4" style="padding-right:150px; text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px;">
+                                        Ship to:
+                                    </P>
+                                </TD>
+                                <TD class="tr4 td9" style="height: 16px;padding: 0px;margin: 0px;width: 4px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td10" style="height: 16px;padding: 0px;margin: 0px;width: 1px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                            </TR>
+                            <TR style="height: 16px;">
+                                <TD class="tr4 td21"  style="border-bottom: #000000 1px solid;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td22" style="border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 293px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr11 td3" style="height: 17px; padding: 0px;margin: 0px;width: 41px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr11 td4" style="height: 17px; padding: 0px;margin: 0px;width: 169px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td23" style="border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 102px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td11" style="border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td11" style="border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td24" style="border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 4px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr4 td25" style="border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 1px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                            </TR>
+                            <TR style="height: 25px;">
+                                <t t-if="doc_model == 'sale.order'">
+                                    <TD class="tr8 td26" style="border-bottom: #000000 1px solid; border-left: #000000 1px solid;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 13px 'Arial';line-height: 16px;" t-field="doc.partner_invoice_id">&#160;</P></TD>
+                                </t>
+                                <t t-if="doc_model == 'purchase.order'">
+                                    <TD class="tr8 td26" style="border-bottom: #000000 1px solid; border-left: #000000 1px solid;padding: 5px;margin: 0px;vertical-align: top;"><t t-set="name" t-value="o.partner_id.name + ','"/>
+                                        <t t-esc="name"/>
+                                        <p>
+                                            <t t-if="o.partner_id.street">
+                                                <t t-set="street" t-value="o.partner_id.street + ','"/>
+                                                <t t-esc="street"/>
+                                            </t>
+                                            <t t-if="o.partner_id.city">
+                                                <t t-set="city" t-value="o.partner_id.city + ','"/>
+                                                <t t-esc="city"/>
+                                            </t>
+                                            <t t-if="o.partner_id.state_id">
+                                                <t t-set="state" t-value="o.partner_id.state_id.name + ','"/>
+                                                <t t-esc="state"/>
+                                            </t>
+                                            <t t-if="o.partner_id.country_id">
+                                                <t t-set="country" t-value="o.partner_id.country_id.name + '.'"/>
+                                                <t t-esc="country"/>
+                                            </t>
+                                            <t t-if="o.partner_id.zip">
+                                                <t t-set="country" t-value="o.partner_id.zip + '.'"/>
+                                                <t t-esc="country"/>
+                                            </t>
+                                        </p></TD>
+                                </t>
+
+                                <t t-if="doc_model == 'account.inovice'">
+                                    <TD class="tr8 td26" style="border-bottom: #000000 1px solid; border-left: #000000 1px solid;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 13px 'Arial';line-height: 16px;">&#160;</P></TD>
+                                </t>
+                                <TD class="tr8 td1" style="border-bottom: #000000 1px solid; padding: 0px;margin: 0px;width: 125px;vertical-align: bottom;"><P class="p0 ft9" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 13px 'Arial';line-height: 16px;">&#160;</P></TD>
+                                <TD class="tr8 td27" style="border-bottom: #000000 1px solid; border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 80px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr8 td3" style=" padding: 0px;margin: 0px;width: 292px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr8 td28" style=" padding: 0px;margin: 0px;width: 168px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 13px 'Arial';line-height: 16px;">&#160;</P></TD>
+
+                                <t t-if="doc_model == 'sale.order' ">
+                                    <div class="col-6">
+                                        <TD  class="tr8 td5" style="border-bottom: #000000 1px solid; border-left: #000000 1px solid;padding: 0px;margin: 0px;width: 93px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 13px 'Arial';line-height: 16px;" t-field="doc.partner_shipping_id"></P></TD>
+                                    </div>
+                                </t>
+                                <t t-if="doc_model == 'purchase.order' ">
+
+                                    <t t-if="not(o.dest_address_id)">
+                                        <TD class="tr8 td5" style="border-bottom: #000000 1px solid; border-left: #000000 1px solid;padding: 5px;margin: 0px;width: 93px;vertical-align: top;">
+                                            <t t-if="o.picking_type_id.warehouse_id.partner_id">
+                                                <t t-set="name" t-value="o.picking_type_id.warehouse_id.partner_id.name + ','"/>
+                                                <t t-esc="name"/>
+                                                <p>
+                                                    <t t-if="o.picking_type_id.warehouse_id.partner_id.street">
+                                                        <t t-set="street" t-value="o.picking_type_id.warehouse_id.partner_id.street + ','"/>
+                                                        <t t-esc="street" />
+                                                    </t>
+                                                    <t t-if="o.picking_type_id.warehouse_id.partner_id.city">
+                                                        <t t-set="city" t-value="o.picking_type_id.warehouse_id.partner_id.city + ','"/>
+                                                        <t t-esc="city"/>
+                                                    </t>
+                                                    <t t-if="o.picking_type_id.warehouse_id.partner_id.state_id">
+                                                        <t t-set="state" t-value="o.picking_type_id.warehouse_id.partner_id.state_id.name + ','"/>
+                                                        <t t-esc="state"/>
+                                                    </t>
+                                                    <t t-if="o.picking_type_id.warehouse_id.partner_id.country_id">
+                                                        <t t-set="country" t-value="o.picking_type_id.warehouse_id.partner_id.country_id.name + ','"/>
+                                                        <t t-esc="country"/>
+                                                    </t>
+                                                    <t t-if="o.picking_type_id.warehouse_id.partner_id.zip">
+                                                        <t t-set="country" t-value="o.picking_type_id.warehouse_id.partner_id.zip + '.'"/>
+                                                        <t t-esc="country"/>
+                                                    </t>
+                                                </p>
+                                            </t>
+                                            <t t-if="not(o.picking_type_id.warehouse_id.partner_id)">
+                                                <t t-esc="o.picking_type_id.name"/>
+                                            </t>
+
+                                        </TD>
+                                    </t>
+                                   <t t-if="(o.dest_address_id)">
+                                        <TD class="tr8 td5" style="border-bottom: #000000 1px solid; border-left: #000000 1px solid;padding: 5px;margin: 0px;width: 93px;vertical-align: top;"><t t-set="name" t-value="o.dest_address_id.name + ','"/>
+                                            <t t-esc="name"/>
+                                            <p>
+                                                <t t-if="o.dest_address_id.street">
+                                                    <t t-set="street" t-value="o.dest_address_id.street + ','"/>
+                                                    <t t-esc="street" />
+                                                </t>
+                                                <t t-if="o.dest_address_id.street2">
+                                                    <t t-set="street2" t-value="o.dest_address_id.street2 + ','"/>
+                                                    <t t-esc="street2" />
+                                                </t>
+                                                <t t-if="o.dest_address_id.city">
+                                                    <t t-set="city" t-value="o.dest_address_id.city + ','"/>
+                                                    <t t-esc="city"/>
+                                                </t>
+                                                <t t-if="o.dest_address_id.state_id">
+                                                    <t t-set="state" t-value="o.dest_address_id.state_id.name + ','"/>
+                                                    <t t-esc="state"/>
+                                                </t>
+                                                <t t-if="o.dest_address_id.country_id">
+                                                    <t t-set="country" t-value="o.dest_address_id.country_id.name + ','"/>
+                                                    <t t-esc="country"/>
+                                                </t>
+                                                <t t-if="o.dest_address_id.zip">
+                                                    <t t-set="country" t-value="o.dest_address_id.zip + '.'"/>
+                                                    <t t-esc="country"/>
+                                                </t>
+                                            </p>
+                                        </TD>
+                                    </t>
+                                </t>
+                                <TD class="tr8 td8" style="border-bottom: #000000 1px solid; padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr8 td8" style="border-bottom: #000000 1px solid; padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr8 td9" style="border-bottom: #000000 1px solid; padding: 0px;margin: 0px;width: 4px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                                <TD class="tr8 td29" style="border-bottom: #000000 1px solid; padding: 0px;margin: 0px;width: 1px;vertical-align: bottom;border-right: #000000 1px solid;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+                            </TR>
+                        </TABLE>
+
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <br />
+                            <table class="table table-sm" style="table-layout:fixed;width:100%;">
+                                <thead style="background-color: #dddddd">
+                                    <tr>
+                                        <th class="text-left" style="width:20%; font-size: 12px;">Name</th>
+                                        <th class="text-left" style="width:30%; font-size: 12px;">Product Description</th>
+                                        <th class="text-left" style="width:20%; font-size: 12px;">Vendor Product Code</th>
+                                        <th class="text-right" style="width:15%; font-size: 12px;">Expected Date</th>
+                                        <th class="text-right" style="width:10%; font-size: 12px;">Quantity</th>
+                                        <th class="text-right" style="width:10%; font-size: 12px;">Price</th>
+                                        <th class="text-right" style="width:10%; font-size: 12px;">Sum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.order_line" t-as="line">
+                                        <td style="font-size: 11px;">
+                                            <span t-field="line.product_id"/>
+                                        </td>
+
+                                        <!--                                         <td style="font-size: 11px;">
+                                                                                    <span t-field="line.product_id.product_tmpl_id.p_description"/>
+                                                                                </td> -->
+                                        <td style="font-size: 11px;">
+                                            <t t-esc="line.product_id.product_tmpl_id.prod_description[0:79] if line.product_id.product_tmpl_id.prod_description else ''"/>
+                                        </td>                                        
+                                        <td style="font-size: 11px;">
+                                            <t t-if="line.product_id.seller_ids">
+                                                <t t-foreach="line.product_id.seller_ids" t-as="seller">
+                                                    <t t-if="seller.name == o.partner_id">
+                                                        <span t-field="seller.product_code"/>
+                                                    </t>
+                                                </t>
+                                            </t>          
+                                        </td>
+                                        <td class="text-right" style="font-size: 11px;">
+                                            <t t-set="dates" t-value="str(line.date_planned)[:-9]"/>
+                                            <t t-set="date" t-value="dates.split('-')[2] + '-' + dates.split('-')[1] + '-' + dates.split('-')[0]"/>
+                                            <t t-esc="date"/>
+                                        </td>
+                                        <td class="text-right" style="font-size: 11px;">
+                                            <span t-field="line.product_qty"/>
+                                            <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                                        </td>
+                                        <td class="text-right" style="font-size: 11px;">
+                                            <span t-field="line.price_unit"/>
+                                        </td>
+                                        <td class="text-right" style="font-size: 11px;">
+                                            <span t-field="line.price_subtotal"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div id="total" class="row justify-content-end">
+                                <div class="col-4">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <td><strong>Subtotal</strong></td>
+                                            <td class="text-right">
+                                                <span t-field="o.amount_untaxed"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Taxes</td>
+                                            <td class="text-right">
+                                                <span t-field="o.amount_tax"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <span t-field="o.amount_total"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <p t-if="o.notes">
+                                <strong>Notes:</strong>
+                                <span t-field="o.notes"/>
+                            </p>
+                            <!--                            <p t-field="o.notes"/>-->
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

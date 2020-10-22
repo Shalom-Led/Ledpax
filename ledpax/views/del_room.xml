@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="del_room_page" name="Delivery Room">
+    <t t-call="portal.portal_layout">
+        <t t-call="portal.portal_searchbar">
+                <t t-set="title">Delivery Room</t>
+            </t>
+            <t t-if="orders" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Reference #</th>
+                        <th>Partner</th>
+                        <th>Scheduled Date</th>
+                        <th>Backorder Of</th>
+                        <th>Total Qty</th>
+                        <th>Reserved Qty</th>
+                        <th>Additional Qty</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="orders" t-as="order">    
+                        <tr>
+                            <td><a t-attf-href="/my/del_room/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a></td>
+                            <td><span t-field="order.partner_id"/></td>
+                            <td><span t-field="order.scheduled_date"/></td>
+                            <td><span t-field="order.backorder_id"/></td>
+                            <td><span t-field="order.tot_qnt"/></td>
+                            <td><t t-if="order.state == 'assigned'">
+                                    <a t-attf-href="/my/del_room/#{order.id}?#{keep_query()}">Release</a>
+                                </t>
+                            </td>
+                            <td>
+                                <t t-if="order.state == 'assigned'">
+                                    <a t-attf-href="/my/del_room/#{order.id}?#{keep_query()}">Add Quantity</a>           
+                                </t>
+                            </td>
+                            <td>
+                                <t t-if="order.state == 'done'">
+                                    <span class="badge badge-success label-text-align"><i class="fa fa-fw fa-truck"/> Shipped</span>
+                                </t>
+                                <t t-if="order.state == 'partially_available'">
+                                    <span class="badge badge-warning label-text-align"><i class="fa fa-fw fa-clock-o"/> Partially Available</span>
+                                </t>
+                                <t t-if="order.state == 'cancel'">
+                                    <span class="badge badge-danger label-text-align"><i class="fa fa-fw fa-times"/> Cancelled</span>
+                                </t>
+                                <t t-if="order.state in ['draft', 'waiting', 'confirmed', 'assigned']">
+                                    <span class="badge badge-secondary label-text-align"><i class="fa fa-fw fa-clock-o"/> Preparation</span>
+                                </t>
+                            </td>
+<!--                             <td><t t-set="delivery_report_url" t-value="'/my/picking/pdf/%s?%s' % (order.id, keep_query())"/>
+                                <div id='picking_info'>
+                                    <a t-att-href="delivery_report_url"><span class="fa fa-download" role="img" aria-label="Download" title="Download"/></a>
+                                    <a t-att-href="delivery_report_url"><span t-field="order.name"/></a>
+                                </div>
+                            </td>   -->                              
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    
+    <template id="del_room_order" name="Portal: My RFQ">
+    <t t-call="portal.portal_layout">
+        <t t-foreach="values['orders']" t-as="order">
+        <t t-call="portal.portal_searchbar">
+            <h4><t t-set="title">Delivery Room</t></h4>
+            <h4>
+                <span t-esc="order.name"/>
+            </h4>
+            </t>
+                <t t-if="values['orders']" t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Type</th>
+                            <th>Product</th>
+                            <th></th>
+                            <th>Product Description</th>
+                            <th>Scheduled Date</th>
+                            <th>Quantity</th>
+                            <th>Stock Available</th>
+                            <th>Initial Demand</th>
+                            <t t-if="order.state == 'assigned'">
+                                <th>To Deliver</th>
+                            </t>
+                            <th>Backorders</th>
+                            <t t-if="order.state == 'assigned'">
+                                <th>Delivered Qty</th>
+                            </t>
+                            <t t-if="order.state == 'done'">
+                                <th>Delivered</th>
+                            </t>
+                            <th>Actual Ship date</th>
+                            <th>Partner</th>
+                            <th>Ship Method</th>
+                            <th>Tracking</th>
+                            <t t-if="order.state == 'done'">
+                                <th>Delivery Date</th>
+                            </t>
+                            <t t-if="order.state == 'done'">
+                                <th>Shipping Note</th>
+                            </t>
+                            <t t-if="order.state == 'assigned'">
+                                <th>Shipping Note</th>
+                            </t>
+                            <t t-if="order.state == 'assigned'">
+                                <th>Release Qty</th>
+                            </t>
+                            <t t-if="order.state == 'assigned'">
+                                <th>Additional Qty</th>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <t t-foreach="order.move_ids_without_package" t-as="ol">    
+                        <tr>  
+                            <td><span t-field="ol.sale_line_id.type" /></td>
+                            <td><span t-field="ol.product_id.name" /></td>
+                            <td><img t-attf-src="data:image/*;base64,{{ol.product_id.image}}" style="height:40px;width:40px"/></td>
+                            <td><span t-field="ol.product_id.prod_description" /></td>
+                            <td><span t-field="order.scheduled_date" t-options='{"widget": "date"}'/></td>
+                            <td><span t-field="ol.sale_line_id.product_uom_qty" /></td>
+                            <td><span t-field="ol.product_id.qty_available" /></td>
+                            <td><span t-field="ol.product_uom_qty" /></td>
+                            <t t-if="order.state == 'assigned'">
+                                <td><span t-field="ol.reserved_availability" /></td>
+                            </t>
+                            <td><span t-field="order.backorder_id" /></td>
+                            <t t-if="order.state == 'assigned'">
+                                <td><span t-field="ol.sale_line_id.qty_delivered" /></td>
+                            </t>
+                            <t t-if="order.state == 'done'">
+                                <td><span t-field="ol.quantity_done" /></td>
+                            </t>
+                            <td></td>
+                            <td><span t-field="order.partner_id.name" /></td>
+                            <td><span t-field="order.carrier_id.name" /></td>
+                            <td><span t-field="order.carrier_tracking_ref" /></td>
+                            <t t-if="order.state == 'done'">
+                                <td><span t-field="order.date_done" /></td>
+                            </t>
+                            <t t-if="order.state == 'done'">
+                                <td><span t-field="ol.shipping_note" /></td>
+                            </t>
+                            <t t-if="order.state == 'assigned'">
+                                <td><input type="text" class="form_controller" name="shipping_note[]" id="shipping_note" default="0" t-att-data-id="ol.id" style = "width: 120px !important;"/></td>
+                            </t>                            
+                            <t t-if="order.state == 'assigned'">
+                                <td><input type="text" class="form_controller" name="release_quantity[]" id="release_quantity" t-att-data-id="ol.id" style = "width: 60px !important;"/></td>
+                            </t>
+                            <t t-if="order.state == 'assigned'">
+                                <td><input type="text" class="form_controller" name="additional_quantity[]" id="additional_quantity" default="0" t-att-data-id="ol.id" style = "width: 60px !important;"/></td>
+                            </t>
+                        </tr>
+                        </t>
+                    </tbody>
+                    </t>
+                    <t t-if="order.state == 'done'">                        
+                        <div class="col-lg-12 text-right">
+                            <t t-set="delivery_report_url" t-value="'/my/picking/pdf/%s?%s/' % (order.id, keep_query())"/>
+                                <a t-att-href="delivery_report_url" id='shipping_note' method="POST" class="btn btn-primary"><span class="fa fa-download" role="button" aria-label="Download" title="Download"/>Generate PDF</a>
+                        </div>
+                    </t>
+                        <t t-if="order.state == 'assigned'">
+                        <div class="col-lg-12 text-right">
+                            <t t-set="delivery_report_url" t-value="'/my/picking/pdf/%s?%s/' % (order.id, keep_query())"/>
+                                <a t-att-href="delivery_report_url" id='shipping_note' method="POST" class="btn btn-primary"><span class="fa fa-download" role="button" aria-label="Download" title="Download"/>Generate PDF</a>        
+                            <a role="button" id='release_qty' method="POST" class="btn btn-primary" data-toggle="modal" href="/my/del_room/#{order.id}?#{keep_query()}">Release</a>
+                            <a role="button" id='add_quantity' method="POST" class="btn btn-primary" data-toggle="modal" href="#">Add Quantity</a>
+                        </div>
+                        <script>
+                                odoo.define('ledpax.Release', function (require) {
+                                    "use strict";
+                                        $(document).ready(function() {
+                                        $('#release_qty').click(function (e){
+                                        var rpc = require('web.rpc');
+                                        var url = window.location.href
+                                        var back_id = url.split("/")[5]
+                                        var bo_ids= [];
+                                        var release_qnt = [];
+                                        var ship_note = [];
+                                        $('input[name^="release_quantity"]').each(function() {
+                                            bo_ids.push($(this).data('id'));
+                                            release_qnt.push($(this).val());
+                                        });
+                                        $('input[name^="shipping_note"]').each(function() {
+                                            bo_ids.push($(this).data('id'));
+                                            ship_note.push($(this).val());
+                                        });
+
+                                        console.log("BACK_ID : ", back_id)
+                                        console.log("QNT : ", release_qnt)
+                                        console.log("BOL_ID : ", bo_ids)
+                                        console.log("Ship : ", ship_note)
+
+                                        rpc.query({
+                                            model: "stock.picking",
+                                            method: 'release_qty',
+                                            args: [[], [back_id,bo_ids,release_qnt,ship_note]],
+                                        }).then(function (result) { 
+                                        alert(result)
+                                        window.location = '/my/del_room'
+                                        })
+
+                                        })
+                                        })
+
+                                        }); 
+                            </script>       
+                        </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="on_submit" inherit_id="ledpax.del_room_order">
+        <xpath expr="//a[@role='button']" position="after">
+            <script type="text/javascript" src ="/ledpax/static/src/js/del_room.js">
+            </script>
+        </xpath>
+    </template>
+
+</odoo> 

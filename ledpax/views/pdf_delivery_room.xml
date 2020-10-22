@@ -1,0 +1,114 @@
+<odoo>
+    <data>
+        <record id="paperformat_delivery_room_report" model="report.paperformat">
+            <field name="name">Delivery Room Custom</field>
+            <field name="default" eval="True"/>
+            <field name="format">Tabloid</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+        <template id="report_delivery_room">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id"/>
+                </t>
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="company" t-value="res_company"/>
+                </t>    
+                <div class="header">
+                    <h1 class="col-md-12" style="font-size:25px;" align="center">
+                        <span>Delivery Status</span>
+                    </h1>
+                    <div class="row mt32 mb32" style="margin-top:50px">
+                        <div class="col-6" name="company_address">
+                            <div t-field="company.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}'/>
+                        </div>
+                        <div class="col-6" name="company_address">
+                            <div style="float:right">
+                                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="height: 110px; width:250px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <br />
+                    <table class="table table-sm o_main_table" style="top:50px">
+                    <thead style="background-color: #dddddd">
+                        <tr>
+                            <th style="border: 1px solid black">Type</th>
+                            <th style="border: 1px solid black">Product</th>
+                            <th style="border: 1px solid black">Image</th>
+                            <th style="border: 1px solid black">Product Description</th>
+                            <th style="border: 1px solid black">Scheduled Date</th>
+                            <th style="border: 1px solid black">Quantity</th>
+                            <th style="border: 1px solid black">Stock Available</th>
+                            <th style="border: 1px solid black">Initial Demand</th>
+                            <th style="border: 1px solid black">To Deliver</th>
+                            <th style="border: 1px solid black">Backorders</th>
+                            <th style="border: 1px solid black">Delivered</th>
+                            <th style="border: 1px solid black">Actual Ship date</th>
+                            <th style="border: 1px solid black">Partner</th>
+                            <th style="border: 1px solid black">Ship Method</th>
+                            <th style="border: 1px solid black">Tracking</th>
+                            <t t-if="o.state == 'done'">
+                                <th style="border: 1px solid black">Delivery Date</th>
+                            </t>
+                            <t t-if="o.state == 'done'">
+                                <th style="border: 1px solid black">Shipping Note</th>
+                            </t>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <t t-foreach="o.move_ids_without_package" t-as="ol">    
+                        <tr>  
+                            <td style="border: 1px solid black"><span t-field="ol.sale_line_id.type" /></td>
+                            <td style="border: 1px solid black"><span t-field="ol.product_id.name" /></td>
+                            <td style="border: 1px solid black"><img t-attf-src="data:image/*;base64,{{ol.product_id.image}}" style="height:40px;width:40px"/></td>
+                            <td style="border: 1px solid black"><span t-field="ol.product_id.prod_description" /></td>
+                            <td style="border: 1px solid black"><span t-field="o.scheduled_date" t-options='{"widget": "date"}'/></td>
+                            <td style="border: 1px solid black"><span t-field="ol.sale_line_id.product_uom_qty" /></td>
+                            <td style="border: 1px solid black"><span t-field="ol.product_id.qty_available" /></td>
+                            <td style="border: 1px solid black"><span t-field="ol.product_uom_qty" /></td>
+                            <td style="border: 1px solid black"><span t-field="ol.reserved_availability" /></td>
+                            <td style="border: 1px solid black"><span t-field="o.backorder_id" /></td>
+                            <td style="border: 1px solid black"><span t-field="ol.sale_line_id.qty_delivered" /></td>
+                            <td style="border: 1px solid black"></td>
+                            <td style="border: 1px solid black"><span t-field="o.partner_id.name" /></td>
+                            <td style="border: 1px solid black"><span t-field="o.carrier_id.name" /></td>
+                            <td style="border: 1px solid black"><span t-field="o.carrier_tracking_ref" /></td>
+                            <t t-if="o.state == 'done'">
+                                <td style="border: 1px solid black"><span t-field="o.date_done" /></td>
+                            </t>
+                            <t t-if="o.state == 'done'">
+                                <td style="border: 1px solid black"><span t-field="ol.shipping_note" /></td>
+                            </t>
+                        </tr>
+                        </t>
+                    </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+                
+        <report
+            id="action_report_delivery_room"
+            string="Delivery Room Report"
+            model="stock.picking"
+            paperformat="ledpax.paperformat_delivery_room_report"
+            report_type="qweb-pdf"
+            file="ledpax.report_delivery_room"
+            name="ledpax.report_delivery_room"
+        />
+    </data>
+</odoo>

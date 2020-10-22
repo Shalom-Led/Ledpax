@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        <record id="view_purchase_inherit_form"  model="ir.ui.view">
+            <field name="name">Purchase Difference</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='order_line']/tree/field[@name='price_subtotal']" position='after'>
+                    <field name='difference' string="Difference"/>
+                    <field name='settled' string="Settled"/>
+                </xpath>
+                <xpath expr="//field[@name ='order_line']/tree/field[@name='product_id']" position='before'>
+                    <field name='type' string="Type"/>
+                </xpath>
+                <xpath expr="//field[@name ='order_line']/tree/field[@name='date_planned']" position='replace'>
+                    <field name='date_planned' string="Estimated Date"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_sale_inherit_form"  model="ir.ui.view">
+            <field name="name">Sale Margin</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='order_line']/tree/field[@name='price_subtotal']" position='after'>
+                    <field name='margin' string="Margin"/>
+                    <field name='margin_percentage' string='Margin Percentage'/>
+                </xpath>
+                <xpath expr="//field[@name ='order_line']/tree/field[@name='price_unit']" position='replace'>
+                    <field name="price_unit" force_save="1"/>
+                </xpath>
+                <xpath expr="//form/header/field[@name='state']" position='replace'>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,exp"/>
+                </xpath>
+                <xpath expr="//field[@name ='amount_total']" position='after'>
+                    <field name="total_margin" widget='monetary' class="oe_subtotal_footer_separator" options="{'currency_field': 'currency_id'}"/>
+                    <field name="total_margin_percentage"/>
+                </xpath>
+                <xpath expr="//field[@name ='partner_shipping_id']" position='after'>
+                    <field name="print_company_id" />
+                </xpath>
+            </field>
+        </record>
+        <record id="view_order_inherit_form"  model="ir.ui.view">
+            <field name="name">Project_name_custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position='before'>
+                    <!-- <field name="project" string="ProjectName" /> -->
+                    <field name="project_name" string="ProjectName" />
+                </xpath>
+            </field>
+        </record>
+        <!--    added project name in list view of sale order-->
+        <record id="view_quotation_tree_inherit_form"  model="ir.ui.view">
+            <field name="name">view_quotation_tree_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position='after'>
+                    <!-- <field name="project" string="ProjectName" /> -->
+                    <field name="project_name" string="Project" />
+                </xpath>
+            </field>
+        </record>
+        <record id="view_order_tree_inherit_form"  model="ir.ui.view">
+            <field name="name">view_order_tree_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position='after'>
+                    <field name="project_name" string="Project" />
+                </xpath>
+            </field>
+        </record>
+<!--    Added project filter in search view of sale order-->
+        <record id="custom_view_sales_order_filter"  model="ir.ui.view">
+            <field name="name">sale.order.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='name']" position='replace'>
+                    <field name="name" string="All" filter_domain="['|','|','|','|',('name','ilike',self),('project_name','ilike',self),('client_order_ref','ilike',self),('partner_id','child_of',self),('user_id','ilike',self)]"/>
+                    <field name="project_name" string="Project" filter_domain="[('project_name', '=ilike', str(self)+'%')]"/>
+                </xpath>
+            </field>
+        </record>
+<!--    Added the Estimated date and project in list view of Purchase order-->
+        <record id="purchase_order_tree_inherit_form"  model="ir.ui.view">
+            <field name="name">purchase_order_tree_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_planned']" position='replace'>
+                    <field name="date_planned" string="Estimated Date" />
+                    <field name="date_ack" string="Scheduled Date" />
+                    <field name="project_so" string="Project" />
+                </xpath>
+            </field>
+        </record>
+        <record id="purchase_order_form_inherit_form"  model="ir.ui.view">
+            <field name="name">purchase_order_form_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position='after'>
+                    <field name="project_so" string="Project" attrs="{'invisible': [('project_so','=',False)]}"/>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page/group/group/label" position='replace'/>
+                <xpath expr="//form/sheet/notebook/page/group/group/div" position='replace'>
+                    <label for="date_for_name" />
+                        <div>
+                            <field name="date_planned" string="Estimated Date" attrs="{'readonly': [('state', 'not in', ('draft', 'sent'))]}"/>
+                            <button name="action_set_date_planned" type="object"
+                                states="draft,sent"
+                                string="Set date to all order lines"
+                                help="This changes the scheduled date of all order lines to the given date"
+                                class="fa fa-calendar o_icon_button oe_edit_only"/>
+                        </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="custom_view_purchase_order_filter"  model="ir.ui.view">
+            <field name="name">purchase.order.custom</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='name']" position='replace'>
+                    <field name="name" string="All" filter_domain="['|','|','|','|',('name','ilike',self),('project_so','ilike',self),('origin','ilike',self),('partner_id.name','ilike',self),('user_id','ilike',self)]"/>
+                    <field name="name" string="Reference"/>
+                    <field name="project_so" string="Project" filter_domain="[('project_so', '=ilike', str(self)+'%')]"/>
+                    <filter string="Order Date" name="date_order" date="date_order"/>
+                </xpath>
+            </field>
+        </record>
+    <!--Transfer View  and project field-->
+        <record id="view_picking_form"  model="ir.ui.view">
+            <field name="name">Upload</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group/field[@name='picking_type_id']" position='after'>
+                    <field name="image" string="Image" />
+                    <field name="project_so" string="Project" attrs="{'invisible': [('project_so','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_attribute_view_form" model="ir.ui.view">
+            <field name="name">product.attribute.form.inherit.inherit</field>
+            <field name="model">product.attribute</field>
+            <field name="inherit_id" ref="product.product_attribute_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_custom']" position="after">
+                    <field name="value" string="Field value" />
+                </xpath>
+                <xpath expr="//field[@name='is_custom']" position="before">
+                    <field name="code" string="Short Code" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_category_form_view" model="ir.ui.view">
+            <field name="name">product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="short_code" string="Short Code" />
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="partner_reward_form_view">
+            <field name="name">partner.document.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group/group[1]/field[@name='vat']" position="after">
+                    <field name="documents_url"   string="Documents URL" attrs="{'invisible': [('customer','=',False)]}" />
+                </xpath>
+            </field>
+        </record>
+    </odoo>

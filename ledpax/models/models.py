@@ -83,25 +83,25 @@ class SaleOrderLin(models.Model):
                     done_q = float(line.product_uom_qty) - float(m_qty)
                     line.qty_delivered = done_q
 
-# class PurchaseOrder(models.Model):
-#     _inherit = 'purchase.order'
+class PurchaseOrder(models.Model):
+    _inherit = 'purchase.order'
 
-#     project=fields.Many2one('project.project',
-#                             string='project',
-#                             default=lambda self: self.env.context.get('default_project_id'),
-#                             index=True,
-#                             track_visibility='onchange')
+    project=fields.Many2one('project.project',
+                            string='project',
+                            default=lambda self: self.env.context.get('default_project_id'),
+                            index=True,
+                            track_visibility='onchange')
 
-#     state = fields.Selection(selection_add=[
-#         ('Estimatedtime','Ack. from Vendor'),    
-#     ], string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
-#     print_company_id = fields.Many2one('res.company', string='Report Company', required=True,
-#                                        default=lambda self: self.env['res.company']._company_default_get(
-#                                            'purchase.order'))
+    state = fields.Selection(selection_add=[
+        ('Estimatedtime','Ack. from Vendor'),    
+    ], string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
+    print_company_id = fields.Many2one('res.company', string='Report Company', required=True,
+                                       default=lambda self: self.env['res.company']._company_default_get(
+                                           'purchase.order'))
 
-#     project_so = fields.Char(string="Project", related='group_id.sale_id.project_name.name', default=None)
-#     date_ack = fields.Date(track_visibility='onchange')
-#     date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
+    project_so = fields.Char(string="Project", related='group_id.sale_id.project_name.name', default=None)
+    date_ack = fields.Date(track_visibility='onchange')
+    date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
 
 
 #     @api.model

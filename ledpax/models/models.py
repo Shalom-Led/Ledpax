@@ -104,20 +104,20 @@ class PurchaseOrder(models.Model):
     date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
 
 
-#     @api.model
-#     def default_get(self, fields):
-#         res = super(PurchaseOrder, self).default_get(fields)
-#         if(self._context.get('default_product_id')):
-#             order_line = []
-#             line = (0, 0, {'product_id': self._context.get('default_product_id'),
-#                            'product_uom':self._context.get('default_product_uom'),
-#                            'name':self._context.get('default_name')
-#                           })
-#             order_line.append(line)
-#             res.update({
-#                 'order_line': order_line,
-#             })
-#         return res
+    @api.model
+    def default_get(self, fields):
+        res = super(PurchaseOrder, self).default_get(fields)
+        if(self._context.get('default_product_id')):
+            order_line = []
+            line = (0, 0, {'product_id': self._context.get('default_product_id'),
+                           'product_uom':self._context.get('default_product_uom'),
+                           'name':self._context.get('default_name')
+                          })
+            order_line.append(line)
+            res.update({
+                'order_line': order_line,
+            })
+        return res
 
 #     @api.multi
 #     def write(self, values):

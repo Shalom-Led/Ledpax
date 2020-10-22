@@ -83,100 +83,100 @@ class SaleOrderLin(models.Model):
                     done_q = float(line.product_uom_qty) - float(m_qty)
                     line.qty_delivered = done_q
 
-class PurchaseOrder(models.Model):
-    _inherit = 'purchase.order'
+# class PurchaseOrder(models.Model):
+#     _inherit = 'purchase.order'
 
-    project=fields.Many2one('project.project',
-                            string='project',
-                            default=lambda self: self.env.context.get('default_project_id'),
-                            index=True,
-                            track_visibility='onchange')
+#     project=fields.Many2one('project.project',
+#                             string='project',
+#                             default=lambda self: self.env.context.get('default_project_id'),
+#                             index=True,
+#                             track_visibility='onchange')
 
-    state = fields.Selection(selection_add=[
-        ('Estimatedtime','Ack. from Vendor'),    
-    ], string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
-    print_company_id = fields.Many2one('res.company', string='Report Company', required=True,
-                                       default=lambda self: self.env['res.company']._company_default_get(
-                                           'purchase.order'))
+#     state = fields.Selection(selection_add=[
+#         ('Estimatedtime','Ack. from Vendor'),    
+#     ], string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
+#     print_company_id = fields.Many2one('res.company', string='Report Company', required=True,
+#                                        default=lambda self: self.env['res.company']._company_default_get(
+#                                            'purchase.order'))
 
-    project_so = fields.Char(string="Project", related='group_id.sale_id.project_name.name', default=None)
-    date_ack = fields.Date(track_visibility='onchange')
-    date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
+#     project_so = fields.Char(string="Project", related='group_id.sale_id.project_name.name', default=None)
+#     date_ack = fields.Date(track_visibility='onchange')
+#     date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
 
 
-    @api.model
-    def default_get(self, fields):
-        res = super(PurchaseOrder, self).default_get(fields)
-        if(self._context.get('default_product_id')):
-            order_line = []
-            line = (0, 0, {'product_id': self._context.get('default_product_id'),
-                           'product_uom':self._context.get('default_product_uom'),
-                           'name':self._context.get('default_name')
-                          })
-            order_line.append(line)
-            res.update({
-                'order_line': order_line,
-            })
-        return res
+#     @api.model
+#     def default_get(self, fields):
+#         res = super(PurchaseOrder, self).default_get(fields)
+#         if(self._context.get('default_product_id')):
+#             order_line = []
+#             line = (0, 0, {'product_id': self._context.get('default_product_id'),
+#                            'product_uom':self._context.get('default_product_uom'),
+#                            'name':self._context.get('default_name')
+#                           })
+#             order_line.append(line)
+#             res.update({
+#                 'order_line': order_line,
+#             })
+#         return res
 
-    @api.multi
-    def write(self, values):
-        try:
-            if values['date_ack'] != False:   
-                values.update(state='Estimatedtime')
-        except Exception:
-            pass
-        return super(PurchaseOrder, self).write(values)
+#     @api.multi
+#     def write(self, values):
+#         try:
+#             if values['date_ack'] != False:   
+#                 values.update(state='Estimatedtime')
+#         except Exception:
+#             pass
+#         return super(PurchaseOrder, self).write(values)
 
-    @api.multi
-    def button_confirm(self):
-        button_confirm = self.env['purchase.order'].search([('id', '=', self.id)])
-        button_confirm.update({'state':'to approve'})
-        self.ensure_one()
-        ir_model_data = self.env['ir.model.data']
-        try:
-            template_id = ir_model_data.get_object_reference('purchase', 'email_template_edi_porder_done')[1]
-        except ValueError:
-            template_id = False
-        try:
-            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
-        except ValueError:
-            compose_form_id = False
-        ctx = {
-            'default_model': 'purchase.order',
-            'default_res_id': self.ids[0],
-            'default_use_template': bool(template_id),
-            'default_template_id': template_id,
-            'default_composition_mode': 'comment',
-            'mark_so_as_sent': True,
-            'proforma': self.env.context.get('proforma', False),
-            'force_email': True
-        }
-        return {
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'views': [(compose_form_id, 'form')],
-            'view_id': compose_form_id,
-            'target': 'new',
-            'context': ctx,
-        }
+#     @api.multi
+#     def button_confirm(self):
+#         button_confirm = self.env['purchase.order'].search([('id', '=', self.id)])
+#         button_confirm.update({'state':'to approve'})
+#         self.ensure_one()
+#         ir_model_data = self.env['ir.model.data']
+#         try:
+#             template_id = ir_model_data.get_object_reference('purchase', 'email_template_edi_porder_done')[1]
+#         except ValueError:
+#             template_id = False
+#         try:
+#             compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+#         except ValueError:
+#             compose_form_id = False
+#         ctx = {
+#             'default_model': 'purchase.order',
+#             'default_res_id': self.ids[0],
+#             'default_use_template': bool(template_id),
+#             'default_template_id': template_id,
+#             'default_composition_mode': 'comment',
+#             'mark_so_as_sent': True,
+#             'proforma': self.env.context.get('proforma', False),
+#             'force_email': True
+#         }
+#         return {
+#             'type': 'ir.actions.act_window',
+#             'view_type': 'form',
+#             'view_mode': 'form',
+#             'res_model': 'mail.compose.message',
+#             'views': [(compose_form_id, 'form')],
+#             'view_id': compose_form_id,
+#             'target': 'new',
+#             'context': ctx,
+#         }
 
-    @api.multi
-    def fill_eta(self, data):
-        try:
-            if data[1] == "" :
-                raise exceptions.UserError("Select the ETA Date...")
-            y = int(data[1].split('-')[0])
-            m = int(data[1].split('-')[1])
-            d = int(data[1].split('-')[2])
-            if (date.today() > date(y,m,d)):
-                raise exceptions.UserError("Select the correct ETA Date...")
-            obj = self.sudo().search([('id', '=', int(data[0]))])
-            obj.sudo().date_ack = data[1]
-        except :
-            pass
+#     @api.multi
+#     def fill_eta(self, data):
+#         try:
+#             if data[1] == "" :
+#                 raise exceptions.UserError("Select the ETA Date...")
+#             y = int(data[1].split('-')[0])
+#             m = int(data[1].split('-')[1])
+#             d = int(data[1].split('-')[2])
+#             if (date.today() > date(y,m,d)):
+#                 raise exceptions.UserError("Select the correct ETA Date...")
+#             obj = self.sudo().search([('id', '=', int(data[0]))])
+#             obj.sudo().date_ack = data[1]
+#         except :
+#             pass
 
 # class Followers(models.Model):
 #     _inherit = 'mail.followers'

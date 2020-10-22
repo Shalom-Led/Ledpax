@@ -355,42 +355,42 @@ class SaleOrde(models.Model):
                     # s_data.append(dic)
                     self.env['order.tag.line'].sudo().create(dic)
  
-#     @api.multi
-#     def create_so(self,data):
-#         d_order = data[0]
-#         add_qnt = data[1]
-#         ol_ids = data[2]
-#         if '?' in d_order:
-#             doid = d_order[:-1]
-#         else:
-#             doid = d_order        
-#         partner = self.env.user.partner_id
-#         s_order = self.env['stock.picking'].sudo().search([('id','=',doid)])
-#         sale_order = s_order.origin
-#         s_name = self.env['sale.order'].sudo().search([('name','=',sale_order)])
-#         s_line = []
-#         for qnt in s_order.move_ids_without_package: 
-#             for y in add_qnt:
-#                 if y != "":
-#                     if float(y) > float(qnt.product_id.qty_available):
-#                         return "Not enough stock !"
-#                     o_line = (0, 0, {'product_id': qnt.product_id.id,
-#                                         'product_uom_qty': y,
-#                                         })
-#                     s_line.append(o_line)
-#                 if add_qnt : 
-#                     add_qnt.pop(0)
-#                     break
-#                 else:
-#                     pass
+    @api.multi
+    def create_so(self,data):
+        d_order = data[0]
+        add_qnt = data[1]
+        ol_ids = data[2]
+        if '?' in d_order:
+            doid = d_order[:-1]
+        else:
+            doid = d_order        
+        partner = self.env.user.partner_id
+        s_order = self.env['stock.picking'].sudo().search([('id','=',doid)])
+        sale_order = s_order.origin
+        s_name = self.env['sale.order'].sudo().search([('name','=',sale_order)])
+        s_line = []
+        for qnt in s_order.move_ids_without_package: 
+            for y in add_qnt:
+                if y != "":
+                    if float(y) > float(qnt.product_id.qty_available):
+                        return "Not enough stock !"
+                    o_line = (0, 0, {'product_id': qnt.product_id.id,
+                                        'product_uom_qty': y,
+                                        })
+                    s_line.append(o_line)
+                if add_qnt : 
+                    add_qnt.pop(0)
+                    break
+                else:
+                    pass
 
-#         so_vals = {'partner_id': partner.id,
-#                     'project_name':s_name.project_name.id,
-#                     'order_line': s_line           
-#                     }
+        so_vals = {'partner_id': partner.id,
+                    'project_name':s_name.project_name.id,
+                    'order_line': s_line           
+                    }
 
-#         self.env['sale.order'].sudo().create(so_vals)
-#         return "New Quotation Created"
+        self.env['sale.order'].sudo().create(so_vals)
+        return "New Quotation Created"
 
 # class CustomStockMove(models.Model):
 #     _inherit = "stock.move"

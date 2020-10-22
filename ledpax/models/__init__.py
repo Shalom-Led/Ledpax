@@ -5,5 +5,5 @@ from . import quatation
 from . import bom
 from . import sku_code
 from . import sku_code_prod
-# from . import models
+from . import models
 # from . import order_tag

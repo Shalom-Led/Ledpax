@@ -243,14 +243,14 @@ class SaleOrde(models.Model):
                     total_margin_percentage = 0.0
                     order.total_margin_percentage = str(round(total_margin_percentage, 2)) + ' %'
 
-#     @api.multi
-#     def unlink(self):
-#         saleorder = self.name
-#         tag_line = self.env['order.tag.line'].search([('order_name','=',saleorder)])
-#         if tag_line:
-#             for tag in tag_line:
-#                 tag.unlink()
-#         super(SaleOrde, self).unlink()
+    @api.multi
+    def unlink(self):
+        saleorder = self.name
+        tag_line = self.env['order.tag.line'].search([('order_name','=',saleorder)])
+        if tag_line:
+            for tag in tag_line:
+                tag.unlink()
+        super(SaleOrde, self).unlink()
 
 #     @api.model
 #     def create(self, vals):

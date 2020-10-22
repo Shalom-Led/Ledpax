@@ -13,97 +13,97 @@ class OrderTag(models.Model):
     saleorders = fields.One2many('sale.order','project_name', string='Orders')
     o_tag_line = fields.One2many('order.tag.line','o_id', string='Order Tag Lines', copy=True)
 
-    @api.model
-    def create(self,values):
-        res = super(OrderTag, self).create(values)
-        ol_id = res.id
-        s_orders = res.saleorders
-        s_data = []
-        for so_id in s_orders:
-            val = so_id.id
-            sale_order = self.env['sale.order'].search([('id','=',val)])
-            partner = sale_order.partner_id.name
-            o_name = sale_order.name
-            prod = sale_order.order_line
-            for p in prod:
-                type = p.type
-                pro_id = p.product_id
-                o_qty = p.product_uom_qty
-                d_qty = p.qty_delivered
-                i_qty = p.qty_invoiced
-                u_price = p.price_unit
-                o_tax = p.tax_id
-                o_subtotal = p.price_subtotal
-                o_margin = p.margin
-                for i in pro_id:
-                    prod_name = i.name
-                    prod_description = i.prod_description
-                dic = {'order_name': o_name,
-                       'o_id': ol_id,
-                       'partner_name': partner,
-                       'invoice_adrress': sale_order.partner_invoice_id.name,
-                       'delivery_address': sale_order.partner_shipping_id.name,
-                       'confirm_date': sale_order.confirmation_date,
-                       'ordered_quantity': o_qty,
-                       'delivered_quantity': d_qty,
-                       'invoice_quantity': i_qty,
-                       'unit_price': u_price,
-                       'tax': o_tax.name,
-                       'subtotal': o_subtotal,
-                       'margin': o_margin,
-                       # 'ref': ref,
-                       'products': prod_name,
-                       'pd': prod_description,
-                       'type': type,
-                       }
-                # s_data.append(dic)
-                self.env['order.tag.line'].sudo().create(dic)
-        return res
+    # @api.model
+    # def create(self,values):
+    #     res = super(OrderTag, self).create(values)
+    #     ol_id = res.id
+    #     s_orders = res.saleorders
+    #     s_data = []
+    #     for so_id in s_orders:
+    #         val = so_id.id
+    #         sale_order = self.env['sale.order'].search([('id','=',val)])
+    #         partner = sale_order.partner_id.name
+    #         o_name = sale_order.name
+    #         prod = sale_order.order_line
+    #         for p in prod:
+    #             type = p.type
+    #             pro_id = p.product_id
+    #             o_qty = p.product_uom_qty
+    #             d_qty = p.qty_delivered
+    #             i_qty = p.qty_invoiced
+    #             u_price = p.price_unit
+    #             o_tax = p.tax_id
+    #             o_subtotal = p.price_subtotal
+    #             o_margin = p.margin
+    #             for i in pro_id:
+    #                 prod_name = i.name
+    #                 prod_description = i.prod_description
+    #             dic = {'order_name': o_name,
+    #                    'o_id': ol_id,
+    #                    'partner_name': partner,
+    #                    'invoice_adrress': sale_order.partner_invoice_id.name,
+    #                    'delivery_address': sale_order.partner_shipping_id.name,
+    #                    'confirm_date': sale_order.confirmation_date,
+    #                    'ordered_quantity': o_qty,
+    #                    'delivered_quantity': d_qty,
+    #                    'invoice_quantity': i_qty,
+    #                    'unit_price': u_price,
+    #                    'tax': o_tax.name,
+    #                    'subtotal': o_subtotal,
+    #                    'margin': o_margin,
+    #                    # 'ref': ref,
+    #                    'products': prod_name,
+    #                    'pd': prod_description,
+    #                    'type': type,
+    #                    }
+    #             # s_data.append(dic)
+    #             self.env['order.tag.line'].sudo().create(dic)
+    #     return res
 
-    @api.multi
-    @api.onchange('saleorders')
-    def onchange_saleorders(self):
-        ol_id = self._origin.id
-        s_orders = self.saleorders
-        s_data = []
-        for so_id in s_orders:
-            val = so_id.id
-            sale_order = self.env['sale.order'].search([('id','=',val)])
-            partner = sale_order.partner_id.name
-            o_name = sale_order.name
-            prod = sale_order.order_line
-            for p in prod:
-                type = p.type
-                pro_id = p.product_id
-                o_qty = p.product_uom_qty
-                d_qty = p.qty_delivered
-                i_qty = p.qty_invoiced
-                u_price = p.price_unit
-                o_tax = p.tax_id
-                o_subtotal = p.price_subtotal
-                o_margin = p.margin
-                for i in pro_id:
-                    prod_name = i.name
-                    prod_description = i.prod_description
-                dic = {'order_name': o_name,
-                       'o_id': ol_id,
-                       'partner_name': partner,
-                       'invoice_adrress' : sale_order.partner_invoice_id.name,
-                       'delivery_address' : sale_order.partner_shipping_id.name,
-                       'confirm_date' : sale_order.confirmation_date,
-                       'ordered_quantity' : o_qty,
-                       'delivered_quantity' : d_qty,
-                       'invoice_quantity' : i_qty,
-                       'unit_price' : u_price,
-                       'tax': o_tax.name,
-                       'subtotal' : o_subtotal,
-                       'margin' : o_margin,
-                       'products' : prod_name,
-                       'pd' : prod_description,
-                       'type' : type,
-                       }
-                # s_data.append(dic)
-                self.env['order.tag.line'].sudo().create(dic)
+    # @api.multi
+    # @api.onchange('saleorders')
+    # def onchange_saleorders(self):
+    #     ol_id = self._origin.id
+    #     s_orders = self.saleorders
+    #     s_data = []
+    #     for so_id in s_orders:
+    #         val = so_id.id
+    #         sale_order = self.env['sale.order'].search([('id','=',val)])
+    #         partner = sale_order.partner_id.name
+    #         o_name = sale_order.name
+    #         prod = sale_order.order_line
+    #         for p in prod:
+    #             type = p.type
+    #             pro_id = p.product_id
+    #             o_qty = p.product_uom_qty
+    #             d_qty = p.qty_delivered
+    #             i_qty = p.qty_invoiced
+    #             u_price = p.price_unit
+    #             o_tax = p.tax_id
+    #             o_subtotal = p.price_subtotal
+    #             o_margin = p.margin
+    #             for i in pro_id:
+    #                 prod_name = i.name
+    #                 prod_description = i.prod_description
+    #             dic = {'order_name': o_name,
+    #                    'o_id': ol_id,
+    #                    'partner_name': partner,
+    #                    'invoice_adrress' : sale_order.partner_invoice_id.name,
+    #                    'delivery_address' : sale_order.partner_shipping_id.name,
+    #                    'confirm_date' : sale_order.confirmation_date,
+    #                    'ordered_quantity' : o_qty,
+    #                    'delivered_quantity' : d_qty,
+    #                    'invoice_quantity' : i_qty,
+    #                    'unit_price' : u_price,
+    #                    'tax': o_tax.name,
+    #                    'subtotal' : o_subtotal,
+    #                    'margin' : o_margin,
+    #                    'products' : prod_name,
+    #                    'pd' : prod_description,
+    #                    'type' : type,
+    #                    }
+    #             # s_data.append(dic)
+    #             self.env['order.tag.line'].sudo().create(dic)
 
 class OrderTagLine(models.Model):
 

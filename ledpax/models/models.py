@@ -193,55 +193,55 @@ class PurchaseOrder(models.Model):
 #         res = super(Followers, self).create(vals)
 #         return res
 
-# class SaleOrde(models.Model):
-#     _inherit = 'sale.order'
+class SaleOrde(models.Model):
+    _inherit = 'sale.order'
 
-#     state = fields.Selection([
-#         ('draft', 'Quotation'),
-#         ('sent', 'Quotation Sent'),
-#         ('sale', 'Sales Order'),
-#         ('exp', 'Expire'),
-#         ('done', 'Locked'),
-#         ('cancel', 'Cancelled'),
-#     ], string='Status', readonly=False, copy=False, index=True, track_visibility='onchange', track_sequence=3, default='draft')
+    state = fields.Selection([
+        ('draft', 'Quotation'),
+        ('sent', 'Quotation Sent'),
+        ('sale', 'Sales Order'),
+        ('exp', 'Expire'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+    ], string='Status', readonly=False, copy=False, index=True, track_visibility='onchange', track_sequence=3, default='draft')
 
-#     project = fields.Many2one('project.project',
-#                               string='Project',
-#                               default=lambda self: self.env.context.get('default_project_id'),
-#                               index=True,
-#                               track_visibility='onchange',
-#                               change_default=True)
+    project = fields.Many2one('project.project',
+                              string='Project',
+                              default=lambda self: self.env.context.get('default_project_id'),
+                              index=True,
+                              track_visibility='onchange',
+                              change_default=True)
 
-#     project_name = fields.Many2one('order.tag', string= "ProjectName")
-#     total_margin = fields.Monetary(string="Total Margin", readonly=True, compute='_compute_total_margin')
-#     print_company_id = fields.Many2one('res.company', string='Report Company', required=True, default=lambda self: self.env['res.company']._company_default_get('sale.order'))
-#     total_margin_percentage = fields.Char(string="Total Margin Percentage", compute='_compute_total_margin_percentage')
+    project_name = fields.Many2one('order.tag', string= "ProjectName")
+    total_margin = fields.Monetary(string="Total Margin", readonly=True, compute='_compute_total_margin')
+    print_company_id = fields.Many2one('res.company', string='Report Company', required=True, default=lambda self: self.env['res.company']._company_default_get('sale.order'))
+    total_margin_percentage = fields.Char(string="Total Margin Percentage", compute='_compute_total_margin_percentage')
 
-#     @api.depends('order_line.product_id','order_line.product_uom_qty','order_line.price_unit')
-#     def _compute_total_margin(self):
-#         for order in self:
-#             tot_margin = 0.0
-#             for line in order.order_line:
-#                 tot_margin += line.margin
-#             order.update({'total_margin': tot_margin})
+    @api.depends('order_line.product_id','order_line.product_uom_qty','order_line.price_unit')
+    def _compute_total_margin(self):
+        for order in self:
+            tot_margin = 0.0
+            for line in order.order_line:
+                tot_margin += line.margin
+            order.update({'total_margin': tot_margin})
 
-#     @api.depends('order_line.product_id', 'order_line.product_uom_qty', 'order_line.price_unit', 'order_line.margin_percentage')
-#     def _compute_total_margin_percentage(self):
-#         for order in self:
-#             i = 0
-#             total = 0.0
-#             for line in order.order_line:
-#                 if (' %' in line.margin_percentage):
-#                     val = line.margin_percentage
-#                     val = val.replace(' %', '')
-#                     margin_percentage = float(val)
-#                     total += margin_percentage
-#                     i += 1
-#                     final = float(total / (i * 100)) * 100
-#                     order.total_margin_percentage = str(round(final, 2)) + ' %'
-#                 else:
-#                     total_margin_percentage = 0.0
-#                     order.total_margin_percentage = str(round(total_margin_percentage, 2)) + ' %'
+    @api.depends('order_line.product_id', 'order_line.product_uom_qty', 'order_line.price_unit', 'order_line.margin_percentage')
+    def _compute_total_margin_percentage(self):
+        for order in self:
+            i = 0
+            total = 0.0
+            for line in order.order_line:
+                if (' %' in line.margin_percentage):
+                    val = line.margin_percentage
+                    val = val.replace(' %', '')
+                    margin_percentage = float(val)
+                    total += margin_percentage
+                    i += 1
+                    final = float(total / (i * 100)) * 100
+                    order.total_margin_percentage = str(round(final, 2)) + ' %'
+                else:
+                    total_margin_percentage = 0.0
+                    order.total_margin_percentage = str(round(total_margin_percentage, 2)) + ' %'
 
 #     @api.multi
 #     def unlink(self):

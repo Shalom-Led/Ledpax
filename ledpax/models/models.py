@@ -49,28 +49,28 @@ class SaleOrderLin(models.Model):
                 margin_percentage = 100
             line.margin_percentage = str(round(margin_percentage,2)) + ' %'
 
-    # @api.onchange('product_id')
-    # @api.multi
-    # def onchange_prodcut_id(self):
-    #     date = fields.Date.today()
-    #     supplier_list = []
-    #     ven_price = []
-    #     if self.product_id.seller_ids:
-    #         for supplier in self.product_id.seller_ids:
-    #             if supplier.date_start and supplier.date_end:
-    #                 if supplier.date_start and supplier.date_start > date:
-    #                     continue
-    #                 if supplier.date_end and supplier.date_end < date:
-    #                     continue
-    #                 supplier_list.append(supplier)
-    #         for rec in supplier_list:
-    #             ven_price.append(rec.price)
-    #         if ven_price:
-    #             ven_price = min(ven_price)
-    #             self.update({'price_unit': ven_price})
-    #     elif not self.product_id.seller_ids:
-    #         for rec in self:
-    #             rec.price_unit = rec.product_id.lst_price
+    @api.onchange('product_id')
+    @api.multi
+    def onchange_prodcut_id(self):
+        date = fields.Date.today()
+        supplier_list = []
+        ven_price = []
+        if self.product_id.seller_ids:
+            for supplier in self.product_id.seller_ids:
+                if supplier.date_start and supplier.date_end:
+                    if supplier.date_start and supplier.date_start > date:
+                        continue
+                    if supplier.date_end and supplier.date_end < date:
+                        continue
+                    supplier_list.append(supplier)
+            for rec in supplier_list:
+                ven_price.append(rec.price)
+            if ven_price:
+                ven_price = min(ven_price)
+                self.update({'price_unit': ven_price})
+        elif not self.product_id.seller_ids:
+            for rec in self:
+                rec.price_unit = rec.product_id.lst_price
 
     # @api.multi
     # @api.depends('order_id.delivery_count')

@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-from odoo import fields, models,api,tools, _
+from odoo import fields, models,api,tools
 from odoo.modules import get_module_resource
 from odoo import exceptions
 import psycopg2

@@ -22,13 +22,10 @@ class ProductCategory(models.Model):
 
 class ProductAttributeinherit(models.Model):
     _inherit = 'product.attribute.value'
-    
-
     value = fields.Selection([
         ('ww', 'wall washer'),
         ('down', 'Down light'),
         ('AA', 'Adjustable Angle')], string="Field value")
-
     code = fields.Char('Short Code')
 
 
@@ -52,10 +49,11 @@ class ProductTemplate(models.Model):
     #          'A Manufacture is a non-material product you provide.')
     drawing_number = fields.Char('Drawing Number')
     part_number_index = fields.Char('Part Number Index')
-    status_active = fields.Boolean('Active ', default=True)
+    status_active = fields.Boolean('Active', default=True)
     status_inactive = fields.Boolean('Not Active', default=False)
     warehouse = fields.Char('WAREHOUSE', compute='_compute_warehouse')
     bin = fields.Char('BIN', compute='_compute_bin')
+
     uom = fields.Selection([
         ('EA', 'EA'),
         ('FT', 'FT'),
@@ -301,8 +299,7 @@ class ProductTemplate(models.Model):
                         raise exceptions.ValidationError('SKU should be unique !')
         except:
             raise exceptions.ValidationError('SKU should be unique !')
-        #to push code on sh this code is commented need to remove comment
-          try:
+        try:
             if vals['name']:
                 prod_name = vals['name']
         except KeyError:

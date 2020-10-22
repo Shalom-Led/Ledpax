@@ -117,7 +117,7 @@ class OrderTagLine(models.Model):
     delivery_address = fields.Char(string="Delivery Address")
     confirm_date = fields.Datetime(string="Confirmation Date", compute='confirmdate', default= None)
     products = fields.Char(string="Products")
-    ordered_quantity = fields.Char(string="Ordered Quantity", compute='confirmdate', default= 0.0)
+    ordered_quantity = fields.Char(string="Ordered Quantity",  compute='confirmdate', default= 0.0)
     delivered_quantity = fields.Char(string="Delivered Quantity", compute='confirmdate', default= 0.0)
     invoice_quantity = fields.Char(string="Invoice Quantity", compute='confirmdate', default= 0.0)
     unit_price = fields.Char(string="Unit Price")

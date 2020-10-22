@@ -48,7 +48,7 @@ class SaleOrderLin(models.Model):
             else:
                 margin_percentage = 100
             line.margin_percentage = str(round(margin_percentage,2)) + ' %'
-    not update on sh
+
     @api.onchange('product_id')
     @api.multi
     def onchange_prodcut_id(self):

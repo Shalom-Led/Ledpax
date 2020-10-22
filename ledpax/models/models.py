@@ -252,57 +252,57 @@ class SaleOrde(models.Model):
                 tag.unlink()
         super(SaleOrde, self).unlink()
 
-#     @api.model
-#     def create(self, vals):
-#         res = super(SaleOrde, self).create(vals)
-#         if res.project_name:
-#             proj_value = res.project_name.id
-#             project = res.id
-#             project_n = res.env['sale.order'].search([('id','=',project)]).id
-#             s_order_obj = res.env['sale.order'].search([('id','=',project)])
-#             val = res.env['order.tag'].search([('id','=',proj_value)])
-#             sale_o = []
-#             s_orders = val.saleorders
-#             for s in s_orders:
-#                 so = s.id
-#                 sale_o.append(so)
-#             s_data = []
-#             sale_o.append(project_n)      
-#             val.update({'saleorders': [( 6, 0, sale_o)]})
-#             prod = res.order_line
-#             for obj in prod:
-#                 type = obj.type
-#                 pro_id = obj.product_id
-#                 o_qty = obj.product_uom_qty
-#                 d_qty = obj.qty_delivered
-#                 i_qty = obj.qty_invoiced
-#                 u_price = obj.price_unit
-#                 o_tax = obj.tax_id
-#                 o_subtotal = obj.price_subtotal
-#                 o_margin = obj.margin
-#                 for i in pro_id:
-#                     prod_name = i.name
-#                     prod_description = i.prod_description
-#                 dic = {'order_name': s_order_obj.name,
-#                             'o_id': val.id,
-#                             'partner_name': s_order_obj.partner_id.name,
-#                             'invoice_adrress' : s_order_obj.partner_invoice_id.name,
-#                             'delivery_address' : s_order_obj.partner_shipping_id.name,
-#                             'confirm_date' : s_order_obj.confirmation_date,
-#                             'ordered_quantity' : o_qty,
-#                             'delivered_quantity' : d_qty,
-#                             'invoice_quantity' : i_qty,
-#                             'unit_price' : u_price,
-#                             'tax': o_tax.name,
-#                             'subtotal' : o_subtotal,
-#                             'margin' : o_margin,
-#                             'products' : prod_name,
-#                             'pd': prod_description,
-#                             'type': type,
-#                               }
-#             # s_data.append(dic)
-#                 res.env['order.tag.line'].sudo().create(dic)
-#         return res
+    @api.model
+    def create(self, vals):
+        res = super(SaleOrde, self).create(vals)
+        if res.project_name:
+            proj_value = res.project_name.id
+            project = res.id
+            project_n = res.env['sale.order'].search([('id','=',project)]).id
+            s_order_obj = res.env['sale.order'].search([('id','=',project)])
+            val = res.env['order.tag'].search([('id','=',proj_value)])
+            sale_o = []
+            s_orders = val.saleorders
+            for s in s_orders:
+                so = s.id
+                sale_o.append(so)
+            s_data = []
+            sale_o.append(project_n)      
+            val.update({'saleorders': [( 6, 0, sale_o)]})
+            prod = res.order_line
+            for obj in prod:
+                type = obj.type
+                pro_id = obj.product_id
+                o_qty = obj.product_uom_qty
+                d_qty = obj.qty_delivered
+                i_qty = obj.qty_invoiced
+                u_price = obj.price_unit
+                o_tax = obj.tax_id
+                o_subtotal = obj.price_subtotal
+                o_margin = obj.margin
+                for i in pro_id:
+                    prod_name = i.name
+                    prod_description = i.prod_description
+                dic = {'order_name': s_order_obj.name,
+                            'o_id': val.id,
+                            'partner_name': s_order_obj.partner_id.name,
+                            'invoice_adrress' : s_order_obj.partner_invoice_id.name,
+                            'delivery_address' : s_order_obj.partner_shipping_id.name,
+                            'confirm_date' : s_order_obj.confirmation_date,
+                            'ordered_quantity' : o_qty,
+                            'delivered_quantity' : d_qty,
+                            'invoice_quantity' : i_qty,
+                            'unit_price' : u_price,
+                            'tax': o_tax.name,
+                            'subtotal' : o_subtotal,
+                            'margin' : o_margin,
+                            'products' : prod_name,
+                            'pd': prod_description,
+                            'type': type,
+                              }
+            # s_data.append(dic)
+                res.env['order.tag.line'].sudo().create(dic)
+        return res
 
 #     @api.onchange('project_name')
 #     def project_onchange(self):

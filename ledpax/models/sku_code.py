@@ -302,7 +302,7 @@ class ProductTemplate(models.Model):
         except:
             raise exceptions.ValidationError('SKU should be unique !')
         #to push code on sh this code is commented need to remove comment
-          try:
+        try:
             if vals['name']:
                 prod_name = vals['name']
         except KeyError:

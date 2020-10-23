@@ -392,14 +392,14 @@ class SaleOrde(models.Model):
         self.env['sale.order'].sudo().create(so_vals)
         return "New Quotation Created"
 
-# class CustomStockMove(models.Model):
-#     _inherit = "stock.move"
+class CustomStockMove(models.Model):
+    _inherit = "stock.move"
     
-#     reserved_availability = fields.Float(
-#         'Quantity Reserved', compute='_compute_reserved_availability',
-#          help='Quantity that has already been reserved for this move')
+    reserved_availability = fields.Float(
+        'Quantity Reserved', compute='_compute_reserved_availability',
+         help='Quantity that has already been reserved for this move')
 
-#     shipping_note = fields.Char("Shipping Note")               
+    shipping_note = fields.Char("Shipping Note")               
 
 # class Pickinginherit(models.Model):
 #     _inherit = 'stock.picking'

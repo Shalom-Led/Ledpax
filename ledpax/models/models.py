@@ -452,96 +452,96 @@ class Pickinginherit(models.Model):
             sku_cod_list=[]
 
     tot_qnt = fields.Float(string='Total quantity' , compute='_find_quantity')
-#     @api.one
-#     def _find_quantity(self):
-#         temp_total = 0
-#         for id in self:
-#             sp_obj=self.browse(id)
-#             sm_obj=self.env['stock.move'].search([('picking_id','=',sp_obj.id.id)])
-#             for line in sm_obj:
-#                 temp_total += line.quantity_done
-#         self.tot_qnt = temp_total
+    @api.one
+    def _find_quantity(self):
+        temp_total = 0
+        for id in self:
+            sp_obj=self.browse(id)
+            sm_obj=self.env['stock.move'].search([('picking_id','=',sp_obj.id.id)])
+            for line in sm_obj:
+                temp_total += line.quantity_done
+        self.tot_qnt = temp_total
 
-#     @api.multi
-#     def release_qty(self,data):
-#         b_order = data[0]
-#         bol_id = data [1]
-#         r_qty = data [2]
-#         ship_notes = data [3]
-#         if '?' in b_order:
-#             boid = b_order[:-1]
-#         else:
-#             boid = b_order        
-#         delivery_line = []
-#         back_order = self.env['stock.picking'].sudo().search([('id','=',boid)])
-#         delivery_order = back_order.backorder_id
-#         s_order = back_order.origin
-#         sal_order = self.env['sale.order'].sudo().search([('name','=',s_order)]).id
-#         for obj in back_order.move_lines:
-#             for note in ship_notes:
-#                 for x in r_qty:
-#                     if (x != '' or note != ''):
-#                         if float(x) > float(obj.product_id.qty_available):
-#                             return "Not enough stock !"
-#                         reserved = float(obj.reserved_availability) - float(x)
-#                         if obj.state != 'partially_available':
-#                             if float(obj.reserved_availability) < float(x):
-#                                 return "Hey reserved quantity is"+ " " + str(obj.reserved_availability) + " " + "if you want more quantity you can add in additional quantity"
-#                         obj.update({'product_uom_qty':reserved})
-#                         products = obj.product_id.id
-#                         sal_line = self.env['sale.order.line'].sudo().search(['&',('order_id','=',sal_order),('product_id','=',products)]) 
-#                         delivered = float(sal_line.qty_delivered) + float(x)
-#                         so_line = sal_line.id
-#                         move_line = {   'picking_id': back_order.id,
-#                                         'sale_id' : back_order.sale_id.id,
-#                                         'group_id' : back_order.group_id.id,
-#                                         'name': 'outgoing_shipment_move',
-#                                         'product_id': products,
-#                                         'product_uom_qty': x,
-#                                         'quantity_done' : x,
-#                                         'product_uom': 1,
-#                                         'state': 'done' ,
-#                                         'shipping_note': note,
-#                                         'location_id':  self.env.ref('stock.stock_location_stock').id,
-#                                         'location_dest_id': self.env.ref('stock.stock_location_customers').id}               
-#                         delivery_line.append(move_line)
-#                     if r_qty: 
-#                         r_qty.pop(0)
-#                         break
-#                     else:
-#                         pass                      
-#                 if ship_notes: 
-#                     ship_notes.pop(0)
-#                     break
-#                 else:
-#                     pass 
-#         backorders = self.env['stock.picking']
-#         for picking in back_order:
-#             moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
-#             if moves_to_backorder:
-#                 backorder_picking = picking.copy({
-#                     'name': '/',
-#                     'move_lines': [],
-#                     'move_line_ids': [],
-#                     'backorder_id': picking.id
-#                 })
-#                 moves_to_backorder.write({'picking_id': backorder_picking.id})
-#                 moves_to_backorder.mapped('package_level_id').write({'picking_id':backorder_picking.id})
-#                 moves_to_backorder.mapped('move_line_ids').write({'picking_id': backorder_picking.id})
-#                 backorder_picking.action_assign()
-#                 backorders |= backorder_picking
+    @api.multi
+    def release_qty(self,data):
+        b_order = data[0]
+        bol_id = data [1]
+        r_qty = data [2]
+        ship_notes = data [3]
+        if '?' in b_order:
+            boid = b_order[:-1]
+        else:
+            boid = b_order        
+        delivery_line = []
+        back_order = self.env['stock.picking'].sudo().search([('id','=',boid)])
+        delivery_order = back_order.backorder_id
+        s_order = back_order.origin
+        sal_order = self.env['sale.order'].sudo().search([('name','=',s_order)]).id
+        for obj in back_order.move_lines:
+            for note in ship_notes:
+                for x in r_qty:
+                    if (x != '' or note != ''):
+                        if float(x) > float(obj.product_id.qty_available):
+                            return "Not enough stock !"
+                        reserved = float(obj.reserved_availability) - float(x)
+                        if obj.state != 'partially_available':
+                            if float(obj.reserved_availability) < float(x):
+                                return "Hey reserved quantity is"+ " " + str(obj.reserved_availability) + " " + "if you want more quantity you can add in additional quantity"
+                        obj.update({'product_uom_qty':reserved})
+                        products = obj.product_id.id
+                        sal_line = self.env['sale.order.line'].sudo().search(['&',('order_id','=',sal_order),('product_id','=',products)]) 
+                        delivered = float(sal_line.qty_delivered) + float(x)
+                        so_line = sal_line.id
+                        move_line = {   'picking_id': back_order.id,
+                                        'sale_id' : back_order.sale_id.id,
+                                        'group_id' : back_order.group_id.id,
+                                        'name': 'outgoing_shipment_move',
+                                        'product_id': products,
+                                        'product_uom_qty': x,
+                                        'quantity_done' : x,
+                                        'product_uom': 1,
+                                        'state': 'done' ,
+                                        'shipping_note': note,
+                                        'location_id':  self.env.ref('stock.stock_location_stock').id,
+                                        'location_dest_id': self.env.ref('stock.stock_location_customers').id}               
+                        delivery_line.append(move_line)
+                    if r_qty: 
+                        r_qty.pop(0)
+                        break
+                    else:
+                        pass                      
+                if ship_notes: 
+                    ship_notes.pop(0)
+                    break
+                else:
+                    pass 
+        backorders = self.env['stock.picking']
+        for picking in back_order:
+            moves_to_backorder = picking.move_lines.filtered(lambda x: x.state not in ('done', 'cancel'))
+            if moves_to_backorder:
+                backorder_picking = picking.copy({
+                    'name': '/',
+                    'move_lines': [],
+                    'move_line_ids': [],
+                    'backorder_id': picking.id
+                })
+                moves_to_backorder.write({'picking_id': backorder_picking.id})
+                moves_to_backorder.mapped('package_level_id').write({'picking_id':backorder_picking.id})
+                moves_to_backorder.mapped('move_line_ids').write({'picking_id': backorder_picking.id})
+                backorder_picking.action_assign()
+                backorders |= backorder_picking
         
-#         for pick in backorders.move_lines:
-#             for mov in r_qty:
-#                 reserved = float(pick.reserved_availability) - float(mov)
-#                 pick.update({'product_uom_qty': reserved})
-#                 if r_qty : 
-#                     r_qty.pop(0)
-#                 break
-#         self.env['stock.move'].sudo().create(delivery_line)
-#         back_order.action_done()
-#         back_order.write({'state':'done'})
-#         return backorders
+        for pick in backorders.move_lines:
+            for mov in r_qty:
+                reserved = float(pick.reserved_availability) - float(mov)
+                pick.update({'product_uom_qty': reserved})
+                if r_qty : 
+                    r_qty.pop(0)
+                break
+        self.env['stock.move'].sudo().create(delivery_line)
+        back_order.action_done()
+        back_order.write({'state':'done'})
+        return backorders
 
 class CustomResPartner(models.Model):
     _inherit = 'res.partner'

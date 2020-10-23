@@ -119,14 +119,14 @@ class PurchaseOrder(models.Model):
             })
         return res
 
-#     @api.multi
-#     def write(self, values):
-#         try:
-#             if values['date_ack'] != False:   
-#                 values.update(state='Estimatedtime')
-#         except Exception:
-#             pass
-#         return super(PurchaseOrder, self).write(values)
+    @api.multi
+    def write(self, values):
+        try:
+            if values['date_ack'] != False:   
+                values.update(state='Estimatedtime')
+        except Exception:
+            pass
+        return super(PurchaseOrder, self).write(values)
 
 #     @api.multi
 #     def button_confirm(self):

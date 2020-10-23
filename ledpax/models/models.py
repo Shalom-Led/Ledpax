@@ -439,19 +439,19 @@ class Pickinginherit(models.Model):
             prod_typ_list=[]
      
     sku_cod = fields.Char( string='SKU' , compute='_find_code')
-#     @api.multi
-#     def _find_code(self):
-#         sku_cod_list=[]
-#         for id in self:
-#             obj=self.env['stock.picking'].search([("name","=",id.name)])
-#             obj1=self.env['stock.move'].search([('picking_id','=',obj.id)])
-#             for stock_move in obj1:
-#                 default_code =stock_move.product_id.default_code
-#                 sku_cod_list.append(default_code)
-#             id.update({'sku_cod' :'%s' % ', '.join(map(str, sku_cod_list))})
-#             sku_cod_list=[]
+    @api.multi
+    def _find_code(self):
+        sku_cod_list=[]
+        for id in self:
+            obj=self.env['stock.picking'].search([("name","=",id.name)])
+            obj1=self.env['stock.move'].search([('picking_id','=',obj.id)])
+            for stock_move in obj1:
+                default_code =stock_move.product_id.default_code
+                sku_cod_list.append(default_code)
+            id.update({'sku_cod' :'%s' % ', '.join(map(str, sku_cod_list))})
+            sku_cod_list=[]
 
-#     tot_qnt = fields.Float(string='Total quantity' , compute='_find_quantity')
+    tot_qnt = fields.Float(string='Total quantity' , compute='_find_quantity')
 #     @api.one
 #     def _find_quantity(self):
 #         temp_total = 0

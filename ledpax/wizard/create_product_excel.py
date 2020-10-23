@@ -14,7 +14,8 @@ class CreateProductExcel(models.TransientModel):
     def submit(self):
         try:
             if self.excel_file :
-                file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/Vendor_Excel/' + 'create_prod_wizard' + '.xlsx'
+                # file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/Vendor_Excel/' + 'create_prod_wizard' + '.xlsx'
+                file_path = 'src/Downloads/Ledpax_Excel_Data/Vendor_Excel/' + 'create_prod_wizard' + '.xlsx'                
                 code = self.excel_file
                 with open(os.path.expanduser(file_path), 'wb') as fout:
                     fout.write(base64.decodestring(code))

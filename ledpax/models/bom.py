@@ -34,7 +34,8 @@ class MrpBom(models.Model):
             for x in self.env['product.product'].search([('product_tmpl_id', '=', vals_list[0]['product_tmpl_id'])]) :
                 prod_name = x.name
                 break
-            file_name = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
+            # file_name = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
+            file_name = 'src/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
             dataframe = pd.read_excel(file_name)
             c = []
             col = dataframe.columns

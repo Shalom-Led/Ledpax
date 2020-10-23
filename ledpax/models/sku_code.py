@@ -141,15 +141,16 @@ class ProductTemplate(models.Model):
             if vals_list[0]['pdf_image'] :
                 from pdf2image import convert_from_path
                 code = bytes(vals_list[0]['pdf_image'], encoding='utf-8')
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
+                # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
+                file = 'src/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
                 with open(os.path.expanduser(file), 'wb') as fout:
                     fout.write(base64.decodestring(code))
                     os.chmod(file,0o777)
                 pdf = convert_from_path(file)
                 for page in pdf:
                     img_name = vals_list[0]['name'] + '.jpg'
-                    rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
-                    page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+                    rm_img = 'src/user/ledpax/static/image/' + img_name
+                    page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
                     img = False
                     img_path = get_module_resource('ledpax', 'static/image', img_name)
                     if img_path:
@@ -165,7 +166,8 @@ class ProductTemplate(models.Model):
             raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
         try :
             if vals_list[0]['excel_file'] :
-                file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + vals_list[0]['name'] + '.xlsx'
+                # file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + vals_list[0]['name'] + '.xlsx'
+                file_path = 'src/Downloads/Ledpax_Excel_Data/' + vals_list[0]['name'] + '.xlsx'
                 code = bytes(vals_list[0]['excel_file'], encoding='utf-8')
                 with open(os.path.expanduser(file_path), 'wb') as fout:
                     fout.write(base64.decodestring(code))
@@ -258,16 +260,17 @@ class ProductTemplate(models.Model):
             
             try:
                 if vals_list[0]['pdf_image']:
-                    file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
+                    # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
+                    file = 'src/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
                     pdf = convert_from_path(file)
                     img_name = vals_list[0]['name'] + '.jpg'
-                    rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
+                    rm_img = 'src/user/ledpax/static/image/' + img_name
                     ncount = 0
                     for page in pdf:
                         if ncount == 0:
                             ncount += 1
                         else :
-                            page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+                            page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
                             img = False
                             img_path = get_module_resource('ledpax', 'static/image', img_name)
                             if img_path:
@@ -321,15 +324,16 @@ class ProductTemplate(models.Model):
                 except:
                     pass
                 code = bytes(vals['pdf_image'], encoding='utf-8')
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+                # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+                file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
                 with open(os.path.expanduser(file), 'wb') as fout:
                     fout.write(base64.decodestring(code))
                     os.chmod(file, 0o777)
                 pdf = convert_from_path(file)
                 for page in pdf:
                     img_name = prod_name + '.jpg'
-                    rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
-                    page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+                    rm_img = 'src/user/ledpax/static/image/' + img_name
+                    page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
                     img = False
                     img_path = get_module_resource('ledpax', 'static/image', img_name)
                     if img_path:
@@ -344,7 +348,8 @@ class ProductTemplate(models.Model):
             raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
         try :
             if vals['excel_file'] :
-                file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
+                # file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
+                file_path = 'src/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
                 code = bytes(vals['excel_file'], encoding='utf-8')
                 with open(os.path.expanduser(file_path), 'wb') as fout:
                     fout.write(base64.decodestring(code))
@@ -452,16 +457,17 @@ class ProductTemplate(models.Model):
 
         try:
             if vals['pdf_image']:
-                file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+                # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+                file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
                 pdf = convert_from_path(file)
                 img_name = prod_name + '.jpg'
-                rm_img = '/odoo12/custom/addons/ledpax/static/image/' + img_name
+                rm_img = 'src/user/ledpax/static/image/' + img_name
                 ncount = 0
                 for page in pdf:
                     if ncount == 0:
                         ncount += 1
                     else :
-                        page.save(os.path.join('/odoo12/custom/addons/ledpax/static/image', img_name), 'JPEG')
+                        page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
                         img = False
                         img_path = get_module_resource('ledpax', 'static/image', img_name)
                         if img_path:

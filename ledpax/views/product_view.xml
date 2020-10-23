@@ -22,7 +22,7 @@
 	    		<field name="drawing_number" placeholder="Drawing Number"/>
 	    		<field name="status_active" attrs="{'invisible': [('status_inactive','=',True)]}"/>
                 <field name="status_inactive" attrs="{'invisible': [('status_active','=',True)]}"/>
-	    		<field name="part_number_index" placeholder="Part Number Index"/>
+	    		<field name="part_number_index" placeholder="Part Index"/>
 	    	</xpath>
 	    	<xpath expr="//group[@name ='inventory']" position='before' >
 	    		<group name="warehouse" string="Warehouse Information">
@@ -49,7 +49,7 @@
 				<field name="prod_description" string="Begin with Description" filter_domain="[('prod_description', '=ilike', str(self)+'%')]"/>
 				<field name="default_code" string="Begin with SKU" filter_domain="[('product_variant_ids.default_code', '=ilike', str(self)+'%')]"/>
 				<separator/>
-				<field name="part_number_index" string="Part Number"/>
+				<field name="part_number_index" string="Part Index"/>
 				<separator/>
 				<filter string="Created Date" name="create_date" date="create_date"/>
 	        </xpath>
@@ -75,7 +75,7 @@
 				<field name="prod_description"/>
         	</xpath>
 			<xpath expr="//field[@name='name']" position="before">
-				<field name="part_number_index" string="Part Number"/>
+				<field name="part_number_index" string="Part Index"/>
         	</xpath>
         	<xpath expr="//field[@name='standard_price']" position="replace"/>
         	<xpath expr="//field[@name='categ_id']" position="replace"/>
@@ -91,7 +91,7 @@
 				<field name="prod_description"/>
         	</xpath>
 			<xpath expr="//field[@name='name']" position="before">
-				<field name="part_number_index" string="Part Number"/>
+				<field name="part_number_index" string="Part Index"/>
         	</xpath>
 			<xpath expr="//field[@name='default_code']" position="replace">
 				<field name="default_code" string="SKU"/>

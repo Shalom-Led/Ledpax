@@ -178,20 +178,20 @@ class PurchaseOrder(models.Model):
 #         except :
 #             pass
 
-# class Followers(models.Model):
-#     _inherit = 'mail.followers'
+class Followers(models.Model):
+    _inherit = 'mail.followers'
 
-#     @api.model
-#     def create(self, vals):
-#         if 'res_model' in vals and 'res_id' in vals and 'partner_id' in vals:
-#             dups = self.env['mail.followers'].search([('res_model', '=',vals.get('res_model')),
-#                                            ('res_id', '=', vals.get('res_id')),
-#                                            ('partner_id', '=', vals.get('partner_id'))])
-#             if len(dups):
-#                 for p in dups:
-#                     p.unlink()
-#         res = super(Followers, self).create(vals)
-#         return res
+    @api.model
+    def create(self, vals):
+        if 'res_model' in vals and 'res_id' in vals and 'partner_id' in vals:
+            dups = self.env['mail.followers'].search([('res_model', '=',vals.get('res_model')),
+                                           ('res_id', '=', vals.get('res_id')),
+                                           ('partner_id', '=', vals.get('partner_id'))])
+            if len(dups):
+                for p in dups:
+                    p.unlink()
+        res = super(Followers, self).create(vals)
+        return res
 
 class SaleOrde(models.Model):
     _inherit = 'sale.order'
@@ -547,26 +547,26 @@ class CustomResPartner(models.Model):
     _inherit = 'res.partner'
     documents_url = fields.Char(string='Documents URL')
     
-# class CustomAccountInvoice(models.Model):
-#     _inherit = 'account.invoice'
-#     print_company_id = fields.Many2one('res.company', string='Report Company', required=True, default=lambda self: self.env['res.company']._company_default_get('account.invoice'))
-#     project_so = fields.Char(string="Project", compute='customproject', default=None, store=True)
-#     @api.depends('origin')
-#     def customproject(self):
-#         for order in self:
-#             so = self.env['sale.order'].search([('name', '=', order.origin)])
-#             po = self.env['purchase.order'].search([('name', '=', order.origin)])
-#             if so:
-#                 for i in so:
-#                     order.update({'project_so': i.project_name.name,
-#                                  })
-#             elif po:
-#                 for i in po:
-#                     order.update({'project_so': i.project_so,
-#                                  })
-#             else:
-#                 order.update({'project_so': None,
-#                                  })
+class CustomAccountInvoice(models.Model):
+    _inherit = 'account.invoice'
+    print_company_id = fields.Many2one('res.company', string='Report Company', required=True, default=lambda self: self.env['res.company']._company_default_get('account.invoice'))
+    project_so = fields.Char(string="Project", compute='customproject', default=None, store=True)
+    @api.depends('origin')
+    def customproject(self):
+        for order in self:
+            so = self.env['sale.order'].search([('name', '=', order.origin)])
+            po = self.env['purchase.order'].search([('name', '=', order.origin)])
+            if so:
+                for i in so:
+                    order.update({'project_so': i.project_name.name,
+                                 })
+            elif po:
+                for i in po:
+                    order.update({'project_so': i.project_so,
+                                 })
+            else:
+                order.update({'project_so': None,
+                                 })
 
 # class CustomPurchaseOrder(models.Model):
 #     _inherit = 'purchase.order'

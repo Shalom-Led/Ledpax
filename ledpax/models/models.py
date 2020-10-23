@@ -163,20 +163,20 @@ class PurchaseOrder(models.Model):
 #             'context': ctx,
 #         }
 
-#     @api.multi
-#     def fill_eta(self, data):
-#         try:
-#             if data[1] == "" :
-#                 raise exceptions.UserError("Select the ETA Date...")
-#             y = int(data[1].split('-')[0])
-#             m = int(data[1].split('-')[1])
-#             d = int(data[1].split('-')[2])
-#             if (date.today() > date(y,m,d)):
-#                 raise exceptions.UserError("Select the correct ETA Date...")
-#             obj = self.sudo().search([('id', '=', int(data[0]))])
-#             obj.sudo().date_ack = data[1]
-#         except :
-#             pass
+    @api.multi
+    def fill_eta(self, data):
+        try:
+            if data[1] == "" :
+                raise exceptions.UserError("Select the ETA Date...")
+            y = int(data[1].split('-')[0])
+            m = int(data[1].split('-')[1])
+            d = int(data[1].split('-')[2])
+            if (date.today() > date(y,m,d)):
+                raise exceptions.UserError("Select the correct ETA Date...")
+            obj = self.sudo().search([('id', '=', int(data[0]))])
+            obj.sudo().date_ack = data[1]
+        except :
+            pass
 
 class Followers(models.Model):
     _inherit = 'mail.followers'

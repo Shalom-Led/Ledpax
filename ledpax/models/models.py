@@ -401,44 +401,44 @@ class CustomStockMove(models.Model):
 
     shipping_note = fields.Char("Shipping Note")               
 
-# class Pickinginherit(models.Model):
-#     _inherit = 'stock.picking'
-#     image = fields.Binary(
-#         "Image", attachment=True,
-#         help="This field holds the image used as image for the product, limited to 1024x1024px.")
-#     prod_typ = fields.Char(string='Product Type',compute='_find_type')
-#     project_so = fields.Char(string="Project", compute='custom_so_project', default=None, store=True)
+class Pickinginherit(models.Model):
+    _inherit = 'stock.picking'
+    image = fields.Binary(
+        "Image", attachment=True,
+        help="This field holds the image used as image for the product, limited to 1024x1024px.")
+    prod_typ = fields.Char(string='Product Type',compute='_find_type')
+    project_so = fields.Char(string="Project", compute='custom_so_project', default=None, store=True)
 
-#     @api.depends('origin')
-#     def custom_so_project(self):
-#         for order in self:
-#             so = self.env['sale.order'].search([('name', '=', order.origin)])
-#             po = self.env['purchase.order'].search([('name', '=', order.origin)])
-#             if so:
-#                 for i in so:
-#                     order.update({'project_so': i.project_name.name,
-#                                   })
-#             elif po:
-#                 for i in po:
-#                     order.update({'project_so': i.project_so,
-#                                   })
-#             else:
-#                 order.update({'project_so': None,
-#                               })
+    @api.depends('origin')
+    def custom_so_project(self):
+        for order in self:
+            so = self.env['sale.order'].search([('name', '=', order.origin)])
+            po = self.env['purchase.order'].search([('name', '=', order.origin)])
+            if so:
+                for i in so:
+                    order.update({'project_so': i.project_name.name,
+                                  })
+            elif po:
+                for i in po:
+                    order.update({'project_so': i.project_so,
+                                  })
+            else:
+                order.update({'project_so': None,
+                              })
 
-#     @api.multi
-#     def _find_type(self):
-#         prod_typ_list=[]
-#         for id in self:
-#             obj=self.env['stock.picking'].search([("name","=",id.name)])
-#             obj1=self.env['stock.move'].search([('picking_id','=',obj.id)])
-#             for stock_move in obj1:
-#                 type_sal = stock_move.product_id.type
-#                 prod_typ_list.append(type_sal)
-#             id.update({'prod_typ' :'%s' % ', '.join(map(str, prod_typ_list))})
-#             prod_typ_list=[]
+    @api.multi
+    def _find_type(self):
+        prod_typ_list=[]
+        for id in self:
+            obj=self.env['stock.picking'].search([("name","=",id.name)])
+            obj1=self.env['stock.move'].search([('picking_id','=',obj.id)])
+            for stock_move in obj1:
+                type_sal = stock_move.product_id.type
+                prod_typ_list.append(type_sal)
+            id.update({'prod_typ' :'%s' % ', '.join(map(str, prod_typ_list))})
+            prod_typ_list=[]
      
-#     sku_cod = fields.Char( string='SKU' , compute='_find_code')
+    sku_cod = fields.Char( string='SKU' , compute='_find_code')
 #     @api.multi
 #     def _find_code(self):
 #         sku_cod_list=[]

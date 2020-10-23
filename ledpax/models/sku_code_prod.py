@@ -172,7 +172,7 @@ class CustomProductProduct(models.Model):
         except KeyError:
             try :
                 if vals['name'] and self.excel_file:
-                    file_path = '/home/dolly/Desktop/Excel data/' + prod_name + '.xlsx'
+                    file_path = 'src/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'
                     with open(os.path.expanduser(file_path), 'wb') as fout:
                         fout.write(self.excel_file)
                         os.chmod(file_path, 0o777)

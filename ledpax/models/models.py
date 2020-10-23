@@ -131,7 +131,7 @@ class PurchaseOrder(models.Model):
     @api.multi
     def button_confirm(self):
         button_confirm = self.env['purchase.order'].search([('id', '=', self.id)])
-        button_confirm.update({'state':'to approve'})
+        # button_confirm.update({'state':'to approve'})
         self.ensure_one()
         ir_model_data = self.env['ir.model.data']
         try:

@@ -1,4 +1,5 @@
-from odoo import fields, models,api,tools
+from odoo import fields, models,api,tools, _
+from odoo.exceptions import ValidationError
 from odoo.modules import get_module_resource
 from odoo import exceptions
 import psycopg2
@@ -64,6 +65,14 @@ class ProductTemplate(models.Model):
     p_description = fields.Char('Prod Description', compute='_compute_size', size=80)
     short_des = fields.Char('Prods Description', compute='_compute_size', size=80)
 
+    # Added validation to avoide duplicate part number index
+    @api.onchange('part_number_index')
+    def onchange_part_number_index(self):
+        if self.part_number_index:
+            mo = self.env['product.template'].search([('part_number_index', '=', self.part_number_index)])
+            for val in mo:
+                if val.part_number_index == self.part_number_index:
+                    raise ValidationError(_('The Part Number Index ' + self.part_number_index + ' is already exist. '))
 
     def _compute_size(self):
         for i in self:

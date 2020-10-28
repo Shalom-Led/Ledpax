@@ -84,7 +84,7 @@ class VendorData(http.Controller):
             if kw['attachment'] == '':
                 return request.redirect('/my/vendor_product_upload')
             # file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/Vendor_Excel/' + str(request.env.user.partner_id.name) + '.xlsx'
-            file_path = 'src/Downloads/Ledpax_Excel_Data/Vendor_Excel/Vendor_Excel/' + str(request.env.user.partner_id.name) + '.xlsx'
+            file_path = 'src/Downloads/Ledpax_Excel_Data/Vendor_Excel/' + str(request.env.user.partner_id.name) + '.xlsx'
             file = kw['attachment']
             attachment = file.read()
             with open(file_path, 'ab') as f:

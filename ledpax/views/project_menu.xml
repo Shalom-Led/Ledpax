@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo> 
+    <data>
+        <record id="view_order_tag_tree" model="ir.ui.view">
+            <field name="name">order.tag - Search</field>
+            <field name="model">order.tag</field>
+            <field name="arch" type="xml">
+                <search string="Ordertag Search">
+                    <field name="name"/>
+                    <field name="saleorders" widget="many2many_tags"/>
+                    <filter string="Created Date" name="create_date" date="create_date"/>
+                </search>
+            </field>
+        </record>       
+
+        <record id="view_order_tag_form" model="ir.ui.view">
+            <field name="name">order.tag.form</field>
+            <field name="model">order.tag</field>
+            <field name="arch" type="xml">
+                <form string="Projects" class="o_sale_order">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" string="Project"/>
+                            <h1>
+                                <field name="name" placeholder="Project name..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="left">
+                                <field name="name"/>
+                            </group>
+                            <group name="right">
+                                <field name="saleorders" string="Orders" widget="many2many_tags" domain="[('project_name','=',False)]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Order Tags" name ="order_tags">
+                                <field name="o_tag_line">
+                                    <tree string="Order Tags" editable="bottom">                   
+                                        <field name ="order_name" string="Name"/>
+                                        <field name = "partner_name" string = "Partner"/>
+                                        <field name = "invoice_adrress" string = "Invoice Address"/>
+                                        <field name = "delivery_address" string = "Delivery Address"/>
+                                        <field name ="confirm_date" string ="Confirmation Date"/>
+                                        <field name ="ref" string ="Referance"/>
+                                        <field name ="type"/>
+                                        <field name ="products" string ="Products"/>
+                                        <field name ="pd"/>
+                                        <field name ="ordered_quantity" string ="Ordered Quantity"/>
+                                        <field name ="delivered_quantity" string ="Delivered Quantity"/>
+                                        <field name ="invoice_quantity" string ="Invoice Quantity"/>
+                                        <field name ="unit_price" string ="Unit Price"/>
+                                        <field name ="tax" string ="Taxes"/>
+                                        <field name ="subtotal" string ="Subtotal"/>
+                                        <field name ="margin" string ="Margin"/>
+<!--                                        <field name ="total" string ="Total"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="order_tag_config_action" model="ir.actions.act_window">
+            <field name="name">Order Tags</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">order.tag</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_order_tag_tree"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a Project
+              </p><p>
+                It will be converted into a purchase order.
+              </p>
+            </field>
+        </record>
+
+    <menuitem id="menu_projects_config"
+            name="Projects"
+            parent="sale.sale_menu_root"
+            sequence="8"/>
+
+    <menuitem id="report_order_tag"
+            name="Projects"
+            parent="menu_projects_config"
+            action="order_tag_config_action"
+            groups="base.group_system"
+            sequence="10"/>
+    </data>
+
+</odoo>

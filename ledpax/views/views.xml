@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <odoo>
+        <record id="mrp_bom_tree_view_inherit_form"  model="ir.ui.view">
+            <field name="name">mrp.bom.custom</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='product_tmpl_id']" position='replace'>
+                    <field name="prod_name"/>
+                    <field name="prod_description1"/>
+<!--                    <field name="uom1"/>-->
+                </xpath>
+                <xpath expr="//tree/field[@name='product_id']" position='replace'>
+                </xpath>
+                <xpath expr="//tree/field[@name='code']" position='replace'>
+                </xpath>
+
+            </field>
+        </record>
+        <record id="view_mrp_bom_filter_inherit_form"  model="ir.ui.view">
+            <field name="name">mrp.bom.custom</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.view_mrp_bom_filter"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//search/field[@name='code']" position='replace'>
+                        <field name="code" string="All" filter_domain="['|',('prod_name','ilike',self),('prod_description1','ilike',self)]"/>
+                        <field name="prod_description1" string="Product Description"/>
+                        <field name="prod_name" string="Begin with Name" filter_domain="[('prod_name', '=ilike', str(self)+'%')]"/>
+                        <field name="prod_description1" string="Begin with Description" filter_domain="[('prod_description1', '=ilike', str(self)+'%')]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+<!--    manufacturing order view create date filter-->
+        <record id="view_mrp_production_filter_inherit_form"  model="ir.ui.view">
+            <field name="name">mrp.production.custom</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//search/field[@name='name']" position='replace'>
+                        <field name="name" string="All" filter_domain="['|','|','|',('project_so','ilike',self),('name','ilike',self),('origin','ilike',self),('product_id','ilike',self)]"/>
+                        <field name="project_so" string="Project" filter_domain="[('project_so', '=ilike', str(self)+'%')]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+        <record id="mrp_production_form_view_inherit_form"  model="ir.ui.view">
+            <field name="name">mrp.productionform.custom</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position='after'>
+                    <field name="project_so" attrs="{'invisible': [('project_so','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="mrp_production_tree_view_inherit_form"  model="ir.ui.view">
+            <field name="name">mrp.mrp_production_tree_view.custom</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position='after'>
+                    <field name="project_so"/>
+                </xpath>
+            </field>
+        </record>
+    <!--    manufacturing unbuild order view create date filter-->
+        <record id="mrp_unbuild_search_view_inherit_form"  model="ir.ui.view">
+            <field name="name">mrp.unbuild.custom</field>
+            <field name="model">mrp.unbuild</field>
+            <field name="inherit_id" ref="mrp.mrp_unbuild_search_view"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//field[@name='product_id']" position='before'>
+                        <field name="name" string="All" filter_domain="['|','|','|',('name','ilike',self),('bom_id','ilike',self),('product_id','ilike',self),('location_id','ilike',self)]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+    <!--    manufacturing scrap order view create date filter-->
+        <record id="stock_scrap_search_view_inherit_form"  model="ir.ui.view">
+            <field name="name">stock.scrap.custom</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_search_view"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//field[@name='product_id']" position='before'>
+                        <field name="name" string="All" filter_domain="['|','|','|',('name','ilike',self),('scrap_location_id','ilike',self),('product_id','ilike',self),('location_id','ilike',self)]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+    <!--    Transfer order view create date filter-->
+        <record id="view_picking_internal_search_inherit_form"  model="ir.ui.view">
+            <field name="name">stock.picking.custom</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//search/field[@name='name']" position='before'>
+                        <field name="name" string="All" filter_domain="['|','|','|','|','|',('name','ilike', self),('location_dest_id','ilike', self),('partner_id.name','ilike',self),('origin','ilike',self),('backorder_id','ilike',self),('project_so','ilike',self)]"/>
+                        <field name="project_so" string="Project" filter_domain="[('project_so', '=ilike', str(self)+'%')]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+        <record id="custom_vpicktree" model="ir.ui.view">
+            <field name="name">custom_stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='partner_id']" position='after' >
+                    <field name="project_so" />
+                </xpath>
+            </field>
+        </record>
+    <!--Added project in invoice and vendor bill-->
+        <record id="view_account_invoice_inherit_form"  model="ir.ui.view">
+            <field name="name">Account report company</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='partner_shipping_id']" position='after'>
+                    <field name="print_company_id" />
+                    <field name="project_so" attrs="{'invisible': [('project_so','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_bill_inherit_form"  model="ir.ui.view">
+            <field name="name">Account bill report company</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='reference']" position='after'>
+                    <field name="print_company_id" />
+                    <field name="project_so" attrs="{'invisible': [('project_so','=',False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    <!--    Project in list view-->
+        <record id="invoice_tree_inherit_form"  model="ir.ui.view">
+            <field name="name">custom_invoice_tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='number']" position='after'>
+                    <field name="project_so" />
+                </xpath>
+            </field>
+        </record>
+        <record id="invoice_supplier_tree_inherit_form"  model="ir.ui.view">
+            <field name="name">custom_invoice_tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name ='number']" position='after'>
+                    <field name="project_so" />
+                </xpath>
+            </field>
+        </record>
+
+       <!--    Invoice view create date filter-->
+        <record id="view_account_invoice_filter_inherit_form"  model="ir.ui.view">
+            <field name="name">account.invoice.custom</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//search/field[@name='number']" position='before'>
+                        <field name="number" string="All" filter_domain="['|','|','|','|','|','|',('company_id','ilike',self),('user_id','ilike',self), ('number','ilike',self), ('origin','ilike',self), ('reference', 'ilike', self), ('partner_id', 'ilike', self),('project_so', 'ilike', self)]"/>
+                        <field name="project_so" string="Project" filter_domain="[('project_so', '=ilike', str(self)+'%')]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+            <!--    payment view create date filter-->
+        <record id="view_account_payment_search_inherit_form"  model="ir.ui.view">
+            <field name="name">account.payment.custom</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_search"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//search/field[@name='name']" position='before'>
+                        <field name="name" string="All" filter_domain="['|','|','|','|','|', ('name','ilike',self),('journal_id','ilike',self),('payment_method_id','ilike',self),('partner_id','ilike',self), ('communication','ilike',self), ('company_id','ilike',self)]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+      <!--    Contact view create date filter-->
+        <record id="view_res_partner_filter_inherit_form"  model="ir.ui.view">
+            <field name="name">res.partner.custom</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//search/field[@name='name']" position='before'>
+                        <field name="name" string="All" filter_domain="['|','|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self), ('phone','ilike',self)]"/>
+                        <filter string="Created Date" name="create_date" date="create_date"/>
+                    </xpath>
+            </field>
+        </record>
+    </odoo>
+
+<!--Product name, Product description, UOM, and QTY.-->
+
+        <!-- <menuitem id="base.menu_board_root" 
+            name="Dashboards" 
+            sequence="-1" 
+            web_icon="base,static/description/board.png" 
+            action="board.open_board_my_dash_action"
+            groups="base.group_user"/>
+
+            <menuitem id="base.menu_reporting_dashboard" 
+            name="Dashboards" 
+            parent="base.menu_board_root" 
+            sequence="0"/> -->
+
+  <!--       <menuitem
+            id="mail.menu_root_discuss"
+            name="Discuss"
+            action="mail.action_discuss"
+            parent ="base.menu_administration"
+            web_icon="mail,static/description/icon.png"
+            groups="base.group_user"
+            sequence="-1"/> -->
+
+        
+            <!-- parent="base.menu_board_root" -->
+

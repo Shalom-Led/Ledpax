@@ -1,0 +1,129 @@
+<odoo>
+
+	<record id='custom_product_list_view' model='ir.ui.view'>
+	    <field name="name">product.list.view.inherit</field>
+	    <field name="model">product.template</field>
+	    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+	    <field name='arch' type='xml'>
+	    	<xpath expr="//field[@name ='list_price']" position='replace'/>
+	    	<xpath expr="//field[@name ='taxes_id']" position='replace'/>
+	    	<xpath expr="//group[@name ='sale']" position='before' >
+	    		<group name="standard_prices" string="Standard Prices">
+	    		    <field name="list_price" string="Sales Price" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+	    		    <label for="standard_price" groups="base.group_user" attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}"/>
+	    		    <div name="standard_price_uom" groups="base.group_user" attrs="{'invisible': [('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False)]}">
+	    		        <field name="standard_price" widget='monetary' options="{'currency_field': 'cost_currency_id'}"/>
+	    		    </div>
+	    		    <field name="taxes_id" widget="many2many_tags"/>
+	    		</group>
+	    	</xpath>
+	    	<xpath expr="//field[@name ='uom_po_id']" position='after' >
+	    		<!-- <field name="uom"/> -->
+	    		<field name="drawing_number" placeholder="Drawing Number"/>
+	    		<field name="status_active" attrs="{'invisible': [('status_inactive','=',True)]}"/>
+                <field name="status_inactive" attrs="{'invisible': [('status_active','=',True)]}"/>
+	    		<field name="part_number_index" placeholder="Part Index"/>
+	    	</xpath>
+	    	<xpath expr="//group[@name ='inventory']" position='before' >
+	    		<group name="warehouse" string="Warehouse Information">
+	    		    <field name="warehouse" string="Warehouse"/>
+	    		    <field name="bin" string="Bin"/>
+	    		    <field name="default_code" string="SKU"/>
+	    		    <!-- <field name="uom"/> -->
+	    		    <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}"/>
+	    		</group>
+	    	</xpath>
+	    </field>
+	</record>
+
+	<record id="custom_product_template_search_view" model="ir.ui.view">
+	    <field name="name">product.template.search.expand</field>
+	    <field name="model">product.template</field>
+	    <field name="inherit_id" ref="product.product_template_search_view"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//field[@name='name']" position="replace">
+	            <field name="name" string="All" filter_domain="['|', '|', '|', '|', ('product_variant_ids.default_code', 'ilike', self),('name', 'ilike', self), ('barcode', 'ilike', self), ('part_number_index', 'ilike', self), ('prod_description', 'ilike', self)]"/>
+				<field name="prod_description" string="Product Description"/>
+				<!-- Begin with filter is apply-->
+				<field name="name" string="Begin with Name" filter_domain="[('name', '=ilike', str(self)+'%')]"/>
+				<field name="prod_description" string="Begin with Description" filter_domain="[('prod_description', '=ilike', str(self)+'%')]"/>
+				<field name="default_code" string="Begin with SKU" filter_domain="[('product_variant_ids.default_code', '=ilike', str(self)+'%')]"/>
+				<separator/>
+				<field name="part_number_index" string="Part Index"/>
+				<separator/>
+				<filter string="Created Date" name="create_date" date="create_date"/>
+	        </xpath>
+	    </field>
+	</record>
+	<record id="custom_product_product_search_view" model="ir.ui.view">
+	    <field name="name">product.product.search.expand</field>
+	    <field name="model">product.product</field>
+	    <field name="inherit_id" ref="product.product_search_form_view"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//field[@name='name']" position="replace">
+	            <field name="name" string="All" filter_domain="['|', '|', '|', '|', ('product_variant_ids.default_code', 'ilike', self),('name', 'ilike', self), ('barcode', 'ilike', self), ('part_number_index', 'ilike', self), ('prod_description', 'ilike', self)]"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="custom_product_template_tree_view" model="ir.ui.view">
+        <field name="name">product.template.product.tree.custom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="after">
+				<field name="prod_description"/>
+        	</xpath>
+			<xpath expr="//field[@name='name']" position="before">
+				<field name="part_number_index" string="Part Index"/>
+        	</xpath>
+        	<xpath expr="//field[@name='standard_price']" position="replace"/>
+        	<xpath expr="//field[@name='categ_id']" position="replace"/>
+        </field>
+    </record>
+<!--	add prod discription field in product varient list view-->
+	<record id="custom_product_product_tree_view" model="ir.ui.view">
+        <field name="name">product.product.tree.custom.custom</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="after">
+				<field name="prod_description"/>
+        	</xpath>
+			<xpath expr="//field[@name='name']" position="before">
+				<field name="part_number_index" string="Part Index"/>
+        	</xpath>
+			<xpath expr="//field[@name='default_code']" position="replace">
+				<field name="default_code" string="SKU"/>
+        	</xpath>
+        </field>
+    </record>
+
+	<record id="custom_product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//field[@name='name']" position="after">
+        		<div class="oe_title">
+                    <label class="oe_edit_only" for="prod_description" string="Product Description"/>
+        			<strong><field name="prod_description" style="font-size:22px"/></strong>
+        		</div>
+        	</xpath>
+        </field>
+    </record>
+
+	<record model="ir.ui.view" id="product_template_kanban_custom_view">
+            <field name="name">Product Template Kanban Custom</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_kanban_view"/>
+            <field name="arch" type="xml">
+                <field name="lst_price" position="after">
+                    <field name="prod_description"/>
+                </field>
+                <strong position="inside">
+                    <p t-if="record.prod_description.value"><field name="prod_description"/></p>
+                </strong>
+            </field>
+	</record>
+</odoo>

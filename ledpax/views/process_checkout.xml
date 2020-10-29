@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="add_project_checkout" inherit_id="website_sale.cart">
+        <xpath expr="//div[hasclass('clearfix')]" position="after">
+            <div class="col-lg-7 text-right">
+                <br></br>
+                <a role="button" href="/my/projects" class="btn btn-success mb32 d-none d-xl-inline-block">
+                    <span class="">Add Project</span>
+<!--                     <span class="fa fa-chevron-right"/>
+ -->                </a>
+            </div>
+        </xpath>
+    </template>
+   	<template id="add_project" name="Order Tag">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Projects</t>
+                </t>
+                <t t-if="orders" t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Project</th>
+                            <th>Saleorders</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="orders" t-as="order">    
+                            <tr>
+                                <td><a t-attf-href="/my/project/#{order.id}?#{keep_query()}"><t t-esc="order.name"/></a></td>
+                                <td><t t-foreach="order.saleorders" t-as="saleorder">
+                                    <span t-field="saleorder.name" widget="many2many_tags"/>
+                                </t></td>
+                                <td>
+                                <input type="checkbox" class="checks" id="checkbox"/>
+                                <span t-esc="order.name" style= "display:none"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            <br/><br/>
+            <button type="button" class="o_default_snippet_text check-box-btn" style="background-color: #1abc9c; padding: 5px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 12x;float: right; margin-right: 50px;" href="/shop/cart" onclick="getProjectValue()">Add Project</button>
+            </t>
+            <script type="text/javascript">
+            function getProjectValue(){
+                    console.log('inside getProjectValue function....')
+                    var check_box = document.getElementsByClassName('checks');
+                    var str = [];
+                    for(i=0;i &lt; check_box.length;i++){
+                        if (check_box[i].checked === true){
+                            str[str.length]=check_box[i].nextElementSibling.innerText;
+                        }
+                    }
+                    console.log('===>>>  '+str);
+                    string = str.toString();
+                    $.post('/my/add_project', {data : string}, function(result){
+                    alert(result)
+                    window.location = '/shop/cart'
+                });
+            }
+
+            function project(){
+                console.log('Inside project function')
+                window.location = '/my/projects'
+
+            }
+        </script>
+    </template>
+</odoo>

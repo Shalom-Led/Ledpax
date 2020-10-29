@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+	<template id="custom_header_footer" inherit_id="web.external_layout_standard">
+		<xpath expr="//div[@class='header']" position="replace">
+		<t t-set="company" t-value="doc.print_company_id" t-if="doc_model == 'sale.order'"/>
+		<t t-set="company" t-value="o.print_company_id" t-if="doc_model == 'account.invoice'"/>
+		<t t-set="company" t-value="o.print_company_id" t-if="doc_model == 'purchase.order'"/>
+			<div class="header" style="position:relative; overflow: hidden;margin: 0px 0px 0px 0px;padding: 0px;border: none;">
+				<DIV id="p1dimg1" style="position:absolute; left:1px;z-index:-1;width:1040px;height:627px;width:1040px;height:627px;">
+					<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 110px; max-width: 110px;" alt="Logo"/>
+				</DIV>
+				<TABLE cellpadding="0" cellspacing="0" class="t0" style="width: 100%;font: 13px 'Arial'">
+					<TR style="height:30px;">
+						<TD class="tr0 td0" style="padding: 0px;margin: 0px;width: 2px;vertical-align: bottom;">
+							<P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px;">&#160;</P>
+						</TD>
+						<TD class="tr0 td1" style="padding: 0px;margin: 0px;width: 125px;vertical-align: bottom;">
+							<P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px;">&#160;</P>
+						</TD>
+						<TD rowspan="2" class="tr1 td2" style="padding-left:20px; height: 35px; margin: 0px;width: 293px;vertical-align: bottom;">
+							<P class="p1 ft1" style="padding-left:45px; padding-bottom:10px; text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 16px 'Arial';line-height: 19px;" t-field="company.partner_id">
+							</P>				
+						</TD>
+						<TD class="tr0 td3" style="padding: 0px;margin: 0px;width: 41px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px;">&#160;</P></TD>
+						<TD class="tr0 td4" style="padding: 0px;margin: 0px;width: 169px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px;">&#160;</P></TD>
+						<TD class="tr0 td5" style="padding: 0px;margin: 0px;width: 93px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px;">&#160;</P></TD>
+						<TD class="tr0 td5" style="padding: 0px;margin: 0px;width: 93px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px;">&#160;</P></TD>
+						<TD class="tr0 td6" style="padding: 0px;margin: 0px;width: 102px;vertical-align: bottom;">
+							<t t-if="doc_model == 'purchase.order'">
+								<t t-if="o.state in ['draft', 'sent']">
+									<P class="p0 ft0" style=" text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">
+										RFQ
+									</P>
+								</t>
+								<t t-else="1">
+									<P class="p0 ft0" style=" text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">
+										ORDER
+									</P>
+								</t>
+							</t>
+							<t t-if="doc_model == 'sale.order'">
+								<t t-if="o.state in ['draft', 'sent']">
+									<P class="p0 ft0" style=" text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">
+										QUOTATION
+									</P>
+								</t>
+								<t t-else="1">
+									<P class="p0 ft0" style=" text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">
+										ORDER
+									</P>
+								</t>	
+							</t>
+							<t t-if="doc_model == 'account.invoice'">
+								<P class="p0 ft0" style=" text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">
+									INVOICE
+								</P>
+							</t>
+							<t t-if="doc_model == 'stock.picking'">
+								<P class="p0 ft0" style=" text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">
+									DELIVERY SLIP
+								</P>
+							</t>							
+
+						</TD>
+						<TD colspan="4" class="tr0 td7" style="padding: 0px;margin: 0px;width: 223px;vertical-align: bottom;"><P class="p2 ft2" style=" text-align: left;padding-left: 45px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 27px 'Arial';line-height: 25px;">&#160;</P></TD>
+					</TR>
+					<TR style="height: 5px;">
+						<TD class="tr2 td0" style="padding: 0px;margin: 0px;width: 2px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td1" style="padding: 0px;margin: 0px;width: 125px;vertical-align: bottom;" ><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td3" style="padding: 0px;margin: 0px;width: 293px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td4" style="padding: 0px;margin: 0px;width: 41px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td5" style="padding: 0px;margin: 0px;width: 93px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td6" style="padding: 0px;margin: 0px;width: 102px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td8" style="padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td8" style="padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td9" style="padding: 0px;margin: 0px;width: 4px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+						<TD class="tr2 td10" style="padding: 0px;margin: 0px;width: 1px;vertical-align: bottom;"><P class="p0 ft3" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 5px;">&#160;</P></TD>
+					</TR>
+					<TR style="height: 16px;padding: 0px;margin: 0px;vertical-align: bottom;">
+						<TD class="tr4 td1" style="width: 125px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td0" style="width: 2px;">
+							<P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px" >
+								&#160;
+							</P>
+						</TD>
+						<TD class="tr4 td2" style="width: 293px;">
+							<P class="p1 ft4" style="padding-left:65px; text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								<t t-set="street" t-value="company.street + ','" t-if="company.street"/>
+								<t t-esc="street"/>
+								<t t-set="street2" t-value="company.street2 + ','" t-if="company.street2"/>
+								<t t-esc="street2"/>
+							</P>
+							<P class="p1 ft4" style="padding-left:65px; text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								<t t-set="city" t-value="company.city + ','" t-if="company.city"/>
+								<t t-esc="city"/>
+								<t t-set="state" t-value="company.state_id.name + ','" t-if="company.state_id"/>
+								<t t-esc="state"/>
+								<t t-set="country" t-value="company.country_id.name + '.'" t-if="company.country_id"/>
+								<t t-esc="country"/>
+							</P>
+						</TD>
+						<TD class="tr4 td3" style="width: 41px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td4" style="width: 169px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td5" style="width: 93px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td6" style="width: 102px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td8" style="width: 109px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td8" style="width: 109px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td9" style="width: 4px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td10" style="width: 1px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+					</TR>
+					<TR style="height: 13px; padding: 0px;margin: 0px;vertical-align: bottom;">
+						<TD class="tr5 td0" style="width: 2px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr5 td1" style="width: 125px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr5 td2" style="width: 293px;">
+							<P class="p1 ft6" style="padding-left:65px; text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 13px;">
+								<t t-set="phone" t-value="'Phone:' + str(company.phone)" t-if="company.phone"/>
+								<t t-esc="phone"/>
+							</P>
+						</TD>
+						<TD class="tr5 td3" style="width: 41px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr5 td4" style="width: 169px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr5 td5" style="width: 93px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr5 td6" style="width: 102px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr6 td11" style="width: 13px; border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft7" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 12px;">&#160;</P></TD>
+						<TD class="tr6 td11" style="width: 13px; border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 109px;vertical-align: bottom;"><P class="p0 ft7" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 12px;">&#160;</P></TD>
+						<TD class="tr5 td9" style="width: 4px; "><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+						<TD class="tr5 td10" style="width: 1px;"><P class="p0 ft5" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 13px;">&#160;</P></TD>
+					</TR>
+					<TR style="height: 20px; padding: 0px;margin: 0px;vertical-align: bottom;">
+						<TD class="tr7 td0" style="width: 2px;" ><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr7 td1" style="width: 125px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr7 td2" style="width: 293px;">
+							<P class="p1 ft4"  style="padding-left:65px; text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								<t t-set="website" t-value="str(company.website).split('//')[1]" t-if="company.website"/>
+								<t t-esc="website"/>
+							</P>
+						</TD>
+						<TD class="tr7 td3" style="width: 41px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr7 td4" style="width: 169px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr7 td5" style="width: 93px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr7 td12" style="border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 101px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td13" style="height: 18px; border-right: #000000 1px solid;border-top: #cacaca 1px solid;border-bottom:#000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;background: #cacaca;">
+							<P class="p5 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								Job title
+							</P>
+						</TD>
+						<t t-if="doc_model == 'sale.order'">
+							<TD class="tr7 td14" style="border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;">
+								<t t-if="doc.project_name">
+									<P class="p4 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px" t-esc="doc.project_name.name[0:15]">
+									</P>
+								</t>
+							</TD>
+						</t>
+						<t t-if="doc_model == 'purchase.order'">
+							<TD class="tr7 td14" style="border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;">
+								<P class="p4 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px" t-field="o.project_so">
+								</P>
+							</TD>
+						</t>
+						<t t-if="doc_model == 'account.invoice'">
+							<TD class="tr7 td14" style="border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;">
+								<P class="p4 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px" t-field="o.project_so">
+								</P>
+							</TD>
+						</t>
+						<t t-if="doc_model == 'stock.picking'">
+							<TD class="tr7 td14" style="border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;">
+								<P class="p4 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px" t-field="o.project_so">
+								</P>
+							</TD>
+						</t>
+						<TD class="tr7 td9" style="width: 4px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr7 td10" style="width: 1px;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+					</TR>
+					<TR style="height: 18px;">
+						<TD class="tr8 td0" style="width: 2px; padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td1" style="width: 125px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td2" style="width: 293px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td3" style="width: 41px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td4" style="width: 169px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td5" style="width: 93px;padding: 0px;margin: 0px;vertical-align: bottom;" ><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td12" style="height: 18px; border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 101px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td15" style="height: 16px; border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;background: #cacaca;">
+							<P class="p5 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px;">
+								#
+							</P>
+						</TD>
+						<t t-if="doc_model == 'sale.order'">
+							<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;" t-field="doc.name"></P></TD>
+						</t>
+						<t t-if="doc_model == 'purchase.order'">
+							<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;" t-field="o.name"></P></TD>
+						</t>
+						<t t-if="doc_model == 'account.invoice'">
+							<TD class="tr4 td16" style="text-align: left;border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px; margin-top: 0px; margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;" t-field="o.number"></P></TD>
+						</t>
+						<t t-if="doc_model == 'stock.picking'">
+							<TD class="tr4 td16" style="text-align: left;border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;" t-field="o.name"></P></TD>
+						</t>
+						<TD class="tr8 td9" style="width: 4px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td10" style="width: 1px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+					</TR>
+					<TR style="height: 18px;">
+						<TD class="tr8 td0" style="width: 2px; padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td1" style="width: 125px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td2" style="width: 293px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td3" style="width: 41px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td4" style="width: 169px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td5" style="width: 93px;padding: 0px;margin: 0px;vertical-align: bottom;" ><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td12" style="height: 18px; border-right: #000000 1px solid;padding: 0px;margin: 0px;width: 101px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr4 td15" style="height: 16px; border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;background: #cacaca;">
+							<P class="p5 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: bold 13px 'Arial';line-height: 16px;">
+								Date
+							</P>
+						</TD>
+						<t t-if="doc_model == 'sale.order'">
+							<t t-set="dates" t-value="str(doc.date_order)[:-9]"/>
+							<t t-set="date" t-value="dates.split('-')[2] + '.' + dates.split('-')[1] + '.' + dates.split('-')[0]"/>
+							<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								<t t-esc="date"/>
+							</P></TD>
+						</t>
+						<t t-if="doc_model == 'purchase.order'">
+							<t t-set="dates" t-value="str(o.date_order)[:-9]"/>
+							<t t-set="date" t-value="dates.split('-')[2] + '.' + dates.split('-')[1] + '.' + dates.split('-')[0]"/>
+							<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								<t t-esc="date"/>
+								</P>
+							</TD>
+						</t>
+                                                <t t-if="doc_model == 'account.invoice'">
+							<t t-if="o.date_invoice">
+								<t t-set="dates" t-value="str(o.date_invoice)"/>
+								<t t-set="date" t-value="dates.split('-')[2] + '.' + dates.split('-')[1] + '.' + dates.split('-')[0]"/>
+								<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+									<t t-esc="date"/>
+								</P></TD>
+							</t>
+							<t t-if="not o.date_invoice">
+<!--								<t t-set="dates" t-value="str(o.date_invoice)"/>-->
+<!--								<t t-set="date" t-value="dates.split('-')[2] + '.' + dates.split('-')[1] + '.' + dates.split('-')[0]"/>-->
+								<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+<!--									<t t-esc="o.date"/>-->
+								</P></TD>
+							</t>
+						</t>
+						<t t-if="doc_model == 'stock.picking'">
+							<t t-set="dates" t-value="str(o.scheduled_date)[:-9]"/>
+							<t t-set="date" t-value="dates.split('-')[2] + '.' + dates.split('-')[1] + '.' + dates.split('-')[0]"/>
+							<TD class="tr4 td16" style="border-right: #000000 1px solid;border-top: #000000 1px solid;border-bottom: #000000 1px solid;padding: 0px;margin: 0px;width: 108px;vertical-align: bottom;"><P class="p6 ft4" style="text-align: left;padding-left: 5px;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: bold 13px 'Arial';line-height: 16px;">
+								<t t-esc="date"/>
+							</P></TD>
+						</t>
+						<TD class="tr8 td9" style="width: 4px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+						<TD class="tr8 td10" style="width: 1px;padding: 0px;margin: 0px;vertical-align: bottom;"><P class="p0 ft0" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap; font: 1px 'Arial';line-height: 1px">&#160;</P></TD>
+					</TR>
+				</TABLE>
+			</div>
+			<br />
+			<br />
+		</xpath>
+
+		<xpath expr="//div[@class = 'footer o_standard_footer']" position="replace">
+
+			<div class="footer o_standard_footer" style="position:relative; overflow: hidden;padding: 0px;border: none;width: 100%">
+			
+				<TABLE cellpadding="0" cellspacing="0" class="t1" style="border-top: #000000 1px solid; width: 1047px;margin-left: 1px;margin-top: 57px;font: 13px 'Arial';">
+					<TR>
+						<TD class="tr15 td53" style="height: 22px; padding: 0px;margin: 0px;width: 523px;vertical-align: bottom;" ><P class="p0 ft9" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: 13px 'Arial';line-height: 16px;">All payments should be made to :-</P></TD>
+					</TR>
+					<TR>
+						<TD class="tr8 td53"  style="height: 18px; padding: 0px;margin: 0px;width: 523px;vertical-align: bottom;"><P class="p0 ft9" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: 13px 'Arial';line-height: 16px;" t-field="company.partner_id"></P></TD>
+					</TR>
+					<TR>
+						<TD class="tr8 td53"  style="height: 18px; padding: 0px;margin: 0px;width: 523px;vertical-align: bottom;">
+							<P class="p0 ft9" style="text-align: left;margin-top: 0px;margin-bottom: 0px;white-space: nowrap;font: 13px 'Arial';line-height: 16px;">
+								<t t-set="street" t-value="company.street + ','" t-if="company.street"/>
+								<t t-esc="street"/>
+								<t t-set="street2" t-value="company.street2 + ','" t-if="company.street2"/>
+								<t t-esc="street2"/>
+								<t t-set="city" t-value="company.city + ','" t-if="company.city"/>
+								<t t-esc="city"/>
+								<t t-set="state" t-value="company.state_id.name + ','" t-if="company.state_id"/>
+								<t t-esc="state"/>
+								<t t-set="country" t-value="company.country_id.name + '.'" t-if="company.country_id"/>
+								<t t-esc="country"/>
+							</P>
+						</TD>
+					</TR>
+				</TABLE>
+
+				<div t-if="report_type == 'pdf'" class="text-muted text-right" style="align:right;font-size: 11px;">
+					<strong>
+						Page: <span class="page"/> / <span class="topage"/>
+					</strong>
+				</div>
+			</div>
+
+		</xpath>
+	</template>
+</data>
+</odoo>

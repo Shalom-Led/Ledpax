@@ -1,0 +1,75 @@
+<odoo>
+        <record model="ir.actions.act_window" id="create_rfq">
+            <field name="context">{'default_product_id': active_id, 'search_default_product_id': active_id}</field>
+            <field name="name">Create RFQ</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="create_rfq">
+            <field name="context">{'default_product_id': active_id, 'search_default_product_id': active_id}</field>
+            <field name="name">Create RFQ</field>
+            <field name="res_model">purchase.order</field>
+            <field name="domain">[]</field> 
+            <field name="view_type">form</field>
+        </record>   
+
+	<record id="product_template_form_create_rfq_button" model="ir.ui.view">
+            <field name="name">product.template.procurement</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <!-- <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/> -->
+            <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                   <button type="object" name="action_view_rfq" class="oe_stat_button" icon="fa-refresh">
+                            <field name="create_rfq" widget="statinfo"/>
+                    </button>
+                </button>
+            </field>
+    </record>
+
+    <record id="product_normal_form_view_inherit_purchase" model="ir.ui.view">
+            <field name="name">product.product.purchase.order</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <!-- <field name="groups_id" eval="[(4, ref('purchase.group_purchase_user'))]"/> -->
+            <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                    <button class="oe_stat_button" name="action_view_rfq" 
+                            type="object" icon="fa-refresh" > 
+                        <field name="rfq_count" widget="statinfo" />
+                    </button>
+                </button>
+            </field>
+    </record>
+
+</odoo>
+
+<!-- <odoo>
+	<record id="product_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.form.view.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+            <field name="arch" type="xml">
+                <button name="toggle_active" position="before">
+                     	<button name="create_rfq" string='Create Rfq' type="object" class="oe_stat_button" icon='fa-list-alt'>
+                    </button>
+
+                </button>
+            </field>
+        </record>
+</odoo>
+ -->
+
+
+<!--  <record id='product_form_view_inherit' model='ir.ui.view'>
+ 	      <field name="name">product.form.view.inherit</field>
+          <field name="model">product.template</field>
+          <field name="inherit_id" ref="product.product_template_only_form_view"/>
+			<field name='arch' type='xml'>
+				<xpath expr="//field[@name ='image_medium']" position='before'>
+                    <button name="create_rfq" string='Create Rfq' type="object" class="oe_stat_button">
+                    </button>
+                </xpath>
+			</field>
+		</record> -->

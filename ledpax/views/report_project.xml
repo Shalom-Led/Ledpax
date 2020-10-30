@@ -26,7 +26,7 @@
                 </t>    
                 <div class="header">
                     <h1 class="col-md-12" style="font-size:25px;" align="center">
-                        <span t-field="o.name"></span>
+                        <strong><span t-field="o.name"></span></strong>
                     </h1>
                     <div class="row mt32 mb32" style="margin-top:50px">
                         <div class="col-6" name="company_address">
@@ -64,7 +64,7 @@
                                 <th style="border: 1px solid black">Subtotal</th>
                             </tr>
                        	</thead>
-			    <tbody>
+			            <tbody>
 	                    	<t t-foreach="o.o_tag_line" t-as="ol">    
 	                        <tr>  
 	                            <td style="border: 1px solid black;"><span t-field="ol.order_name" /></td>      
@@ -95,6 +95,7 @@
             report_type="qweb-pdf"
             file="ledpax.report_project"
             name="ledpax.report_project"
+            menu="False"
         />
     </data>
 </odoo>

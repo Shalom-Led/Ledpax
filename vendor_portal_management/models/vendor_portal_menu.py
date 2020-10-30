@@ -9,7 +9,7 @@ class VendorPortalWebsite(models.Model):
 
     name = fields.Char(string='RFQ Reference', readonly=True, required=True, copy=False, default='New')
     product_id = fields.Many2one('product.product', string='Product', change_default=True, required=True)
-    rfq_reference = fields.Char(string='Rfq Reference', compute='_rfq_reference')
+    rfq_reference = fields.Char(string='RFQ Reference', compute='_rfq_reference')
     product_qty = fields.Float(string='Quantity', required=True)
     estimated_quote = fields.Text(string='Our Estimated Quote')
     estimated_delivery = fields.Date(string='Our Estimated Delivery')
@@ -45,13 +45,17 @@ class VendorPortalWebsite(models.Model):
         e_date = data[1]
         e_note = data[2]
         e_rfqid = data[3]
-        epoid = e_rfqid
+        if '?' in e_rfqid:
+            epoid = e_rfqid[:-1]
+        else:
+            epoid = e_rfqid         
         vid = self.env['vendor.portal'].sudo().search([('id','=',epoid)])
         close_date = str(vid.rfq_closing_date)
         if e_date < close_date:
             return "The date can't be in the past."
         partner = self.env.user.partner_id.name
         pol_vals = {    'vendors': partner,
+                        'v_id': self.env.user.partner_id.id,
                         'estimated_quote_by_vendor':e_price,
                         'estimated_date_by_vendor':e_date,
                         'notes':e_note,
@@ -62,7 +66,10 @@ class VendorPortalWebsite(models.Model):
 
     def create_po(self):
         v_partner = self.vendor
-        v_partner_id = self.env['res.partner'].search([('name','=',v_partner)])
+        for line in self.vendor_line:
+            if line.vendors == v_partner:
+                line_v_id = line.v_id
+                v_partner_id = self.env['res.partner'].search([('id','=',line_v_id)])
         result = self.env['purchase.order'].create({
             'partner_id': v_partner_id.id,
             'date_order': self.date_order,
@@ -107,6 +114,7 @@ class VendorOrderLines(models.Model):
     estimated_date_by_vendor = fields.Date(string="Estimated Date", required=False)
     vendors =fields.Text(string='Vendor', change_default=True,)
     notes = fields.Text(string="Note")
+    v_id = fields.Char(string="v_id")
 
     def name_get(self):
         result = []

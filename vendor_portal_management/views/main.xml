@@ -63,10 +63,8 @@
             </t>
         </template>
 
-
-        <template id="rfq_detail_page_view" name="Portal: My RFQ">
+    <template id="rfq_detail_page_view" name="Portal: My RFQ">
         <t t-call="portal.portal_layout">
-            <!-- <t t-set="request_for_quotation" t-as="order"> -->
             <t t-foreach="values['orders']" t-as="order">
             <div id="optional_placeholder"></div>
             <div class="container">
@@ -80,59 +78,56 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card-body">
                         <div class="mb8">
-                            <strong>Date:</strong> <span t-field="order.date_order" t-options='{"widget": "date"}'/>
+                            <strong>Date: </strong><span t-field="order.date_order" t-options='{"widget": "date"}'/>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <strong>Product</strong>
-                            </div>
-                            <div class="col-lg-2 text-right">
-                                <strong>Quantity</strong>
-                            </div>
-                            <t t-if="order.state == 'done'">
-                                <div class="col-lg-1 text-right">
-                                    <strong>Vendor</strong>
-                                </div>
-                            </t>
-                            <t t-if="order.state == 'done'">
-                                <div class="col-lg-1 text-right">
-                                    <strong>Price</strong>
-                                </div>
-                            </t>
-                        </div>
-                            <div class="row purchases_vertical_align">
-                                <div class="col-lg-1 text-center">
-                                    <img t-attf-src="data:image/*;base64,{{order.product_id.image}}" style="height:40px;width:40px"/>
-                                </div>
-                                <div id='product_name' class="col-lg-5">
-                                    <span t-esc="order.product_id.name"/>
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <span t-esc="order.product_qty"/>
-                                </div>
-                                <t t-if="order.state == 'done'">
-                                    <div class="col-lg-1 text-right">
-                                        <span t-esc="order.vendor"/>
-                                    </div>
-                                </t>
-                                <t t-if="order.state == 'done'">
-                                    <div class="col-lg-1 text-right">
-                                        <span t-esc="order.estimated_quote"/>
-                                    </div>
-                                </t>
-                                <div class="col-lg-2 text-right">
+                        <br></br>
+                            <table class="table table-bordered">
+                            <thead style="background-color: #dddddd">
+                                <tr>
+                                    <th style="border: 1px solid black; font-size: 12px;">Product</th>
+                                    <th style="border: 1px solid black; font-size: 12px;">Image</th>
+                                    <th style="border: 1px solid black; font-size: 12px; width:20%">Description</th>
+                                    <th style="border: 1px solid black; font-size: 12px;">Quantity</th>
+                                    <th style="border: 1px solid black; font-size: 12px;">Stock Available</th>
+                                    <th style="border: 1px solid black; font-size: 12px;">Product Type</th>
+                                    <t t-if="order.state == 'done'">
+                                        <th style="border: 1px solid black; font-size: 12px;">Vendor</th>
+                                    </t>
+                                    <t t-if="order.state == 'done'">
+                                    <th style="border: 1px solid black; font-size: 12px;">Price</th>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>  
+                                    <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.product_id.name" /></td>
+                                    <td style="border: 1px solid black; font-size: 12px;"><img t-attf-src="data:image/*;base64,{{order.product_id.image}}" style="height:50px;width:50px"/></td>
+                                    <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.product_id.prod_description" /></td>
+                                    <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.product_qty" /></td>
+                                    <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.product_id.qty_available" /></td>
+                                    <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.product_id.type" /></td>
+                                    <t t-if="order.state == 'done'">
+                                        <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.vendor"/></td>
+                                    </t>
+                                    <t t-if="order.state == 'done'">
+                                        <td style="border: 1px solid black; font-size: 12px;"><span t-field="order.estimated_quote"/></td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <div class="col-lg-12 text-right">
                                 <t t-if="order.state != 'done'">
                                 <a role="button" class="btn btn-primary" t-att-data-id="order.name" data-toggle="modal" data-target="#modalsubmitprice" href="#">My Price</a>
                                 </t>
-                                </div>
                             </div>
                             <div id="quote_content" class="col-12 col-lg justify-content-end">
                                 <div role="dialog" class="modal fade" id="modalsubmitprice">
                                     <div class="modal-dialog">
-                                        <form id="submitprice" method="POST" t-attf-action="/my/rfq/submit/price/#{order.id}/#{order.id}" class="modal-content">
-                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <form id="submitprice" method="POST" t-attf-action="/my/rfq/submit/price/#{order.id}/#{order.id}" class="modal-content">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                             <header class="modal-header">
                                                 <h4 class="modal-title">Submit My Price</h4>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
@@ -161,14 +156,13 @@
                                     </div>
                                 </div>
                             </div>
-                        <hr/>
-                    </div>
+                    </div>                            
                 </div>
             </div>
-          </t>
-          <div class="oe_structure mb32"/>
         </t>
-    </template>
+            <div class="oe_structure mb32"/>
+        </t>
+    </template>     
 
     <template id="on_submit" inherit_id="vendor_portal_management.rfq_detail_page_view">
         <xpath expr="//a[@role='button']" position="after">

@@ -197,13 +197,4 @@
             </field>
         </record>
 
-        <record id="model_sale_order_action_confirm" model="ir.actions.server">
-            <field name="name">Confirm Sale</field>
-            <field name="model_id" ref="sale.model_sale_order"/>
-            <field name="binding_model_id" ref="sale.model_sale_order"/>
-            <field name='groups_id' eval="[(4, ref('ledpax.validation_group'))]"/>
-            <field name="state">code</field>
-            <field name="code">action = records.confirm_sale()</field>
-        </record>
-
     </odoo>

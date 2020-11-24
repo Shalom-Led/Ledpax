@@ -252,13 +252,6 @@ class SaleOrde(models.Model):
                 tag.unlink()
         super(SaleOrde, self).unlink()
 
-    def confirm_sale(self):
-        active_ids = self._context.get('active_ids', [])
-        for act in active_ids:
-            sales = self.env['sale.order'].search([('id','=',act)])
-            if sales.state == 'draft' or sales.state == 'sent':
-                 sales.action_confirm()
-
     @api.model
     def create(self, vals):
         res = super(SaleOrde, self).create(vals)
@@ -580,7 +573,3 @@ class CustomAccountInvoice(models.Model):
 #     print_company_id = fields.Many2one('res.company', string='Report Company', required=True, default=lambda self: self.env['res.company']._company_default_get('purchase.order'))
 #     project_so = fields.Char(string="Project",related='group_id.sale_id.project_name.name', default=None)
 #
-class IrActionsServer(models.Model):
-    _inherit = 'ir.actions.server'
-
-    groups_id = fields.Many2many('res.groups', 'res_groups_server_rel', 'uid', 'gid', string='Groups')

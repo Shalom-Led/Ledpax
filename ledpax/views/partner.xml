@@ -50,6 +50,12 @@
                     <!-- <field name="project" string="ProjectName" /> -->
                     <field name="project_name" string="ProjectName" />
                 </xpath>
+                <xpath expr="//form/header/button[@name='action_confirm'][1]" position='attributes'>
+                    <attribute name="groups">ledpax.validation_group</attribute>
+                </xpath>
+                <xpath expr="//form/header/button[@name='action_confirm'][2]" position='attributes'>
+                    <attribute name="groups">ledpax.validation_group</attribute>
+                </xpath>
             </field>
         </record>
         <!--    added project name in list view of sale order-->
@@ -144,6 +150,9 @@
                     <field name="image" string="Image" />
                     <field name="project_so" string="Project" attrs="{'invisible': [('project_so','=',False)]}"/>
                 </xpath>
+<!--                 <xpath expr="//form/header/button[@name='button_validate']" position='attributes'>
+                    <attribute name="groups">ledpax.validation_group</attribute>
+                </xpath> -->
             </field>
         </record>
 
@@ -182,4 +191,18 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="validation_group" model="res.groups">
+            <field name="name">Validation Access</field>
+        </record>
+
+        <record id="model_sale_order_action_confirm" model="ir.actions.server">
+            <field name="name">Confirm Sale</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name='groups_id' eval="[(4, ref('ledpax.validation_group'))]"/>
+            <field name="state">code</field>
+            <field name="code">action = records.confirm_sale()</field>
+        </record>
+
     </odoo>

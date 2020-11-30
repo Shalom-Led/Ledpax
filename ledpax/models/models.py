@@ -31,7 +31,6 @@ class SaleOrderLin(models.Model):
             marg = (prod.product_uom_qty  * prod.price_unit ) - (prod.product_uom_qty * prod.product_id.standard_price) - discout
             if marg != 0.0:
                 prod.update({'margin': marg})
-                break
             else:
                 prod.update({'margin': 0.00})
 

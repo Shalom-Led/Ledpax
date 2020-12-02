@@ -54,6 +54,7 @@ class ProductTemplate(models.Model):
     status_inactive = fields.Boolean('Not Active', default=False)
     warehouse = fields.Char('WAREHOUSE', compute='_compute_warehouse')
     bin = fields.Char('BIN', compute='_compute_bin')
+    prod_active = fields.Boolean(default=True)    
 
     uom = fields.Selection([
         ('EA', 'EA'),

@@ -251,6 +251,13 @@ class SaleOrde(models.Model):
                 tag.unlink()
         super(SaleOrde, self).unlink()
 
+    # def confirm_sale(self):
+    #     active_ids = self._context.get('active_ids', [])
+    #     for act in active_ids:
+    #         sales = self.env['sale.order'].search([('id','=',act)])
+    #         if sales.state == 'draft' or sales.state == 'sent':
+    #              sales.action_confirm()
+
     @api.model
     def create(self, vals):
         res = super(SaleOrde, self).create(vals)

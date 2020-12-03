@@ -87,7 +87,7 @@
 	        </t>
 		</template>        
 
-       	<report
+        <report
             id="action_report_project"
             string="Project Report"
             model="order.tag"
@@ -97,5 +97,16 @@
             name="ledpax.report_project"
             menu="False"
         />
+
+        <record id='inherited_order_tag_form' model='ir.ui.view'>
+            <field name="name">order.tag.form</field>
+            <field name="model">order.tag</field>
+            <field name="inherit_id" ref="ledpax.view_order_tag_form"/> 
+            <field name="arch" type="xml">
+                <header>
+                    <button name="%(ledpax.action_report_project)d" class="btn-primary" type="action" string="Print"/>
+                </header>
+            </field>
+        </record>
     </data>
 </odoo>

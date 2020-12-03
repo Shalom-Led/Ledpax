@@ -41,6 +41,10 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="validation_group" model="res.groups">
+            <field name="name">Validation Access</field>
+        </record>
         
         <record id="view_order_inherit_form"  model="ir.ui.view">
             <field name="name">Project_name_custom</field>
@@ -50,6 +54,12 @@
                 <xpath expr="//field[@name='partner_id']" position='before'>
                     <!-- <field name="project" string="ProjectName" /> -->
                     <field name="project_name" string="ProjectName" />
+                </xpath>
+                <xpath expr="//form/header/button[@name='action_confirm'][1]" position='attributes'>
+                    <attribute name="groups">ledpax.validation_group</attribute>
+                </xpath>
+                <xpath expr="//form/header/button[@name='action_confirm'][2]" position='attributes'>
+                    <attribute name="groups">ledpax.validation_group</attribute>
                 </xpath>
             </field>
         </record>
@@ -145,6 +155,9 @@
                     <field name="image" string="Image" />
                     <field name="project_so" string="Project" attrs="{'invisible': [('project_so','=',False)]}"/>
                 </xpath>
+<!--                 <xpath expr="//form/header/button[@name='button_validate']" position='attributes'>
+                    <attribute name="groups">ledpax.validation_group</attribute>
+                </xpath> -->
             </field>
         </record>
 

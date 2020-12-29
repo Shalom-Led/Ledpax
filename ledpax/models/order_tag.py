@@ -73,66 +73,6 @@ class OrderTag(models.Model):
                     self.env['order.tag.purchase.line'].sudo().create(po_dic)
         return res
 
-    @api.multi
-    @api.onchange('purchaseorders')
-    def onchange_purchaseorders(self):
-        ol_id = self._origin.id
-        p_orders = self.purchaseorders
-        for po_id in p_orders:
-            po_val = po_id.id
-            purchase_order = self.env['purchase.order'].search([('id','=',po_val)])
-            po_lines = purchase_order.order_line
-            for line in po_lines:
-                po_dic = {'po_order_name': purchase_order.name,
-                        'tag_po' : ol_id,
-                        'vendor_name' : purchase_order.partner_id.name, 
-                        'vendor_ref' : purchase_order.partner_ref,
-                        'order_date' : purchase_order.date_order,
-                        'po_type' : line.type,
-                        'prod': line.product_id.name,
-                        'po_description': line.name,
-                        'estimate_date' : line.date_planned,
-                        'quantity' : line.product_qty,
-                        'po_unit_price' : line.price_unit,
-                        'po_tax' : line.taxes_id.name,
-                        'po_subtotal' : line.price_subtotal,
-                        }
-                self.env['order.tag.purchase.line'].sudo().create(po_dic)
-
-    @api.multi
-    @api.onchange('saleorders')
-    def onchange_saleorders(self):
-        ol_id = self._origin.id
-        s_orders = self.saleorders
-        s_data = []
-        for so_id in s_orders:
-            val = so_id.id
-            sale_order = self.env['sale.order'].search([('id','=',val)])
-            prod = sale_order.order_line
-            for p in prod:
-                pro_id = p.product_id
-                for i in pro_id:
-                    prod_name = i.name
-                    prod_description = i.prod_description
-                dic = {'order_name': sale_order.name,
-                        'o_id': ol_id,
-                        'partner_name': sale_order.partner_id.name,
-                        'invoice_adrress': sale_order.partner_invoice_id.name,
-                        'delivery_address': sale_order.partner_shipping_id.name,
-                        'confirm_date': sale_order.confirmation_date,
-                        'ordered_quantity': p.product_uom_qty,
-                        'delivered_quantity': p.qty_delivered,
-                        'invoice_quantity': p.qty_invoiced,
-                        'unit_price': p.price_unit,
-                        'tax': p.tax_id.name,
-                        'subtotal': p.price_subtotal,
-                        'margin': p.margin,
-                        'products': prod_name,
-                        'pd': prod_description,
-                        'type': p.type,
-                      }
-                self.env['order.tag.line'].sudo().create(dic)
-
 class OrderTagLine(models.Model):
 
     _name = "order.tag.line"

@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <search string="Ordertag Search">
                     <field name="name"/>
-                    <field name="saleorders" widget="many2many_tags"/>
+                    <field name="saleorders" widget="many2many_tags" readonly="1"/>
                     <filter string="Created Date" name="create_date" date="create_date"/>
                 </search>
             </field>
@@ -32,12 +32,12 @@
                                 <field name="name"/>
                             </group>
                             <group name="right">
-                                <field name="saleorders" string="Sale Orders" widget="many2many_tags" domain="[('project_name','=',False)]"/>
-                                <field name="purchaseorders" string=" Purchase Orders" widget="many2many_tags" domain="[('project_po','=',False)]"/>
+                                <field name="saleorders" string="Sale Orders" widget="many2many_tags" domain="[('project_name','=',False)]" readonly="1"/>
+                                <field name="purchaseorders" string=" Purchase Orders" widget="many2many_tags" domain="[('project_po','=',False)]" readonly="1"/>
                             </group>
                         </group>
                         <notebook>
-                            <page string="Order Tags" name="order_tags">
+                            <page string="Sale Order Tags" name="order_tags">
                                 <field name="o_tag_line">
                                     <tree string="Order Tags" editable="bottom">                   
                                         <field name ="order_name" string="Name"/>

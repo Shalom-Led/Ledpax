@@ -237,18 +237,10 @@ class ProjectModel(http.Controller):
         Saleorder = request.env['sale.order'].sudo().search([('id','=',order_id)])
         proj = request.env['order.tag'].sudo().search([('name','=',proj_name)])
         Saleorder.update({'project_name':proj})
-        s_data = []
         prod = Saleorder.order_line
         for obj in prod:
             type = obj.type
             pro_id = obj.product_id
-            o_qty = obj.product_uom_qty
-            d_qty = obj.qty_delivered
-            i_qty = obj.qty_invoiced
-            u_price = obj.price_unit
-            o_tax = obj.tax_id
-            o_subtotal = obj.price_subtotal
-            o_margin = obj.margin
             for i in pro_id:
                 prod_name = i.name
                 prod_description = i.prod_description
@@ -258,18 +250,17 @@ class ProjectModel(http.Controller):
                     'invoice_adrress' : Saleorder.partner_invoice_id.name,
                     'delivery_address' : Saleorder.partner_shipping_id.name,
                     'confirm_date' : Saleorder.confirmation_date,
-                    'ordered_quantity' : o_qty,
-                    'delivered_quantity' : d_qty,
-                    'invoice_quantity' : i_qty,
-                    'unit_price' : u_price,
-                    'tax': o_tax.name,
-                    'subtotal' : o_subtotal,
-                    'margin' : o_margin,
+                    'ordered_quantity' : obj.product_uom_qty,
+                    'delivered_quantity' : obj.qty_delivered,
+                    'invoice_quantity' : obj.qty_invoiced,
+                    'unit_price' : obj.price_unit,
+                    'tax': obj.tax_id.name,
+                    'subtotal' : obj.price_subtotal,
+                    'margin' : obj.margin,
                     'products' : prod_name,
                     'pd': prod_description,
                     'type': type,
                       }
-            # s_data.append(dic)
             http.request.env['order.tag.line'].sudo().create(dic)
         return 'Project added successfully'
 

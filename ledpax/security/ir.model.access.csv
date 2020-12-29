@@ -5,4 +5,6 @@ access_order_tag,access_order_tag,model_order_tag,base.group_portal,1,1,1,1
 access_order_tag,access_order_tag,model_order_tag,base.group_user,1,1,1,1
 access_order_tag_line,access_order_tag_line,model_order_tag_line,base.group_portal,1,1,1,1
 access_order_tag_line,access_order_tag_line,model_order_tag_line,base.group_user,1,1,1,1
+access_order_tag_purchase_line,access_order_tag_purchase_line,model_order_tag_purchase_line,base.group_portal,1,1,1,1
+access_order_tag_purchase_line,access_order_tag_purchase_line,model_order_tag_purchase_line,base.group_user,1,1,1,1
 access_stock_picking_type,stock.picking.type,stock.model_stock_picking_type,base.group_portal,1,1,1,1

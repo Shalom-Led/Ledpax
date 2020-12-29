@@ -101,6 +101,7 @@ class PurchaseOrder(models.Model):
     project_so = fields.Char(string="Project", related='group_id.sale_id.project_name.name', default=None)
     date_ack = fields.Date(track_visibility='onchange')
     date_for_name = fields.Date('Estimated Date', track_visibility='onchange')
+    project_po = fields.Many2one('order.tag', string= "Project Name")
 
 
     @api.model
@@ -126,6 +127,79 @@ class PurchaseOrder(models.Model):
         except Exception:
             pass
         return super(PurchaseOrder, self).write(values)
+
+    @api.model
+    def create(self, vals):
+        rec = super(PurchaseOrder, self).create(vals)
+        if rec.project_po:
+            proj_value = rec.project_po.id
+            project_n = rec.id
+            val = rec.env['order.tag'].search([('id','=',proj_value)])
+            purchase_o = []
+            po_orders = val.purchaseorders
+            for po in po_orders:
+                p_order = po.id
+                purchase_o.append(p_order)
+            purchase_o.append(project_n)      
+            val.update({'purchaseorders': [( 6, 0, purchase_o)]})
+            po_lines = rec.order_line
+            for line in po_lines:
+                po_dic = {'po_order_name': rec.name,
+                            'tag_po' : val.id,
+                            'vendor_name' : rec.partner_id.name, 
+                            'vendor_ref' : rec.partner_ref,
+                            'order_date' : rec.date_order,
+                            'po_type' : line.type,
+                            'prod': line.product_id.name,
+                            'po_description': line.name,
+                            'estimate_date' : line.date_planned,
+                            'quantity' : line.product_qty,
+                            'po_unit_price' : line.price_unit,
+                            'po_tax' : line.taxes_id.name,
+                            'po_subtotal' : line.price_subtotal,
+                          }
+                rec.env['order.tag.purchase.line'].sudo().create(po_dic) 
+        return rec 
+
+    @api.onchange('project_po')
+    def project_po_onchange(self):
+        if self.project_po:
+            proj_value = self.project_po.id
+            project_n = self.id
+            val = self.env['order.tag'].search([('id','=',proj_value)])
+            purchase_o = []
+            po_orders = val.purchaseorders
+            for po in po_orders:
+                p_order = po.id
+                purchase_o.append(p_order)
+            purchase_o.append(project_n)      
+            val.update({'purchaseorders': [( 6, 0, purchase_o)]})
+            po_lines = self.order_line
+            for line in po_lines:
+                po_dic = {'po_order_name': self.name,
+                            'tag_po' : val.id,
+                            'vendor_name' : self.partner_id.name, 
+                            'vendor_ref' : self.partner_ref,
+                            'order_date' : self.date_order,
+                            'po_type' : line.type,
+                            'prod': line.product_id.name,
+                            'po_description': line.name,
+                            'estimate_date' : line.date_planned,
+                            'quantity' : line.product_qty,
+                            'po_unit_price' : line.price_unit,
+                            'po_tax' : line.taxes_id.name,
+                            'po_subtotal' : line.price_subtotal,
+                          }
+                self.env['order.tag.purchase.line'].sudo().create(po_dic)        
+
+    @api.multi
+    def unlink(self):
+        purchaseorder = self.name
+        po_tag_line = self.env['order.tag.purchase.line'].search([('po_order_name','=',purchaseorder)])
+        if po_tag_line:
+            for tag in po_tag_line:
+                tag.unlink()
+        super(PurchaseOrder, self).unlink()        
 
     @api.multi
     def button_confirm(self):
@@ -272,20 +346,12 @@ class SaleOrde(models.Model):
             for s in s_orders:
                 so = s.id
                 sale_o.append(so)
-            s_data = []
             sale_o.append(project_n)      
             val.update({'saleorders': [( 6, 0, sale_o)]})
             prod = res.order_line
             for obj in prod:
                 type = obj.type
                 pro_id = obj.product_id
-                o_qty = obj.product_uom_qty
-                d_qty = obj.qty_delivered
-                i_qty = obj.qty_invoiced
-                u_price = obj.price_unit
-                o_tax = obj.tax_id
-                o_subtotal = obj.price_subtotal
-                o_margin = obj.margin
                 for i in pro_id:
                     prod_name = i.name
                     prod_description = i.prod_description
@@ -295,18 +361,17 @@ class SaleOrde(models.Model):
                             'invoice_adrress' : s_order_obj.partner_invoice_id.name,
                             'delivery_address' : s_order_obj.partner_shipping_id.name,
                             'confirm_date' : s_order_obj.confirmation_date,
-                            'ordered_quantity' : o_qty,
-                            'delivered_quantity' : d_qty,
-                            'invoice_quantity' : i_qty,
-                            'unit_price' : u_price,
-                            'tax': o_tax.name,
-                            'subtotal' : o_subtotal,
-                            'margin' : o_margin,
+                            'ordered_quantity' : obj.product_uom_qty,
+                            'delivered_quantity' : obj.qty_delivered,
+                            'invoice_quantity' : obj.qty_invoiced,
+                            'unit_price' : obj.price_unit,
+                            'tax': obj.tax_id.name,
+                            'subtotal' : obj.price_subtotal,
+                            'margin' : obj.margin,
                             'products' : prod_name,
                             'pd': prod_description,
                             'type': type,
                               }
-            # s_data.append(dic)
                 res.env['order.tag.line'].sudo().create(dic)
         return res
 
@@ -323,7 +388,6 @@ class SaleOrde(models.Model):
             for s in s_orders:
                 so = s.id
                 sale_o.append(so)
-            s_data = []
             sale_o.append(project_n)      
             val.update({'saleorders': [( 6, 0, sale_o)]})
             prod = self.order_line
@@ -331,13 +395,6 @@ class SaleOrde(models.Model):
                 for obj in prod:
                     type = obj.type
                     pro_id = obj.product_id
-                    o_qty = obj.product_uom_qty
-                    d_qty = obj.qty_delivered
-                    i_qty = obj.qty_invoiced
-                    u_price = obj.price_unit
-                    o_tax = obj.tax_id
-                    o_subtotal = obj.price_subtotal
-                    o_margin = obj.margin
                     for i in pro_id:
                         prod_name = i.name
                         prod_description = i.prod_description
@@ -347,18 +404,17 @@ class SaleOrde(models.Model):
                             'invoice_adrress' : s_order_obj.partner_invoice_id.name,
                             'delivery_address' : s_order_obj.partner_shipping_id.name,
                             'confirm_date' : s_order_obj.confirmation_date,
-                            'ordered_quantity' : o_qty,
-                            'delivered_quantity' : d_qty,
-                            'invoice_quantity' : i_qty,
-                            'unit_price' : u_price,
-                            'tax': o_tax.name,
-                            'subtotal' : o_subtotal,
-                            'margin' : o_margin,
+                            'ordered_quantity' : obj.product_uom_qty,
+                            'delivered_quantity' : obj.qty_delivered,
+                            'invoice_quantity' : obj.qty_invoiced,
+                            'unit_price' : obj.price_unit,
+                            'tax': obj.tax_id.name,
+                            'subtotal' : obj.price_subtotal,
+                            'margin' : obj.margin,
                             'products' : prod_name,
                             'pd': prod_description,
                             'type': type,
                            }
-                    # s_data.append(dic)
                     self.env['order.tag.line'].sudo().create(dic)
  
     @api.multi
@@ -557,6 +613,7 @@ class CustomAccountInvoice(models.Model):
     _inherit = 'account.invoice'
     print_company_id = fields.Many2one('res.company', string='Report Company', required=True, default=lambda self: self.env['res.company']._company_default_get('account.invoice'))
     project_so = fields.Char(string="Project", compute='customproject', default=None, store=True)
+    
     @api.depends('origin')
     def customproject(self):
         for order in self:

@@ -106,7 +106,7 @@
                 <xpath expr="//field[@name='date_planned']" position='replace'>
                     <field name="date_planned" string="Estimated Date" />
                     <field name="date_ack" string="Scheduled Date" />
-                    <field name="project_po" string="Project" />
+                    <field name="project_so" string="Project" />
                 </xpath>
             </field>
         </record>
@@ -115,9 +115,6 @@
             <field name="model">purchase.order</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_id']" position='before'>
-                    <field name="project_po" string="Project Name"/>
-                </xpath>
                 <xpath expr="//field[@name='origin']" position='after'>
                     <field name="project_so" string="Project" attrs="{'invisible': [('project_so','=',False)]}"/>
                 </xpath>
@@ -141,9 +138,9 @@
             <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//search/field[@name='name']" position='replace'>
-                    <field name="name" string="All" filter_domain="['|','|','|','|',('name','ilike',self),('project_po','ilike',self),('origin','ilike',self),('partner_id.name','ilike',self),('user_id','ilike',self)]"/>
+                    <field name="name" string="All" filter_domain="['|','|','|','|',('name','ilike',self),('project_so','ilike',self),('origin','ilike',self),('partner_id.name','ilike',self),('user_id','ilike',self)]"/>
                     <field name="name" string="Reference"/>
-                    <field name="project_po" string="Project" filter_domain="[('project_po', '=ilike', str(self)+'%')]"/>
+                    <field name="project_so" string="Project" filter_domain="[('project_so', '=ilike', str(self)+'%')]"/>
                     <filter string="Order Date" name="date_order" date="date_order"/>
                 </xpath>
             </field>

@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <search string="Ordertag Search">
                     <field name="name"/>
-                    <field name="saleorders" widget="many2many_tags" readonly="1"/>
+                    <field name="saleorders" widget="many2many_tags"/>
                     <filter string="Created Date" name="create_date" date="create_date"/>
                 </search>
             </field>
@@ -32,12 +32,11 @@
                                 <field name="name"/>
                             </group>
                             <group name="right">
-                                <field name="saleorders" string="Sale Orders" widget="many2many_tags" domain="[('project_name','=',False)]" readonly="1"/>
-                                <field name="purchaseorders" string=" Purchase Orders" widget="many2many_tags" domain="[('project_po','=',False)]" readonly="1"/>
+                                <field name="saleorders" string="Orders" widget="many2many_tags" domain="[('project_name','=',False)]"/>
                             </group>
                         </group>
                         <notebook>
-                            <page string="Sale Order Tags" name="order_tags">
+                            <page string="Order Tags" name="order_tags">
                                 <field name="o_tag_line">
                                     <tree string="Order Tags" editable="bottom">                   
                                         <field name ="order_name" string="Name"/>
@@ -57,24 +56,6 @@
                                         <field name ="subtotal" string ="Subtotal"/>
                                         <field name ="margin" string ="Margin"/>
 <!--                                        <field name ="total" string ="Total"/>-->
-                                    </tree>
-                                </field>
-                            </page>
-                            <page string="Purchase Order Tags" name="po_order_tags">
-                                <field name="po_tag_line">
-                                    <tree string="Purchase Order Tags" editable="bottom">
-                                        <field name ="po_order_name" string="Order Name"/>
-                                        <field name ="vendor_name" string="Vendor"/>
-                                        <field name ="vendor_ref" string="Vendor Ref"/>
-                                        <field name ="order_date" string="Order date"/>
-                                        <field name ="po_type" string="Type"/>
-                                        <field name ="prod" string="Product"/>
-                                        <field name ="po_description" string="Description"/>
-                                        <field name ="estimate_date" string="Estimated date"/>
-                                        <field name ="quantity" string="Quantity"/>
-                                        <field name ="po_unit_price" string="Unit Price"/>
-                                        <field name ="po_tax" string="Tax"/>
-                                        <field name ="po_subtotal" string="Subtotal"/>
                                     </tree>
                                 </field>
                             </page>

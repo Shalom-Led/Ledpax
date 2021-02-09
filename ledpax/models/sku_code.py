@@ -351,7 +351,7 @@ class ProductTemplate(models.Model):
                     if img_path:
                         with open(img_path, 'rb') as f:
                             img = f.read()
-                            print("IMG--------------------------------------"img)
+                            print("IMG--------------------------------------",img)
                             vals['image_medium'] = base64.b64encode(img)
                     os.remove(rm_img)
                     break

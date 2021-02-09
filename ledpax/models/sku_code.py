@@ -329,6 +329,7 @@ class ProductTemplate(models.Model):
                     vals['description_purchase'] = vals['description']
         except:
             pass
+        # try :
         if vals['pdf_image'] :
             from pdf2image import convert_from_path
             try:
@@ -359,6 +360,10 @@ class ProductTemplate(models.Model):
                         vals['image_medium'] = base64.b64encode(img)
                 os.remove(rm_img)
                 break
+        # except KeyError:
+            # pass
+        # except:
+            # raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
         try :
             if vals['excel_file'] :
                 # file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'

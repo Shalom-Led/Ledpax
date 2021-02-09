@@ -28,6 +28,8 @@ class CustomProductProduct(models.Model):
     default_code = fields.Char()
     rfq_count = fields.Integer('RFQ count', compute='_compute_rfq_count')
 
+
+
     @api.model_create_multi
     def create(self, vals_list):
         ''' Store the initial standard price in order to be able to retrieve the cost of a product template for a given date'''

@@ -317,6 +317,7 @@ class ProductTemplate(models.Model):
                 prod_name = vals['name']
         except KeyError:
             prod_name = self.name
+            print("prod_name===========================================",prod_name)
         except:
             pass
         try:
@@ -336,6 +337,7 @@ class ProductTemplate(models.Model):
                 code = bytes(vals['pdf_image'], encoding='utf-8')
                 # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
                 file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+                print("file+++++++++++++++++++++++++++++++++++++++++++++++++",file)
                 with open(os.path.expanduser(file), 'wb') as fout:
                     fout.write(base64.decodestring(code))
                     os.chmod(file, 0o777)

@@ -344,6 +344,7 @@ class ProductTemplate(models.Model):
                     fout.write(base64.decodestring(code))
                     os.chmod(file, 0o777)
                 pdf = convert_from_path(file)
+                _logger.info('PDF %s',pdf)
                 for page in pdf:
                     _logger.info('page %s',page)
                     img_name = prod_name + '.jpg'

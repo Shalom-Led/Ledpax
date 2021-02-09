@@ -6,6 +6,8 @@ import psycopg2
 import base64
 import io
 import os
+import logging
+_logger = logging.getLogger(__name__)
 try:
     import xlrd
     try:
@@ -317,7 +319,7 @@ class ProductTemplate(models.Model):
                 prod_name = vals['name']
         except KeyError:
             prod_name = self.name
-            print("prod_name===========================================",prod_name)
+            _logger.info('prod_name===========================================',prod_name)
         except:
             pass
         try:
@@ -337,23 +339,23 @@ class ProductTemplate(models.Model):
                 code = bytes(vals['pdf_image'], encoding='utf-8')
                 # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
                 file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                print("file+++++++++++++++++++++++++++++++++++++++++++++++++",file)
+                _logger.info('file+++++++++++++++++++++++++++++++++++++++++++++++++',file)
                 with open(os.path.expanduser(file), 'wb') as fout:
                     fout.write(base64.decodestring(code))
                     os.chmod(file, 0o777)
                 pdf = convert_from_path(file)
                 for page in pdf:
-                    print("page*******************************",page)
+                    _logger.info('page*******************************',page)
                     img_name = prod_name + '.jpg'
                     rm_img = 'src/user/ledpax/static/image/' + img_name
                     page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
                     img = False
                     img_path = get_module_resource('ledpax', 'static/image', img_name)
-                    print("img_path----------------------------------",img_path)
+                    _logger.info('img_path----------------------------------',img_path)
                     if img_path:
                         with open(img_path, 'rb') as f:
                             img = f.read()
-                            print("IMG--------------------------------------",img)
+                            _logger.info('IMG--------------------------------------',img)
                             vals['image_medium'] = base64.b64encode(img)
                     os.remove(rm_img)
                     break

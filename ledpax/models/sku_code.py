@@ -341,14 +341,17 @@ class ProductTemplate(models.Model):
                     os.chmod(file, 0o777)
                 pdf = convert_from_path(file)
                 for page in pdf:
+                    print("page*******************************",page)
                     img_name = prod_name + '.jpg'
                     rm_img = 'src/user/ledpax/static/image/' + img_name
                     page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
                     img = False
                     img_path = get_module_resource('ledpax', 'static/image', img_name)
+                    print("img_path----------------------------------",img_path)
                     if img_path:
                         with open(img_path, 'rb') as f:
                             img = f.read()
+                            print("IMG--------------------------------------"img)
                             vals['image_medium'] = base64.b64encode(img)
                     os.remove(rm_img)
                     break

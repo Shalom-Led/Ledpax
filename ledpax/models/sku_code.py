@@ -329,41 +329,41 @@ class ProductTemplate(models.Model):
                     vals['description_purchase'] = vals['description']
         except:
             pass
-        try :
-            if vals['pdf_image'] :
-                from pdf2image import convert_from_path
-                try:
-                    self.env['product.image'].search([('product_tmpl_id', '=', self.id)]).unlink()
-                except:
-                    pass
-                code = bytes(vals['pdf_image'], encoding='utf-8')
-                # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
-                _logger.info('file %s',file)
-                with open(os.path.expanduser(file), 'wb') as fout:
-                    fout.write(base64.decodestring(code))
-                    os.chmod(file, 0o777)
-                pdf = convert_from_path(file)
-                _logger.info('PDF %s',pdf)
-                for page in pdf:
-                    _logger.info('page %s',page)
-                    img_name = prod_name + '.jpg'
-                    rm_img = 'src/user/ledpax/static/image/' + img_name
-                    page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
-                    img = False
-                    img_path = get_module_resource('ledpax', 'static/image', img_name)
-                    _logger.info('img_path %s',img_path)
-                    if img_path:
-                        with open(img_path, 'rb') as f:
-                            img = f.read()
-                            _logger.info('IMG %s',img)
-                            vals['image_medium'] = base64.b64encode(img)
-                    os.remove(rm_img)
-                    break
-        except KeyError:
-            pass
-        except:
-            raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
+        # try :
+        if vals['pdf_image'] :
+            from pdf2image import convert_from_path
+            try:
+                self.env['product.image'].search([('product_tmpl_id', '=', self.id)]).unlink()
+            except:
+                pass
+            code = bytes(vals['pdf_image'], encoding='utf-8')
+            # file = '/home/odoo12_entrp/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+            file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
+            _logger.info('file %s',file)
+            with open(os.path.expanduser(file), 'wb') as fout:
+                fout.write(base64.decodestring(code))
+                os.chmod(file, 0o777)
+            pdf = convert_from_path(file)
+            _logger.info('PDF %s',pdf)
+            for page in pdf:
+                _logger.info('page %s',page)
+                img_name = prod_name + '.jpg'
+                rm_img = 'src/user/ledpax/static/image/' + img_name
+                page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
+                img = False
+                img_path = get_module_resource('ledpax', 'static/image', img_name)
+                _logger.info('img_path %s',img_path)
+                if img_path:
+                    with open(img_path, 'rb') as f:
+                        img = f.read()
+                        _logger.info('IMG %s',img)
+                        vals['image_medium'] = base64.b64encode(img)
+                os.remove(rm_img)
+                break
+        # except KeyError:
+            # pass
+        # except:
+            # raise exceptions.ValidationError('Selected file is not PDF supported. Upload PDF file.')
         try :
             if vals['excel_file'] :
                 # file_path = '/home/odoo12_entrp/Downloads/Ledpax_Excel_Data/' + prod_name + '.xlsx'

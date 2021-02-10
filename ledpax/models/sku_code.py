@@ -1,4 +1,4 @@
-from odoo import fields, models,api,tools, _
+from odoo import fields,models,api,tools, _
 from odoo.exceptions import ValidationError
 from odoo.modules import get_module_resource
 from odoo import exceptions

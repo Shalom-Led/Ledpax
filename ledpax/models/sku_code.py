@@ -159,10 +159,10 @@ class ProductTemplate(models.Model):
                 pdf = convert_from_path(file)
                 for page in pdf:
                     img_name = vals_list[0]['name'] + '.jpg'
-                    rm_img = 'src/user/ledpax/static/image/' + img_name
-                    page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
+                    rm_img = 'src/Downloads/PDF_image/' + img_name
+                    page.save(os.path.join('src/Downloads/PDF_image/', img_name), 'JPEG')
                     img = False
-                    img_path = get_module_resource('ledpax', 'static/image', img_name)
+                    img_path = get_module_resource('ledpax', 'src/Downloads/PDF_image/', img_name)
                     if img_path:
                         with open(img_path, 'rb') as f:
                             img = f.read()
@@ -274,15 +274,15 @@ class ProductTemplate(models.Model):
                     file = 'src/Downloads/Temp_PDF/' + vals_list[0]['name'] + '.pdf' 
                     pdf = convert_from_path(file)
                     img_name = vals_list[0]['name'] + '.jpg'
-                    rm_img = 'src/user/ledpax/static/image/' + img_name
+                    rm_img = 'src/Downloads/PDF_image/' + img_name
                     ncount = 0
                     for page in pdf:
                         if ncount == 0:
                             ncount += 1
                         else :
-                            page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
+                            page.save(os.path.join('src/Downloads/PDF_image/', img_name), 'JPEG')
                             img = False
-                            img_path = get_module_resource('ledpax', 'static/image', img_name)
+                            img_path = get_module_resource('ledpax', 'src/Downloads/PDF_image/', img_name)
                             if img_path:
                                 with open(img_path, 'rb') as f:
                                     img = f.read()
@@ -342,10 +342,10 @@ class ProductTemplate(models.Model):
                 pdf = convert_from_path(file)
                 for page in pdf:
                     img_name = prod_name + '.jpg'
-                    rm_img = 'src/user/ledpax/static/image/' + img_name
-                    page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
+                    rm_img = 'src/Downloads/PDF_image/' + img_name
+                    page.save(os.path.join('src/Downloads/PDF_image/', img_name), 'JPEG')
                     img = False
-                    img_path = get_module_resource('ledpax', 'static/image', img_name)
+                    img_path = get_module_resource('ledpax', 'src/Downloads/PDF_image/', img_name)
                     if img_path:
                         with open(img_path, 'rb') as f:
                             img = f.read()
@@ -471,15 +471,15 @@ class ProductTemplate(models.Model):
                 file = 'src/Downloads/Temp_PDF/' + prod_name + '.pdf' 
                 pdf = convert_from_path(file)
                 img_name = prod_name + '.jpg'
-                rm_img = 'src/user/ledpax/static/image/' + img_name
+                rm_img = 'src/Downloads/PDF_image/' + img_name
                 ncount = 0
                 for page in pdf:
                     if ncount == 0:
                         ncount += 1
                     else :
-                        page.save(os.path.join('src/user/ledpax/static/image', img_name), 'JPEG')
+                        page.save(os.path.join('src/Downloads/PDF_image/', img_name), 'JPEG')
                         img = False
-                        img_path = get_module_resource('ledpax', 'static/image', img_name)
+                        img_path = get_module_resource('ledpax', 'src/Downloads/PDF_image/', img_name)
                         if img_path:
                             with open(img_path, 'rb') as f:
                                 img = f.read()

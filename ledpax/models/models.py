@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models,api,tools
+from odoo import fields,models,api,tools
 from odoo import exceptions
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
